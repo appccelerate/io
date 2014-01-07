@@ -22,13 +22,15 @@
     <copyright>Copyright 2012-2014</copyright>
     <tags>Appccelerate</tags>
 	<frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework="net45" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework="net45" />
     </frameworkAssemblies>
     <dependencies/>	
   </metadata>
   <files>
-    <file src="..\..\source\Appccelerate.IO\bin\Release\Appccelerate.IO.dll" target="lib\net45" />
-    <file src="..\..\source\Appccelerate.IO\bin\Release\Appccelerate.IO.pdb" target="lib\net45" />
-    <file src="..\..\source\Appccelerate.IO\bin\Release\Appccelerate.IO.xml" target="lib\net45" />
-    <file src="..\..\source\Appccelerate.IO\**\*.cs" target="src" />
+    <file src="Appccelerate.IO\bin\Release\Appccelerate.IO.dll" target="lib\net45" />
+    <file src="Appccelerate.IO\bin\Release\Appccelerate.IO.pdb" target="lib\net45" />
+    <file src="Appccelerate.IO\bin\Release\Appccelerate.IO.xml" target="lib\net45" />
+    <file src="Appccelerate.IO\**\*.cs" target="src" />
   </files>  
 </package>
