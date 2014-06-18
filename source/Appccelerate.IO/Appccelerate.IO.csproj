@@ -11,7 +11,7 @@
     <AssemblyName>Appccelerate.IO</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>5539b0da</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>b3e6cf38</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -129,15 +129,15 @@
     <Error Condition="!Exists('..\packages\Appccelerate.CheckNugetDependenciesTask.0.3.0\build\Appccelerate.CheckNugetDependenciesTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.CheckNugetDependenciesTask.0.3.0\build\Appccelerate.CheckNugetDependenciesTask.targets'))" />
     <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets'))" />
     <Error Condition="!Exists('..\packages\GitVersionTask.1.0.0.0\Build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GitVersionTask.1.0.0.0\Build\GitVersionTask.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.Development.0.37\build\Appccelerate.development.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.0.37\build\Appccelerate.development.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.Development.ProductionCode.0.37\build\Appccelerate.development.ProductionCode.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.ProductionCode.0.37\build\Appccelerate.development.ProductionCode.targets'))" />
+    <Error Condition="!Exists('..\packages\Appccelerate.Development.0.38\build\Appccelerate.development.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.0.38\build\Appccelerate.development.targets'))" />
+    <Error Condition="!Exists('..\packages\Appccelerate.Development.ProductionCode.0.38\build\Appccelerate.development.ProductionCode.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.ProductionCode.0.38\build\Appccelerate.development.ProductionCode.targets'))" />
   </Target>
   <Import Project="..\packages\Appccelerate.CheckHintPathTask.1.4.0\build\Appccelerate.CheckHintPathTask.targets" Condition="Exists('..\packages\Appccelerate.CheckHintPathTask.1.4.0\build\Appccelerate.CheckHintPathTask.targets')" />
   <Import Project="..\packages\Appccelerate.CheckNugetDependenciesTask.0.3.0\build\Appccelerate.CheckNugetDependenciesTask.targets" Condition="Exists('..\packages\Appccelerate.CheckNugetDependenciesTask.0.3.0\build\Appccelerate.CheckNugetDependenciesTask.targets')" />
   <Import Project="..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" />
   <Import Project="..\packages\GitVersionTask.1.0.0.0\Build\GitVersionTask.targets" Condition="Exists('..\packages\GitVersionTask.1.0.0.0\Build\GitVersionTask.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.0.37\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.37\build\Appccelerate.development.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.ProductionCode.0.37\build\Appccelerate.development.ProductionCode.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.0.37\build\Appccelerate.development.ProductionCode.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.0.38\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.38\build\Appccelerate.development.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.ProductionCode.0.38\build\Appccelerate.development.ProductionCode.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.0.38\build\Appccelerate.development.ProductionCode.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

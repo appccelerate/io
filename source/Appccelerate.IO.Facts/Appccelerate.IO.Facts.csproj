@@ -11,7 +11,7 @@
     <AssemblyName>Appccelerate.IO.Facts</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>dfaa407f</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>2e1e2f0e</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -106,12 +106,12 @@
     <Error Condition="!Exists('..\packages\Appccelerate.CheckHintPathTask.1.4.0\build\Appccelerate.CheckHintPathTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.CheckHintPathTask.1.4.0\build\Appccelerate.CheckHintPathTask.targets'))" />
     <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets'))" />
     <Error Condition="!Exists('..\packages\GitVersionTask.1.0.0.0\Build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GitVersionTask.1.0.0.0\Build\GitVersionTask.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.Development.0.37\build\Appccelerate.development.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.0.37\build\Appccelerate.development.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.Development.Facts.0.37\build\Appccelerate.Development.Facts.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.Facts.0.37\build\Appccelerate.Development.Facts.targets'))" />
+    <Error Condition="!Exists('..\packages\Appccelerate.Development.0.38\build\Appccelerate.development.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.0.38\build\Appccelerate.development.targets'))" />
+    <Error Condition="!Exists('..\packages\Appccelerate.Development.Facts.0.38\build\Appccelerate.Development.Facts.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.Facts.0.38\build\Appccelerate.Development.Facts.targets'))" />
   </Target>
   <Import Project="..\packages\Appccelerate.CheckHintPathTask.1.4.0\build\Appccelerate.CheckHintPathTask.targets" Condition="Exists('..\packages\Appccelerate.CheckHintPathTask.1.4.0\build\Appccelerate.CheckHintPathTask.targets')" />
   <Import Project="..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" />
   <Import Project="..\packages\GitVersionTask.1.0.0.0\Build\GitVersionTask.targets" Condition="Exists('..\packages\GitVersionTask.1.0.0.0\Build\GitVersionTask.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.0.37\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.37\build\Appccelerate.development.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.Facts.0.37\build\Appccelerate.Development.Facts.targets" Condition="Exists('..\packages\Appccelerate.Development.Facts.0.37\build\Appccelerate.Development.Facts.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.0.38\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.38\build\Appccelerate.development.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.Facts.0.38\build\Appccelerate.Development.Facts.targets" Condition="Exists('..\packages\Appccelerate.Development.Facts.0.38\build\Appccelerate.Development.Facts.targets')" />
 </Project>
