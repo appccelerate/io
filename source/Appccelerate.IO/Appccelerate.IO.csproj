@@ -95,6 +95,7 @@
     <Compile Include="Resources\EmbeddedResourceLoader.cs" />
     <Compile Include="Resources\FileResourceLoader.cs" />
     <Compile Include="Resources\IResourceLoader.cs" />
+    <Compile Include="ShortcutPath.cs" />
     <Compile Include="Streams\StreamDecoratorStream.cs" />
     <Compile Include="Streams\StreamExtensionMethods.cs" />
     <Compile Include="TemporaryFileHolder.cs" />

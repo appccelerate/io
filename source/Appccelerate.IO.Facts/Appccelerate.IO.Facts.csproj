@@ -69,6 +69,7 @@
     <Compile Include="Properties\GlobalAssemblyInfo.cs" />
     <Compile Include="Resources\EmbeddedResourceLoaderFacts.cs" />
     <Compile Include="Resources\FileResourceLoaderFacts.cs" />
+    <Compile Include="ShortcutPathFacts.cs" />
     <Compile Include="Streams\ByteArrayFluentAssertionsExtensionMethods.cs" />
     <Compile Include="Streams\StreamDecoratorStreamNoStreamFacts.cs" />
     <Compile Include="Streams\StreamDecoratorStreamPropertiesFacts.cs" />
