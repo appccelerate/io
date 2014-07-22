@@ -10,18 +10,18 @@
     <projectUrl>https://github.com/appccelerate/io</projectUrl>
     <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-	<summary>Evaluation of rules, computations, validations and much more.</summary>
+    <summary>Evaluation of rules, computations, validations and much more.</summary>
     <description>
-	  Provides functionality for simplified IO operations:
-      File system abstraction (completely testable)
-      Stream decorators/interceptors,
-      loader for resources (from file/embedded)
-	</description>
-	<releaseNotes>
+      Provides functionality for simplified IO operations:
+        File system abstraction (completely testable)
+        Stream decorators/interceptors,
+        loader for resources (from file/embedded)
+    </description>
+    <releaseNotes>
     </releaseNotes>
     <copyright>Copyright 2012-2014</copyright>
     <tags>Appccelerate</tags>
-	<frameworkAssemblies>
+    <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="net45" />
       <frameworkAssembly assemblyName="System.Core" targetFramework="net45" />
       <frameworkAssembly assemblyName="System.Xml" targetFramework="net45" />
@@ -31,9 +31,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Appccelerate.IO\bin\Release\Appccelerate.IO.dll" target="lib\net45" />
-    <file src="Appccelerate.IO\bin\Release\Appccelerate.IO.pdb" target="lib\net45" />
-    <file src="Appccelerate.IO\bin\Release\Appccelerate.IO.xml" target="lib\net45" />
-    <file src="Appccelerate.IO\**\*.cs" target="src" />
+    <file src="bin\Release\Appccelerate.IO.dll" target="lib\net45" />
+    <file src="bin\Release\Appccelerate.IO.pdb" target="lib\net45" />
+    <file src="bin\Release\Appccelerate.IO.xml" target="lib\net45" />
+    <file src="**\*.cs" target="src" />
   </files>  
 </package>

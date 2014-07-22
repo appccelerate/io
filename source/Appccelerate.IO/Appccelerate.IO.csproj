@@ -101,6 +101,7 @@
     <Compile Include="TemporaryFileHolder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="appccelerate.io.nuspec" />
     <None Include="Appccelerate.Public.snk" />
     <None Include="Appccelerate.snk" />
     <None Include="NuGet.config" />
