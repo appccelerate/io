@@ -16,6 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
+using System;
 using System.Reflection;
 
 // General Information about an assembly is controlled through the following 
@@ -23,3 +24,5 @@ using System.Reflection;
 // associated with an assembly.
 [assembly: AssemblyTitle("Appccelerate.IO")]
 [assembly: AssemblyDescription("")]
+
+[assembly: CLSCompliant(true)]
