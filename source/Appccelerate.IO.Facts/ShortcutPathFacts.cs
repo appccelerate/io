@@ -21,6 +21,7 @@ namespace Appccelerate.IO
     using System;
     using FluentAssertions;
     using Xunit;
+    using Xunit.Extensions;
 
     public class ShortcutPathFacts
     {
@@ -69,6 +70,48 @@ namespace Appccelerate.IO
             Action action = () => new ShortcutPath(InvalidShortcutPath);
 
             action.ShouldThrow<ArgumentException>();
+        }
+
+        [Theory]
+        [InlineData(@"%AppData%\folder\file.ext", @"%AppData%\folder\file.ext", true)]
+        [InlineData(@"%AppData%\folder\file.ext", @"%AppData%\folder\other.ext", false)]
+        [InlineData(@"%AppData%\folder\file.ext", @"%AppData%\other\file.ext", false)]
+        public void SupportsEqualityOperator(string aa, string bb, bool expected)
+        {
+            ShortcutPath a = aa;
+            ShortcutPath b = bb;
+
+            bool result = a == b;
+
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(@"%AppData%\folder\file.ext", @"%AppData%\folder\file.ext", false)]
+        [InlineData(@"%AppData%\folder\file.ext", @"%AppData%\folder\other.ext", true)]
+        [InlineData(@"%AppData%\folder\file.ext", @"%AppData%\other\file.ext", true)]
+        public void SupportsInequalityOperator(string aa, string bb, bool expected)
+        {
+            ShortcutPath a = aa;
+            ShortcutPath b = bb;
+
+            bool result = a != b;
+
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(@"%AppData%\folder\file.ext", @"%AppData%\folder\file.ext", true)]
+        [InlineData(@"%AppData%\folder\file.ext", @"%AppData%\folder\other.ext", false)]
+        [InlineData(@"%AppData%\folder\file.ext", @"%AppData%\other\file.ext", false)]
+        public void SupportsEquals(string aa, string bb, bool expected)
+        {
+            ShortcutPath a = aa;
+            ShortcutPath b = bb;
+
+            bool result = a == b;
+
+            result.Should().Be(expected);
         }
     }
 }

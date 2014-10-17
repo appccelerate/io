@@ -82,6 +82,28 @@ namespace Appccelerate.IO
             return string.Equals(this.Value, other.Value);
         }
 
+        public static bool operator ==(ShortcutPath a, ShortcutPath b)
+        {
+            if (ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+            // ReSharper disable RedundantCast.0 because otherwise it results in recursion.
+            if (((object)a == null) || ((object)b == null))
+            // ReSharper restore RedundantCast.0
+            {
+                return false;
+            }
+
+            return a.Value == b.Value;
+        }
+
+        public static bool operator !=(ShortcutPath a, ShortcutPath b)
+        {
+            return !(a == b);
+        }
+
         private static bool ContainsInvalidShortcut(string shortcutPath)
         {
             return shortcutPath.Count(c => c == ShortcutCharacter.Single()) % 2 == 1;
