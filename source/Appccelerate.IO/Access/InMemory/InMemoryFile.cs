@@ -25,59 +25,116 @@ namespace Appccelerate.IO.Access.InMemory
     using System.Security.AccessControl;
     using System.Text;
 
-    public class InMemoryFile : IFile
+    using Appccelerate.IO.Access.Internals;
+
+    using Path = System.IO.Path;
+
+    public class InMemoryFile : IFile, IExtensionProvider<IFileExtension>
     {
         private readonly IInMemoryFileSystem fileSystem;
 
-        public InMemoryFile(IInMemoryFileSystem fileSystem)
+        private readonly IEnumerable<IFileExtension> extensions;
+
+        public InMemoryFile(IInMemoryFileSystem fileSystem, IEnumerable<IFileExtension> extensions)
         {
             this.fileSystem = fileSystem;
+            this.extensions = extensions;
+        }
+
+        public IEnumerable<IFileExtension> Extensions
+        {
+            get
+            {
+                return this.extensions;
+            }
         }
 
         public void Delete(string path)
         {
-            this.fileSystem.DeleteFile(path);
+            this.EncapsulateWithExtension(
+                () => this.fileSystem.DeleteFile(path),
+                extension => extension.BeginDelete(path),
+                extension => extension.EndDelete(path),
+                (IFileExtension extension, ref Exception exception) => extension.FailDelete(ref exception, path));
         }
 
         public bool Exists(string path)
         {
-            return this.fileSystem.FileExists(path);
+            return this.EncapsulateWithExtension(
+                () => this.fileSystem.FileExists(path),
+                extension => extension.BeginExists(path),
+                (extension, result) => extension.EndExists(result, path),
+                (IFileExtension extension, ref Exception exception) => extension.FailExists(ref exception, path));
         }
 
         public IEnumerable<byte> ReadAllBytes(string path)
         {
-            return this.fileSystem.GetFile(path);
+            return this.EncapsulateWithExtension(
+                () => this.fileSystem.GetFile(path),
+                extension => extension.BeginReadAllBytes(path),
+                (extension, result) => extension.EndReadAllBytes(result.ToArray(), path),
+                (IFileExtension extension, ref Exception exception) => extension.FailReadAllBytes(ref exception, path));
         }
 
         public string ReadAllText(string path)
         {
-            return Encoding.Default.GetString(this.ReadAllBytes(path).ToArray());
+            return this.EncapsulateWithExtension(
+                () => Encoding.Default.GetString(this.fileSystem.GetFile(path).ToArray()),
+                extension => extension.BeginReadAllText(path),
+                (extension, result) => extension.EndReadAllText(result, path),
+                (IFileExtension extension, ref Exception exception) => extension.FailReadAllText(ref exception, path));
         }
 
         public void WriteAllBytes(string path, IEnumerable<byte> bytes)
         {
-            this.fileSystem.CreateDirectory(Path.GetDirectoryName(path));
-            this.fileSystem.AddFile(path, bytes);
+            this.EncapsulateWithExtension(
+                () =>
+                    {
+                        this.fileSystem.CreateDirectory(Path.GetDirectoryName(path));
+                        this.fileSystem.AddFile(path, bytes);
+                    },
+                extension => extension.BeginWriteAllBytes(path, bytes.ToArray()),
+                extension => extension.EndWriteAllBytes(path, bytes.ToArray()),
+                (IFileExtension extension, ref Exception exception) => extension.FailWriteAllBytes(ref exception, path, bytes.ToArray()));
         }
 
         public void WriteAllText(string path, string contents)
         {
-            this.WriteAllBytes(path, Encoding.Default.GetBytes(contents));
+            this.EncapsulateWithExtension(
+                () =>
+                {
+                    this.fileSystem.CreateDirectory(Path.GetDirectoryName(path));
+                    this.fileSystem.AddFile(path, Encoding.Default.GetBytes(contents));
+                },
+                extension => extension.BeginWriteAllText(path, contents),
+                extension => extension.EndWriteAllText(path, contents),
+                (IFileExtension extension, ref Exception exception) => extension.FailWriteAllText(ref exception, path, contents));
         }
 
         public Stream OpenRead(string path)
         {
-            var bytes = this.fileSystem.GetFile(path).ToArray();
+            return this.EncapsulateWithExtension(
+                () =>
+                    {
+                        var bytes = this.fileSystem.GetFile(path).ToArray();
 
-            var stream = new MemoryStream(bytes);
-            stream.Seek(0, SeekOrigin.Begin);
+                        var stream = new MemoryStream(bytes);
+                        stream.Seek(0, SeekOrigin.Begin);
 
-            return stream;
+                        return stream;
+                    },
+                extension => extension.BeginOpenRead(path),
+                (extension, result) => extension.EndOpenRead(result, path),
+                (IFileExtension extension, ref Exception exception) => extension.FailOpenRead(ref exception, path));
         }
 
         public void Move(string sourceFileName, string destinationFileName)
         {
-            this.fileSystem.Move(sourceFileName, destinationFileName);
+            this.EncapsulateWithExtension(
+                () => this.fileSystem.Move(sourceFileName, destinationFileName),
+                extension => extension.BeginMove(sourceFileName, destinationFileName),
+                extension => extension.EndMove(sourceFileName, destinationFileName),
+                (IFileExtension extension, ref Exception exception) => extension.FailMove(ref exception, sourceFileName, destinationFileName));
         }
 
         public void Copy(string sourceFileName, string destFileName)

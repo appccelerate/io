@@ -21,9 +21,20 @@ namespace Appccelerate.IO.Access.InMemory
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     public class InMemoryAccessFactory : IAccessFactory
     {
+        private Func<IEnumerable<IFileExtension>> fileExtensionsProvider = Enumerable.Empty<IFileExtension>;
+
+        private Func<IEnumerable<IDirectoryExtension>> directoryExtensionsProvider = Enumerable.Empty<IDirectoryExtension>;
+
+        private Func<IEnumerable<IPathExtension>> pathExtensionsProvider = Enumerable.Empty<IPathExtension>;
+
+        private Func<IEnumerable<IEnvironmentExtension>> environmentExtensionsProvider = Enumerable.Empty<IEnvironmentExtension>;
+
+        private Func<IEnumerable<IDriveExtension>> driveExtensionsProvider = Enumerable.Empty<IDriveExtension>;
+
         public InMemoryAccessFactory()
         {
             this.FileSystem = new InMemoryFileSystem();
@@ -38,7 +49,7 @@ namespace Appccelerate.IO.Access.InMemory
 
         public IFile CreateFile()
         {
-            return new InMemoryFile(this.FileSystem);
+            return new InMemoryFile(this.FileSystem, this.fileExtensionsProvider());
         }
 
         public IPath CreatePath()
@@ -88,27 +99,27 @@ namespace Appccelerate.IO.Access.InMemory
 
         public void RegisterFileExtensionsProvider(Func<IEnumerable<IFileExtension>> extensionsProvider)
         {
-            throw new NotImplementedException();
+            this.fileExtensionsProvider = extensionsProvider;
         }
 
         public void RegisterDirectoryExtensionsProvider(Func<IEnumerable<IDirectoryExtension>> extensionsProvider)
         {
-            throw new NotImplementedException();
+            this.directoryExtensionsProvider = extensionsProvider;
         }
 
         public void RegisterDriveExtensionsProvider(Func<IEnumerable<IDriveExtension>> extensionsProvider)
         {
-            throw new NotImplementedException();
+            this.driveExtensionsProvider = extensionsProvider;
         }
 
         public void RegisterPathExtensionsProvider(Func<IEnumerable<IPathExtension>> extensionsProvider)
         {
-            throw new NotImplementedException();
+            this.pathExtensionsProvider = extensionsProvider;
         }
 
         public void RegisterEnvironmentExtensionsProvider(Func<IEnumerable<IEnvironmentExtension>> extensionsProvider)
         {
-            throw new NotImplementedException();
+            this.environmentExtensionsProvider = extensionsProvider;
         }
     }
 }

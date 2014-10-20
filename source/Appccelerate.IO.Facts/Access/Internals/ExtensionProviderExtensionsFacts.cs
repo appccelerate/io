@@ -82,6 +82,467 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
+        public void CallsBeginWithCorrectParameters_WhenUsingAction()
+        {
+            const string ExpectedParameter = "Test";
+
+            this.SetupExtensions();
+
+            this.provider.EncapsulateWithExtension(
+                () => this.Do(ExpectedParameter),
+                e => e.BeginDo(ExpectedParameter),
+                e => e.EndDo(ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            A.CallTo(() => this.extension.BeginDo(ExpectedParameter)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void CallsEndWithCorrectParameters_WhenUsingAction()
+        {
+            const string ExpectedParameter = "Test";
+
+            this.SetupExtensions();
+
+            this.provider.EncapsulateWithExtension(
+                () => this.Do(ExpectedParameter),
+                e => e.BeginDo(ExpectedParameter),
+                e => e.EndDo(ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            A.CallTo(() => this.extension.EndDo(ExpectedParameter)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void CallsActionWithCorrectParameters_WhenUsingAction()
+        {
+            const string ExpectedParameter = "Test";
+
+            this.SetupExtensions();
+
+            this.provider.EncapsulateWithExtension(
+                () => this.Do(ExpectedParameter),
+                e => e.BeginDo(ExpectedParameter),
+                e => e.EndDo(ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            this.stringParameter.Should().Be(ExpectedParameter);
+        }
+
+        [Fact]
+        public void CallsFailWithCorrectExceptionAndRethrowsException_WhenUsingAction()
+        {
+            var exception = new Exception();
+
+            const string ExpectedParameter = "Test";
+
+            this.RegisterExtensions(this.extension);
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                () =>
+                                    {
+                                        throw exception;
+                                    },
+                                e => e.BeginDo(ExpectedParameter),
+                                e => e.EndDo(ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<Exception>();
+            A.CallTo(() => this.extension.FailDo(ref exception)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void RethrowsExchangedException_WhenUsingActionAndExtensionExchangesException()
+        {
+            const string ExpectedParameter = "Test";
+
+            this.RegisterExtensions(new NewExceptionExchangingExtension(new InvalidOperationException()));
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                () =>
+                                    {
+                                        throw new ArgumentException();
+                                    },
+                                e => e.BeginDo(ExpectedParameter),
+                                e => e.EndDo(ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void RethrowsLastExchangedException_WhenUsingActionAndMultipleExtensionsExchangeException()
+        {
+            const string ExpectedParameter = "Test";
+
+            this.RegisterExtensions(
+                new NewExceptionExchangingExtension(new OutOfMemoryException()),
+                new NewExceptionExchangingExtension(new InvalidOperationException()));
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                () =>
+                                    {
+                                        throw new ArgumentException();
+                                    },
+                                e => e.BeginDo(ExpectedParameter),
+                                e => e.EndDo(ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void CallsBeginWithCorrectParameters_WhenUsingActionWithOverload()
+        {
+            const bool ExpectedParameter = true;
+
+            this.SetupExtensions();
+
+            this.provider.EncapsulateWithExtension(
+                () => this.Do(ExpectedParameter),
+                e => e.BeginDo(ExpectedParameter),
+                e => e.EndDo(ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            A.CallTo(() => this.extension.BeginDo(ExpectedParameter)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void CallsEndWithCorrectParameters_WhenUsingActionWithOverload()
+        {
+            const bool ExpectedParameter = true;
+
+            this.SetupExtensions();
+
+            this.provider.EncapsulateWithExtension(
+                () => this.Do(ExpectedParameter),
+                e => e.BeginDo(ExpectedParameter),
+                e => e.EndDo(ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            A.CallTo(() => this.extension.EndDo(ExpectedParameter)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void CallsActionWithCorrectParameters_WhenUsingActionWithOverload()
+        {
+            const bool ExpectedParameter = true;
+
+            this.SetupExtensions();
+
+            this.provider.EncapsulateWithExtension(
+                () => this.Do(ExpectedParameter),
+                e => e.BeginDo(ExpectedParameter),
+                e => e.EndDo(ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            this.boolParameter.Should().Be(ExpectedParameter);
+        }
+
+        [Fact]
+        public void CallsFailWithCorrectExceptionAndRethrowsException_WhenUsingActionWithOverload()
+        {
+            const bool ExpectedParameter = true;
+
+            this.SetupExtensions();
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                () =>
+                                    {
+                                        throw new ArgumentException();
+                                    },
+                                e => e.BeginDo(ExpectedParameter),
+                                e => e.EndDo(ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<ArgumentException>();
+        }
+
+        [Fact]
+        public void RethrowsExchangedException_WhenUsingActionWithOverloadAndExtensionExchangesException()
+        {
+            const bool ExpectedParameter = true;
+
+            this.RegisterExtensions(new NewExceptionExchangingExtension(new InvalidOperationException()));
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                () =>
+                                    {
+                                        throw new ArgumentException();
+                                    },
+                                e => e.BeginDo(ExpectedParameter),
+                                e => e.EndDo(ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void RethrowsLastExchangedException_WhenUsingActionWithOverloadAndMultipleExtensionsExchangeException()
+        {
+            const bool ExpectedParameter = true;
+
+            this.RegisterExtensions(
+                new NewExceptionExchangingExtension(new OutOfMemoryException()),
+                new NewExceptionExchangingExtension(new InvalidOperationException()));
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                () =>
+                                    {
+                                        throw new ArgumentException();
+                                    },
+                                e => e.BeginDo(ExpectedParameter),
+                                e => e.EndDo(ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void ReturnsValue_WhenUsingFunc()
+        {
+            const string ExpectedParameter = "Test";
+
+            this.RegisterExtensions(this.extension);
+
+            int result = this.provider.EncapsulateWithExtension(
+                () => this.DoReturn(ExpectedParameter),
+                e => e.BeginDoReturn(ExpectedParameter),
+                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            result.Should().Be(ExpectedReturnValue);
+        }
+
+        [Fact]
+        public void CallsBeginWithCorrectParameters_WhenUsingFunc()
+        {
+            const string ExpectedParameter = "Test";
+
+            this.SetupExtensions();
+
+            this.provider.EncapsulateWithExtension(
+                () => this.DoReturn(ExpectedParameter),
+                e => e.BeginDoReturn(ExpectedParameter),
+                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            A.CallTo(() => this.extension.BeginDoReturn(ExpectedParameter)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void CallsEndWithCorrectParameters_WhenUsingFunc()
+        {
+            const string ExpectedParameter = "Test";
+
+            this.SetupExtensions();
+
+            this.provider.EncapsulateWithExtension(
+                () => this.DoReturn(ExpectedParameter),
+                e => e.BeginDoReturn(ExpectedParameter),
+                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            A.CallTo(() => this.extension.EndDoReturn(ExpectedReturnValue, ExpectedParameter)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void CallsActionWithCorrectParameters_WhenUsingFunc()
+        {
+            const string ExpectedParameter = "Test";
+
+            this.SetupExtensions();
+
+            this.provider.EncapsulateWithExtension(
+                () => this.DoReturn(ExpectedParameter),
+                e => e.BeginDoReturn(ExpectedParameter),
+                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            this.stringParameter.Should().Be(ExpectedParameter);
+        }
+
+        [Fact]
+        public void CallsFailWithCorrectExceptionAndRethrowsException_WhenUsingFunc()
+        {
+            const string ExpectedParameter = "Test";
+
+            this.SetupExtensions();
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                (Func<int>)(() =>
+                                    {
+                                        throw new ArgumentException();
+                                    }),
+                                e => e.BeginDoReturn(ExpectedParameter),
+                                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<ArgumentException>();
+        }
+
+        [Fact]
+        public void RethrowsExchangedException_WhenUsingFuncAndExtensionExchangesException()
+        {
+            const string ExpectedParameter = "Test";
+
+            this.RegisterExtensions(new NewExceptionExchangingExtension(new InvalidOperationException()));
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                (Func<int>)(() =>
+                                    {
+                                        throw new ArgumentException();
+                                    }),
+                                e => e.BeginDoReturn(ExpectedParameter),
+                                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDoReturn(ref ex));
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void RethrowsLastExchangedException_WhenUsingFuncAndMultipleExtensionsExchangeException()
+        {
+            const string ExpectedParameter = "Test";
+
+            this.RegisterExtensions(
+                new NewExceptionExchangingExtension(new OutOfMemoryException()),
+                new NewExceptionExchangingExtension(new InvalidOperationException()));
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                (Func<int>)(() =>
+                                {
+                                    throw new ArgumentException();
+                                }),
+                                e => e.BeginDoReturn(ExpectedParameter),
+                                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void CallsBeginWithCorrectParameters_WhenUsingFuncWithOverload()
+        {
+            const bool ExpectedParameter = true;
+
+            this.SetupExtensions();
+
+            this.provider.EncapsulateWithExtension(
+                () => this.DoReturn(ExpectedParameter),
+                e => e.BeginDoReturn(ExpectedParameter),
+                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            A.CallTo(() => this.extension.BeginDoReturn(ExpectedParameter)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void CallsEndWithCorrectParameters_WhenUsingFuncWithOverload()
+        {
+            const bool ExpectedParameter = true;
+
+            this.SetupExtensions();
+
+            this.provider.EncapsulateWithExtension(
+                () => this.DoReturn(ExpectedParameter),
+                e => e.BeginDoReturn(ExpectedParameter),
+                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            A.CallTo(() => this.extension.EndDoReturn(ExpectedReturnValue, ExpectedParameter)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void CallsActionWithCorrectParameters_WhenUsingFuncWithOverload()
+        {
+            const bool ExpectedParameter = true;
+
+            this.SetupExtensions();
+
+            this.provider.EncapsulateWithExtension(
+                () => this.DoReturn(ExpectedParameter),
+                e => e.BeginDoReturn(ExpectedParameter),
+                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            this.boolParameter.Should().Be(ExpectedParameter);
+        }
+
+        [Fact]
+        public void CallsFailWithCorrectExceptionAndRethrowsException_WhenUsingFuncWithOverload()
+        {
+            const bool ExpectedParameter = true;
+
+            this.SetupExtensions();
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                (Func<int>)(() =>
+                                {
+                                    throw new ArgumentException();
+                                }),
+                                e => e.BeginDoReturn(ExpectedParameter),
+                                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<ArgumentException>();
+        }
+
+        [Fact]
+        public void RethrowsExchangedException_WhenUsingFuncWithOverloadAndExtensionExchangesException()
+        {
+            const bool ExpectedParameter = true;
+
+            this.RegisterExtensions(new NewExceptionExchangingExtension(new InvalidOperationException()));
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                (Func<int>)(() =>
+                                {
+                                    throw new ArgumentException();
+                                }),
+                                e => e.BeginDoReturn(ExpectedParameter),
+                                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void RethrowsLastExchangedException_WhenUsingFuncWithOverloadAndMultipleExtensionsExchangeException()
+        {
+            const bool ExpectedParameter = true;
+
+            this.RegisterExtensions(
+                new NewExceptionExchangingExtension(new OutOfMemoryException()),
+                new NewExceptionExchangingExtension(new InvalidOperationException()));
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                (Func<int>)(() =>
+                                {
+                                    throw new ArgumentException();
+                                }),
+                                e => e.BeginDoReturn(ExpectedParameter),
+                                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        /*********************************/
+
+        [Fact]
         public void SurroundWithExtensions_WhenUsingAction_MustCallBeginWithCorrectParameters()
         {
             const string ExpectedParameter = "Test";
@@ -337,6 +798,8 @@ namespace Appccelerate.IO.Access.Internals
             action.ShouldThrow<InvalidOperationException>();
         }
 
+        /*  !!!!!!!!!!!!!!!!  */
+
         [Fact]
         public void SurroundWithExtensions_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMapping_MustCallBeginWithCorrectParameters()
         {
@@ -345,6 +808,22 @@ namespace Appccelerate.IO.Access.Internals
             this.SetupExtensions();
 
             this.provider.SurroundWithExtension<IExtension, Stream>(() => this.DoReturn(ExpectedParameter), ExpectedParameter);
+
+            A.CallTo(() => this.extension.BeginDoReturn(ExpectedParameter)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void CallsBeginWithCorrectParameters_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMapping()
+        {
+            const int ExpectedParameter = 42;
+
+            this.RegisterExtensions(this.extension);
+            
+            this.provider.EncapsulateWithExtension(
+                () => this.DoReturn(ExpectedParameter),
+                e => e.BeginDoReturn(ExpectedParameter),
+                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
             A.CallTo(() => this.extension.BeginDoReturn(ExpectedParameter)).MustHaveHappened();
         }
@@ -362,6 +841,22 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
+        public void CallsEndWithCorrectParameters_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMapping()
+        {
+            const int ExpectedParameter = 42;
+
+            this.RegisterExtensions(this.extension);
+
+            this.provider.EncapsulateWithExtension(
+                () => this.DoReturn(ExpectedParameter),
+                e => e.BeginDoReturn(ExpectedParameter),
+                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            A.CallTo(() => this.extension.EndDoReturn(this.expectedReturnStream, ExpectedParameter)).MustHaveHappened();
+        }
+
+        [Fact]
         public void SurroundWithExtensions_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMapping_MustCallActionWithCorrectParameters()
         {
             const int ExpectedParameter = 42;
@@ -370,6 +865,23 @@ namespace Appccelerate.IO.Access.Internals
 
             Stream result = this.provider.SurroundWithExtension<IExtension, Stream>(() => this.DoReturn(ExpectedParameter), ExpectedParameter);
 
+            this.intParameter.Should().Be(ExpectedParameter);
+            result.Should().Be(this.expectedReturnStream);
+        }
+
+        [Fact]
+        public void CallsActionWithCorrectParameters_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMapping()
+        {
+            const int ExpectedParameter = 42;
+
+            this.RegisterExtensions(this.extension);
+
+            Stream result = this.provider.EncapsulateWithExtension(
+                () => this.DoReturn(ExpectedParameter),
+                e => e.BeginDoReturn(ExpectedParameter),
+                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+            
             this.intParameter.Should().Be(ExpectedParameter);
             result.Should().Be(this.expectedReturnStream);
         }
@@ -389,6 +901,27 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
+        public void CallsFailWithCorrectParameters_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMapping()
+        {
+            var exception = new Exception();
+            const int ExpectedParameter = 42;
+
+            this.RegisterExtensions(this.extension);
+
+            Action action = () => this.provider.EncapsulateWithExtension(
+                (Func<Stream>)(() =>
+                    {
+                        throw exception;
+                    }),
+                e => e.BeginDoReturn(ExpectedParameter),
+                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                (IExtension e, ref Exception ex) => e.FailDoReturn(ref ex));
+
+            action.ShouldThrow<Exception>();
+            A.CallTo(() => this.extension.FailDoReturn(ref exception)).MustHaveHappened();
+        }
+
+        [Fact]
         public void SurroundWithExtensions_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMapping_MustCallFailWithCorrectExceptionAndRethrowExchangedException()
         {
             const int ExpectedParameter = 42;
@@ -399,6 +932,53 @@ namespace Appccelerate.IO.Access.Internals
             Action action = () => this.provider.SurroundWithExtension<IExtension, Stream>(() => this.DoReturn(ExpectedParameter), ExpectedParameter);
 
             action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void RethrowsExchangedException_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMappingAndExtensionExchangesException()
+        {
+            const int ExpectedParameter = 42;
+
+            this.RegisterExtensions(new NewExceptionExchangingExtension(new InvalidOperationException()));
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                (Func<Stream>)(() =>
+                                {
+                                    throw new ArgumentException();
+                                }),
+                                e => e.BeginDoReturn(ExpectedParameter),
+                                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void RethrowsLastExchangedException_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMappingAndMultipleExtensionsExchangeException()
+        {
+            const int ExpectedParameter = 42;
+
+            this.RegisterExtensions(
+                new NewExceptionExchangingExtension(new OutOfMemoryException()),
+                new NewExceptionExchangingExtension(new InvalidOperationException()));
+
+            Action action = () =>
+                            this.provider.EncapsulateWithExtension(
+                                (Func<Stream>)(() =>
+                                {
+                                    throw new ArgumentException();
+                                }),
+                                e => e.BeginDoReturn(ExpectedParameter),
+                                (e, r) => e.EndDoReturn(r, ExpectedParameter),
+                                (IExtension e, ref Exception ex) => e.FailDo(ref ex));
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        private void RegisterExtensions(params IExtension[] extensions)
+        {
+            A.CallTo(() => this.provider.Extensions).Returns(extensions);
         }
 
         private void Do(bool parameter)
@@ -470,6 +1050,147 @@ namespace Appccelerate.IO.Access.Internals
         private void SetupExtensionsWithExceptionExchangingExtension()
         {
             A.CallTo(() => this.provider.Extensions).Returns(new List<IExtension> { new ExceptionExchangingExtension(this.exception), new SecondExceptionExchangingExtension(this.exception) });
+        }
+
+        private class ExceptionThrowingExtension : IExtension
+        {
+            public Exception BeginException { get; set; }
+
+            public Exception EndException { get; set; }
+            
+            public void BeginDo(bool s)
+            {
+                this.Begin();
+            }
+
+            public void EndDo(bool s)
+            {
+                this.End();
+            }
+
+            public void BeginDo(string s)
+            {
+                this.Begin();
+            }
+
+            public void EndDo(string s)
+            {
+                this.End();
+            }
+
+            public void FailDo(ref Exception exception)
+            {
+            }
+
+            public void BeginDoReturn(string s)
+            {
+                this.Begin();
+            }
+
+            public void EndDoReturn(int result, string s)
+            {
+                this.End();
+            }
+
+            public void BeginDoReturn(bool s)
+            {
+                this.Begin();
+            }
+
+            public void EndDoReturn(int result, bool s)
+            {
+                this.End();
+            }
+
+            public void BeginDoReturn(int s)
+            {
+                this.Begin();
+            }
+
+            public void EndDoReturn(Stream result, int s)
+            {
+                this.End();
+            }
+
+            public void FailDoReturn(ref Exception exception)
+            {
+            }
+
+            private void Begin()
+            {
+                if (this.BeginException != null)
+                {
+                    throw this.BeginException;
+                }
+            }
+
+            private void End()
+            {
+                if (this.EndException != null)
+                {
+                    throw this.EndException;
+                }
+            }
+        }
+
+        private class NewExceptionExchangingExtension : IExtension
+        {
+            private readonly Exception replacement;
+
+            public NewExceptionExchangingExtension(Exception replacement)
+            {
+                this.replacement = replacement;
+            }
+
+            public void BeginDo(bool s)
+            {
+            }
+
+            public void EndDo(bool s)
+            {
+            }
+
+            public void BeginDo(string s)
+            {
+            }
+
+            public void EndDo(string s)
+            {
+            }
+
+            public void FailDo(ref Exception exception)
+            {
+                exception = this.replacement;
+            }
+
+            public void BeginDoReturn(string s)
+            {
+            }
+
+            public void EndDoReturn(int result, string s)
+            {
+            }
+
+            public void BeginDoReturn(bool s)
+            {
+            }
+
+            public void EndDoReturn(int result, bool s)
+            {
+            }
+
+            public void BeginDoReturn(int s)
+            {
+            }
+
+            public void EndDoReturn(Stream result, int s)
+            {
+            }
+
+            public void FailDoReturn(ref Exception exception)
+            {
+                exception = this.replacement;
+            }
         }
 
         private class ExceptionExchangingExtension : IExtension
