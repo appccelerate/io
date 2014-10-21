@@ -25,7 +25,7 @@ namespace Appccelerate.IO
         public AbsoluteFilePath(string absoluteFilePath)
             : base(absoluteFilePath)
         {
-            if (string.IsNullOrEmpty(Path.GetFileName(absoluteFilePath)))
+            if (!IsAbsoluteFilePath(absoluteFilePath))
             {
                 throw new ArgumentException("Expected absolute file path, but is `" + absoluteFilePath + "`.");
             }
@@ -39,6 +39,12 @@ namespace Appccelerate.IO
         public static AbsoluteFilePath FromString(string absoluteFilePath)
         {
             return new AbsoluteFilePath(absoluteFilePath);
+        }
+
+        public static bool IsAbsoluteFilePath(string path)
+        {
+            return AbsolutePath.IsAbsolutePath(path)
+                   && !string.IsNullOrEmpty(Path.GetFileName(path));
         }
     }
 }

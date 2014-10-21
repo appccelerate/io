@@ -24,7 +24,7 @@ namespace Appccelerate.IO
     {
         public AbsolutePath(string absolutePath)
         {
-            if (!Path.IsPathRooted(absolutePath))
+            if (!IsAbsolutePath(absolutePath))
             {
                 throw new ArgumentException("Expected absolute path but is `" + absolutePath + "`.");
             }
@@ -48,6 +48,11 @@ namespace Appccelerate.IO
             {
                 return new AbsoluteFilePath(this.Value);
             }
+        }
+
+        public static bool IsAbsolutePath(string path)
+        {
+            return Path.IsPathRooted(path);
         }
 
         public static implicit operator AbsolutePath(string absolutePath)
