@@ -210,5 +210,17 @@ namespace Appccelerate.IO
 
             result.Should().BeFalse();
         }
+
+        [Theory]
+        [InlineData(@"c:\folder\file.ext", true)]
+        [InlineData(@"c:\folder\", true)]
+        [InlineData(@".\folder\", false)]
+        [InlineData(@"blah", false)]
+        public void ReturnsWhetherAPathIsAnAbsolutePath(string path, bool expected)
+        {
+            bool result = AbsolutePath.IsAbsolutePath(path);
+
+            result.Should().Be(expected);
+        }
     }
 }

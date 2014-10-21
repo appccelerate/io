@@ -77,14 +77,14 @@ namespace Appccelerate.IO
             return this.Value;
         }
 
+        public static bool ContainsInvalidShortcut(string shortcutPath)
+        {
+            return shortcutPath.Count(c => c == ShortcutCharacter.Single()) % 2 == 1;
+        }
+
         protected bool Equals(ShortcutPath other)
         {
             return string.Equals(this.Value, other.Value);
-        }
-
-        private static bool ContainsInvalidShortcut(string shortcutPath)
-        {
-            return shortcutPath.Count(c => c == ShortcutCharacter.Single()) % 2 == 1;
         }
     }
 }

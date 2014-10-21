@@ -21,6 +21,7 @@ namespace Appccelerate.IO
     using System;
     using FluentAssertions;
     using Xunit;
+    using Xunit.Extensions;
 
     public class ShortcutPathFacts
     {
@@ -69,6 +70,20 @@ namespace Appccelerate.IO
             Action action = () => new ShortcutPath(InvalidShortcutPath);
 
             action.ShouldThrow<ArgumentException>();
+        }
+
+        [Theory]
+        [InlineData("c:\\folder\\file.extension", false)]
+        [InlineData("%Shortcut%", false)]
+        [InlineData("%Shortcut%\\%AnotherShortcut%", false)]
+        [InlineData("%Short%cut%", true)]
+        [InlineData("%Shortcut", true)]
+        [InlineData("Shortcut%\\folder", true)]
+        public void ReturnsWhetherpathContainsInvalidShortcut(string path, bool expected)
+        {
+            bool result = ShortcutPath.ContainsInvalidShortcut(path);
+
+            result.Should().Be(expected);
         }
     }
 }
