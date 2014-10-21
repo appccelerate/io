@@ -263,7 +263,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         /// <inheritdoc />
-        public Stream Open(string path, FileMode mode, System.IO.FileAccess access)
+        public Stream Open(string path, FileMode mode, FileAccess access)
         {
             return this.EncapsulateWithExtension(
                 () => System.IO.File.Open(path, mode, access),
@@ -273,7 +273,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         /// <inheritdoc />
-        public Stream Open(string path, FileMode mode, System.IO.FileAccess access, FileShare share)
+        public Stream Open(string path, FileMode mode, FileAccess access, FileShare share)
         {
             return this.EncapsulateWithExtension(
                 () => System.IO.File.Open(path, mode, access, share),
@@ -525,7 +525,11 @@ namespace Appccelerate.IO.Access.Internals
         /// <inheritdoc />
         public void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
         {
-            this.SurroundWithExtension(() => System.IO.File.Replace(sourceFileName, destinationFileName, destinationBackupFileName), sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.Replace(sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors),
+                e => e.BeginReplace(sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors),
+                e => e.EndReplace(sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors),
+                (IFileExtension e, ref Exception exception) => e.FailReplace(ref exception, sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors));
         }
 
         /// <inheritdoc />
