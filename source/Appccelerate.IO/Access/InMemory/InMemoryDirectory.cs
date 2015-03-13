@@ -45,7 +45,17 @@ namespace Appccelerate.IO.Access.InMemory
 
         public IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption)
         {
-            return this.GetFiles(path).Where(x => x.IsLike(searchPattern));
+            switch (searchOption)
+            {
+                case SearchOption.TopDirectoryOnly:
+                    return this.GetFiles(path).Where(x => x.IsLike(searchPattern));
+
+                case SearchOption.AllDirectories:
+                    return this.GetFilesRecursive(path, searchPattern);
+
+                default:
+                    throw new ArgumentOutOfRangeException(searchOption + "is not a valid search option.");
+            }
         }
 
         public IEnumerable<string> GetDirectories(string path)
@@ -203,6 +213,21 @@ namespace Appccelerate.IO.Access.InMemory
         public void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
         {
             throw new NotImplementedException();
+        }
+
+        private IEnumerable<string> GetFilesRecursive(string path, string searchPattern)
+        {
+            var paths = new List<string>();
+
+            paths.AddRange(this.GetFiles(path).Where(x => x.IsLike(searchPattern)));
+
+            var subDirectories = this.GetDirectories(path);
+            foreach (string subDirectory in subDirectories)
+            {
+                paths.AddRange(this.GetFilesRecursive(subDirectory, searchPattern));
+            }
+
+            return paths;
         }
     }
 }
