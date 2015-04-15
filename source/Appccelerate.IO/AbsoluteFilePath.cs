@@ -35,10 +35,5 @@ namespace Appccelerate.IO
         {
             return new AbsoluteFilePath(absoluteFilePath);
         }
-
-        public static AbsoluteFilePath FromString(string absoluteFilePath)
-        {
-            return new AbsoluteFilePath(absoluteFilePath);
-        }
     }
 }
