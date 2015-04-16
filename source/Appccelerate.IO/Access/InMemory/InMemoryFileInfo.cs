@@ -20,6 +20,7 @@ namespace Appccelerate.IO.Access.InMemory
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Security.AccessControl;
 
@@ -49,11 +50,29 @@ namespace Appccelerate.IO.Access.InMemory
             }
         }
 
-        public string FullName { get; private set; }
+        public string FullName
+        {
+            get
+            {
+                return this.pathToFile;  
+            } 
+        }
 
-        public string Name { get; private set; }
+        public string Name
+        {
+            get
+            {
+                return Path.GetFileName(this.pathToFile);
+            }
+        }
 
-        public string Extension { get; private set; }
+        public string Extension
+        {
+            get
+            {
+                return Path.GetExtension(this.pathToFile);
+            }
+        }
 
         public DateTime LastAccessTime { get; set; }
 
@@ -63,13 +82,33 @@ namespace Appccelerate.IO.Access.InMemory
 
         public DateTime LastWriteTimeUtc { get; set; }
 
-        public IDirectoryInfo Directory { get; private set; }
+        public IDirectoryInfo Directory
+        {
+            get
+            {
+                string parentDirectory = this.pathToFile.Substring(0, this.pathToFile.Length - (Path.GetFileName(this.pathToFile).Length + 1));
 
-        public string DirectoryName { get; private set; }
+                return new InMemoryDirectoryInfo(this.fileSystem, parentDirectory);
+            }
+        }
+
+        public string DirectoryName
+        {
+            get
+            {
+                return this.Directory.Name;
+            }
+        }
 
         public bool IsReadOnly { get; set; }
 
-        public long Length { get; private set; }
+        public long Length
+        {
+            get
+            {
+                return this.fileSystem.GetFile(this.pathToFile).LongCount();
+            }
+        }
 
         public void Refresh()
         {
@@ -91,12 +130,26 @@ namespace Appccelerate.IO.Access.InMemory
 
         public IFileInfo CopyTo(string destFileName)
         {
-            return null;
+            if (this.fileSystem.FileExists(destFileName))
+            {
+                throw new IOException("file " + destFileName + " already exists.");
+            }
+
+            this.fileSystem.AddFile(destFileName, this.fileSystem.GetFile(this.pathToFile));
+
+            return new InMemoryFileInfo(this.fileSystem, destFileName);
         }
 
         public IFileInfo CopyTo(string destFileName, bool overwrite)
         {
-            return null;
+            if (!overwrite)
+            {
+                return this.CopyTo(destFileName);
+            }
+
+            this.fileSystem.AddFile(destFileName, this.fileSystem.GetFile(this.pathToFile));
+
+            return new InMemoryFileInfo(this.fileSystem, destFileName);
         }
 
         public Stream Create()
@@ -129,6 +182,7 @@ namespace Appccelerate.IO.Access.InMemory
 
         public void MoveTo(string destFileName)
         {
+            this.fileSystem.Move(this.pathToFile, destFileName);
         }
 
         public Stream Open(FileMode mode)

@@ -31,12 +31,32 @@ namespace Appccelerate.IO.Access.InMemory
         public InMemoryDirectoryInfo(IInMemoryFileSystem fileSystem, string pathToDirectory)
         {
             this.fileSystem = fileSystem;
-            this.pathToDirectory = pathToDirectory;
+            this.pathToDirectory = pathToDirectory.NormalizePathEnding();
         }
 
-        public IDirectoryInfo Root { get; private set; }
+        public IDirectoryInfo Root
+        {
+            get
+            {
+                return new InMemoryDirectoryInfo(this.fileSystem, Path.GetPathRoot(this.pathToDirectory));
+            }
+        }
 
-        public IDirectoryInfo Parent { get; private set; }
+        public IDirectoryInfo Parent
+        {
+            get
+            {
+                string directoryName = Path.GetDirectoryName(this.pathToDirectory);
+                if (string.IsNullOrEmpty(directoryName))
+                {
+                    return null;
+                }
+
+                string parentDirectory = this.pathToDirectory.Substring(0, this.pathToDirectory.Length - (directoryName.Length + 1));
+
+                return new InMemoryDirectoryInfo(this.fileSystem, parentDirectory);
+            }
+        }
 
         public FileAttributes Attributes { get; set; }
 
@@ -60,7 +80,13 @@ namespace Appccelerate.IO.Access.InMemory
             }
         }
 
-        public string Name { get; private set; }
+        public string Name 
+        { 
+            get
+            {
+                return Path.GetFileName(this.pathToDirectory);
+            }
+        }
 
         public string Extension { get; private set; }
 
