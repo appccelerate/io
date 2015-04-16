@@ -63,7 +63,7 @@ namespace Appccelerate.IO.Access.InMemory
 
         public IFileInfo CreateFileInfo(string pathToFile)
         {
-            throw new NotImplementedException();
+            return new InMemoryFileInfo(this.FileSystem, pathToFile);
         }
 
         public IDirectoryInfo CreateDirectoryInfo(DirectoryInfo directoryInfo)
@@ -73,7 +73,7 @@ namespace Appccelerate.IO.Access.InMemory
 
         public IDirectoryInfo CreateDirectoryInfo(string pathToDirectory)
         {
-            throw new NotImplementedException();
+            return new InMemoryDirectoryInfo(this.FileSystem, pathToDirectory);
         }
 
         public IDriveInfo CreateDriveInfo(DriveInfo driveInfo)

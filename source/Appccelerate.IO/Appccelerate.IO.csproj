@@ -68,8 +68,10 @@
     <Compile Include="Access\InMemory\IInMemoryFileSystem.cs" />
     <Compile Include="Access\InMemory\InMemoryAccessFactory.cs" />
     <Compile Include="Access\InMemory\InMemoryDirectory.cs" />
+    <Compile Include="Access\InMemory\InMemoryDirectoryInfo.cs" />
     <Compile Include="Access\InMemory\InMemoryEnvironment.cs" />
     <Compile Include="Access\InMemory\InMemoryFile.cs" />
+    <Compile Include="Access\InMemory\InMemoryFileInfo.cs" />
     <Compile Include="Access\InMemory\InMemoryFileSystem.cs" />
     <Compile Include="Access\InMemory\StringExtensionMethods.cs" />
     <Compile Include="Access\Internals\Directory.cs" />

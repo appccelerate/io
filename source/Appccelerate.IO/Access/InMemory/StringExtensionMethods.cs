@@ -19,6 +19,7 @@
 namespace Appccelerate.IO.Access.InMemory
 {
     using System;
+    using System.IO;
 
     public static class StringExtensionMethods
     {
@@ -40,6 +41,11 @@ namespace Appccelerate.IO.Access.InMemory
             }
 
             return false;
+        }
+
+        public static string NormalizePathEnding(this string inputString)
+        {
+            return inputString.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
         }
     }
 }
