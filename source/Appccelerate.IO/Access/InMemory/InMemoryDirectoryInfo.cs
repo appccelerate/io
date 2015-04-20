@@ -88,7 +88,13 @@ namespace Appccelerate.IO.Access.InMemory
             }
         }
 
-        public string Extension { get; private set; }
+        public string Extension
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public DateTime LastAccessTime { get; set; }
 
