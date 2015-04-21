@@ -41,7 +41,7 @@ namespace Appccelerate.IO.Access.InMemory
 
             public DirectoryFacts()
             {
-                this.testee = new InMemoryFileSystem();
+                this.testee = new InMemoryFileSystem(new TimeDoesNotMatterInMemoryDateTimeProvider());
             }
 
             [Fact]
@@ -124,7 +124,7 @@ namespace Appccelerate.IO.Access.InMemory
 
             public FileFacts()
             {
-                this.testee = new InMemoryFileSystem();
+                this.testee = new InMemoryFileSystem(new TimeDoesNotMatterInMemoryDateTimeProvider());
             }
 
             [Fact]

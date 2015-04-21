@@ -27,12 +27,15 @@ namespace Appccelerate.IO.Access.InMemory
 
     public class InMemoryFileSystem : IInMemoryFileSystem
     {
+        private readonly IInMemoryDateTimeProvider dateTimeProvider;
+
         private static readonly object Lock = new object();
 
         private readonly Tree<DirectoryEntry> fileSystem;
 
-        public InMemoryFileSystem()
+        public InMemoryFileSystem(IInMemoryDateTimeProvider dateTimeProvider)
         {
+            this.dateTimeProvider = dateTimeProvider;
             this.fileSystem = new Tree<DirectoryEntry>(new DirectoryEntry("root"));
         }
 
@@ -53,12 +56,15 @@ namespace Appccelerate.IO.Access.InMemory
 
             if (!this.FileExists(absoluteFilePath))
             {
-                AddFileEntry(absoluteFilePath, fileContent, parentDirectory);
+                this.AddFileEntry(absoluteFilePath, fileContent, parentDirectory);
             }
             else
             {
                 FileEntry current = GetFileByNameIgnoringCase(parentDirectory, Path.GetFileName(absoluteFilePath));
                 current.Content = fileContent;
+                DateTime now = this.dateTimeProvider.UtcNow;
+                current.FileProperties.LastWriteTimeUtc = now;
+                current.FileProperties.LastAccessTimeUtc = now;
             }
         }
 
@@ -70,8 +76,21 @@ namespace Appccelerate.IO.Access.InMemory
             this.EnsureFileExists(absoluteFilePath);
 
             FileEntry fileEntry = GetFileByNameIgnoringCase(parentDirectory, Path.GetFileName(absoluteFilePath));
+            fileEntry.FileProperties.LastAccessTimeUtc = this.dateTimeProvider.UtcNow;
 
             return fileEntry.Content;
+        }
+
+        public FileProperties GetFileProperties(AbsoluteFilePath absoluteFilePath)
+        {
+            var parentDirectory = this.GetDirectoryBy(Directory.GetParent(absoluteFilePath).FullName);
+            EnsureDirectoryExists(parentDirectory, absoluteFilePath);
+
+            this.EnsureFileExists(absoluteFilePath);
+
+            FileEntry fileEntry = GetFileByNameIgnoringCase(parentDirectory, Path.GetFileName(absoluteFilePath));
+
+            return fileEntry.FileProperties;
         }
 
         public void DeleteFile(AbsoluteFilePath absoluteFilePath)
@@ -299,11 +318,23 @@ namespace Appccelerate.IO.Access.InMemory
             return result;
         }
 
-        private static void AddFileEntry(AbsoluteFilePath absoluteFilePath, IEnumerable<byte> fileContent, Tree<DirectoryEntry> parentDirectory)
+        private void AddFileEntry(AbsoluteFilePath absoluteFilePath, IEnumerable<byte> fileContent, Tree<DirectoryEntry> parentDirectory)
         {
             lock (Lock)
             {
-                parentDirectory.Item.Files.Add(new FileEntry(Path.GetFileName(absoluteFilePath), fileContent));
+                DateTime now = this.dateTimeProvider.UtcNow;
+                var fileEntry = new FileEntry(Path.GetFileName(absoluteFilePath), fileContent) 
+                    { 
+                        FileProperties =
+                        {
+                            Attributes = FileAttributes.Normal, 
+                            CreationTimeUtc = now, 
+                            LastAccessTimeUtc = now, 
+                            LastWriteTimeUtc = now
+                        } 
+                    };
+
+                parentDirectory.Item.Files.Add(fileEntry);
             }
         }
 
@@ -354,11 +385,14 @@ namespace Appccelerate.IO.Access.InMemory
             {
                 this.Content = content;
                 this.Name = name;
+                this.FileProperties = new FileProperties();
             }
 
             public string Name { get; private set; }
 
             public IEnumerable<byte> Content { get; set; }
+
+            public FileProperties FileProperties { get; private set; }
         }
 
         private class Tree<T>

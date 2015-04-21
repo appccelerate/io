@@ -136,8 +136,15 @@ namespace Appccelerate.IO.Access.InMemory
             }
 
             this.fileSystem.AddFile(destFileName, this.fileSystem.GetFile(this.pathToFile));
+            FileProperties fileProperties = this.fileSystem.GetFileProperties(destFileName);
 
-            return new InMemoryFileInfo(this.fileSystem, destFileName);
+            return new InMemoryFileInfo(this.fileSystem, destFileName)
+                       {
+                           Attributes = fileProperties.Attributes,
+                           CreationTimeUtc = fileProperties.CreationTimeUtc,
+                           LastAccessTimeUtc = fileProperties.LastAccessTimeUtc,
+                           LastWriteTimeUtc = fileProperties.LastWriteTimeUtc
+                       };
         }
 
         public IFileInfo CopyTo(string destFileName, bool overwrite)

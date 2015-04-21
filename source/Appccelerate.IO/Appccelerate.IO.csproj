@@ -66,8 +66,12 @@
     <Compile Include="Access\IFileExtension.g.cs" />
     <Compile Include="Access\IFileInfo.g.cs" />
     <Compile Include="Access\IFileSystemInfo.g.cs" />
+    <Compile Include="Access\InMemory\FileProperties.cs" />
+    <Compile Include="Access\InMemory\IInMemoryDateTimeProvider.cs" />
     <Compile Include="Access\InMemory\IInMemoryFileSystem.cs" />
     <Compile Include="Access\InMemory\InMemoryAccessFactory.cs" />
+    <Compile Include="Access\InMemory\InMemoryDateTimeProvider.cs" />
+    <Compile Include="Access\InMemory\TimeDoesNotMatterInMemoryDateTimeProvider.cs" />
     <Compile Include="Access\InMemory\InMemoryDirectory.cs" />
     <Compile Include="Access\InMemory\InMemoryDirectoryInfo.cs" />
     <Compile Include="Access\InMemory\InMemoryEnvironment.cs" />

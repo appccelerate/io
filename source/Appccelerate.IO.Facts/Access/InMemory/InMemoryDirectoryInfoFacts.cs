@@ -32,7 +32,7 @@ namespace Appccelerate.IO.Access.InMemory
 
         public InMemoryDirectoryInfoFacts()
         {
-            this.fileSystem = new InMemoryFileSystem();
+            this.fileSystem = new InMemoryFileSystem(new TimeDoesNotMatterInMemoryDateTimeProvider());
         }
 
         [Theory]

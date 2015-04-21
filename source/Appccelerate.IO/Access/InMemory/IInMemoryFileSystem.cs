@@ -26,6 +26,8 @@ namespace Appccelerate.IO.Access.InMemory
 
         IEnumerable<byte> GetFile(AbsoluteFilePath absoluteFilePath);
 
+        FileProperties GetFileProperties(AbsoluteFilePath absoluteFilePath);
+
         void DeleteFile(AbsoluteFilePath absoluteFilePath);
 
         void DeleteDirectory(AbsoluteFolderPath absoluteFolderPath);

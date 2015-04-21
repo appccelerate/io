@@ -35,9 +35,13 @@ namespace Appccelerate.IO.Access.InMemory
 
         private Func<IEnumerable<IDriveExtension>> driveExtensionsProvider = Enumerable.Empty<IDriveExtension>;
 
-        public InMemoryAccessFactory()
+        public InMemoryAccessFactory() : this(new TimeDoesNotMatterInMemoryDateTimeProvider())
         {
-            this.FileSystem = new InMemoryFileSystem();
+        }
+
+        public InMemoryAccessFactory(IInMemoryDateTimeProvider dateTimeProvider)
+        {
+            this.FileSystem = new InMemoryFileSystem(dateTimeProvider);
         }
 
         public IInMemoryFileSystem FileSystem { get; private set; }
