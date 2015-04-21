@@ -43,9 +43,18 @@ namespace Appccelerate.IO.Access.InMemory
             return this.fileSystem.GetFilesOf(path).Select(x => x.Value);
         }
 
+        public IEnumerable<string> GetFiles(string path, string searchPattern)
+        {
+            return this.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly);
+        }
+
         public IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption)
         {
-            return this.GetFiles(path).Where(x => x.IsLike(searchPattern));
+            IEnumerable<string> allFileCandidates = searchOption == SearchOption.TopDirectoryOnly ? 
+                this.GetFiles(path) : 
+                this.fileSystem.GetFilesOfRecursive(path).Select(x => x.Value);
+
+            return allFileCandidates.Where(x => Path.GetFileName(x).IsLike(searchPattern));
         }
 
         public IEnumerable<string> GetDirectories(string path)
@@ -53,34 +62,36 @@ namespace Appccelerate.IO.Access.InMemory
             return this.fileSystem.GetSubdirectoriesOf(path).Select(x => x.Value);
         }
 
+        public IEnumerable<string> GetDirectories(string path, string searchPattern)
+        {
+            return this.fileSystem.GetSubdirectoriesOf(path)
+                .Select(x => x.Value)
+                .Where(x => Path.GetFileName(x).IsLike(searchPattern));
+        }
+
         public IDirectoryInfo CreateDirectory(string path)
         {
             this.fileSystem.CreateDirectory(path);
 
-            return null;
+            return new InMemoryDirectoryInfo(this.fileSystem, path);
         }
 
         public void Delete(string path)
         {
-            this.fileSystem.DeleteDirectory(path);
+            this.Delete(path, false);
         }
 
         public void Delete(string path, bool recursive)
         {
-            this.Delete(path);
+            if (!recursive)
+            {
+                this.EnsureDirectoryIsEmpty(path);
+            }
+
+            this.fileSystem.DeleteDirectory(path);
         }
 
         public IDirectoryInfo CreateDirectory(string path, DirectorySecurity directorySecurity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<string> GetFiles(string path, string searchPattern)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<string> GetDirectories(string path, string searchPattern)
         {
             throw new NotImplementedException();
         }
@@ -203,6 +214,14 @@ namespace Appccelerate.IO.Access.InMemory
         public void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
         {
             throw new NotImplementedException();
+        }
+
+        private void EnsureDirectoryIsEmpty(string path)
+        {
+            if (this.fileSystem.GetSubdirectoriesOf(path).Any() || this.fileSystem.GetFilesOf(path).Any())
+            {
+                throw new IOException("The directory `" + path + "` is not empty and cannot be deleted.");
+            }
         }
     }
 }

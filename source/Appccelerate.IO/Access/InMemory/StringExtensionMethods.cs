@@ -20,6 +20,7 @@ namespace Appccelerate.IO.Access.InMemory
 {
     using System;
     using System.IO;
+    using System.Text.RegularExpressions;
 
     public static class StringExtensionMethods
     {
@@ -30,12 +31,12 @@ namespace Appccelerate.IO.Access.InMemory
 
         public static bool IsLike(this string inputString, string pattern)
         {
-            var regexPattern = System.Text.RegularExpressions.Regex.Escape(pattern);
+            string regexPattern = Regex.Escape(pattern);
             regexPattern = regexPattern.Replace(@"\*", @".*");
             regexPattern = regexPattern.Replace(@"\?", @".?");
             regexPattern = "^" + regexPattern + @"\z";
 
-            if (System.Text.RegularExpressions.Regex.Match(inputString.Trim().ToLower(), regexPattern.Trim().ToLower()).Success)
+            if (Regex.Match(inputString.Trim().ToLower(), regexPattern.Trim().ToLower()).Success)
             {
                 return true;
             }
