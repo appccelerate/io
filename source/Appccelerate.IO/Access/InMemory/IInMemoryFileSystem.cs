@@ -32,6 +32,8 @@ namespace Appccelerate.IO.Access.InMemory
 
         IEnumerable<AbsoluteFolderPath> GetSubdirectoriesOf(AbsoluteFolderPath absoluteFolderPath);
 
+        IEnumerable<AbsoluteFolderPath> GetSubdirectoriesOfRecursive(AbsoluteFolderPath absoluteFolderPath);
+        
         IEnumerable<AbsoluteFilePath> GetFilesOf(AbsoluteFolderPath absoluteFolderPath);
 
         IEnumerable<AbsoluteFilePath> GetFilesOfRecursive(AbsoluteFolderPath absoluteFolderPath);

@@ -27,9 +27,10 @@ namespace Appccelerate.IO.Access.InMemory
 
     public class InMemoryFileSystemFacts
     {
-        private const string Folder = "c:\\folder";
+        private const string Root = "c:\\";
+        private const string Folder = Root + "folder";
         private const string FileInFolder = Folder + "\\file.ext";
-        private const string OtherFolder = "c:\\otherfolder";
+        private const string OtherFolder = Root + "otherfolder";
         private const string OtherFileInOtherFolder = OtherFolder + "\\otherfile.ext";
 
         private static readonly byte[] DummyFile = { 1, 2, 3 };
@@ -98,6 +99,22 @@ namespace Appccelerate.IO.Access.InMemory
                 Action action = () => this.testee.DeleteDirectory(Folder);
 
                 action.ShouldThrow<DirectoryNotFoundException>();
+            }
+
+            [Fact]
+            public void ReturnsSubDiretoriesRecursively()
+            {
+                const string SubFolder = Folder + "\\SubFolder";
+                this.testee.CreateDirectory(Folder);
+                this.testee.CreateDirectory(SubFolder);
+                this.testee.CreateDirectory(OtherFolder);
+
+                IEnumerable<AbsoluteFolderPath> result = this.testee.GetSubdirectoriesOfRecursive(Root);
+
+                result.Should().HaveCount(3)
+                    .And.Contain(Folder)
+                    .And.Contain(SubFolder)
+                    .And.Contain(OtherFolder);
             }
         }
 
