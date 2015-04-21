@@ -101,26 +101,26 @@ namespace Appccelerate.IO.Access.InMemory
 
         public IEnumerable<AbsoluteFolderPath> GetSubdirectoriesOf(AbsoluteFolderPath absoluteFolderPath)
         {
-            var currentItem = this.GetDirectoryBy(absoluteFolderPath);
-            EnsureDirectoryExists(currentItem, absoluteFolderPath);
+            Tree<DirectoryEntry> currentDirectory = this.GetDirectoryBy(absoluteFolderPath);
+            EnsureDirectoryExists(currentDirectory, absoluteFolderPath);
 
-            return currentItem.Children.Select(i => new AbsoluteFolderPath(Path.Combine(absoluteFolderPath, i.Item.Name))).ToList();
+            return currentDirectory.Children.Select(i => new AbsoluteFolderPath(Path.Combine(absoluteFolderPath, i.Item.Name))).ToList();
         }
 
         public IEnumerable<AbsoluteFilePath> GetFilesOf(AbsoluteFolderPath absoluteFolderPath)
         {
-            var currentItem = this.GetDirectoryBy(absoluteFolderPath);
-            EnsureDirectoryExists(currentItem, absoluteFolderPath);
+            Tree<DirectoryEntry> currentDirectory = this.GetDirectoryBy(absoluteFolderPath);
+            EnsureDirectoryExists(currentDirectory, absoluteFolderPath);
 
-            return currentItem.Item.Files.Select(i => new AbsoluteFilePath(Path.Combine(absoluteFolderPath, i.Name))).ToList();
+            return currentDirectory.Item.Files.Select(i => new AbsoluteFilePath(Path.Combine(absoluteFolderPath, i.Name))).ToList();
         }
 
         public IEnumerable<AbsoluteFilePath> GetFilesOfRecursive(AbsoluteFolderPath absoluteFolderPath)
         {
-            var currentItem = this.GetDirectoryBy(absoluteFolderPath);
-            EnsureDirectoryExists(currentItem, absoluteFolderPath);
+            Tree<DirectoryEntry> currentDirectory = this.GetDirectoryBy(absoluteFolderPath);
+            EnsureDirectoryExists(currentDirectory, absoluteFolderPath);
 
-            return this.GetFilesOfRecursiveInternal(absoluteFolderPath, currentItem);
+            return this.GetFilesOfRecursiveInternal(absoluteFolderPath, currentDirectory);
         }
 
         public bool FileExists(AbsoluteFilePath absoluteFilePath)
@@ -169,7 +169,7 @@ namespace Appccelerate.IO.Access.InMemory
 
             foreach (Tree<DirectoryEntry> child in directoryEntry.Children)
             {
-                IEnumerable<AbsoluteFilePath> filesInChild = this.GetFilesOfRecursiveInternal(absoluteFolderPath + "\\" + child.Item.Name, child);
+                IEnumerable<AbsoluteFilePath> filesInChild = this.GetFilesOfRecursiveInternal(Path.Combine(absoluteFolderPath, child.Item.Name), child);
 
                 files.AddRange(filesInChild);
             }
