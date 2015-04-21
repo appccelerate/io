@@ -44,7 +44,7 @@ namespace Appccelerate.IO.Access.InMemory
 
         public IDirectory CreateDirectory()
         {
-            return new InMemoryDirectory(this.FileSystem);
+            return new InMemoryDirectory(this.FileSystem, this.directoryExtensionsProvider());
         }
 
         public IFile CreateFile()

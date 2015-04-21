@@ -24,73 +24,143 @@ namespace Appccelerate.IO.Access.InMemory
     using System.Linq;
     using System.Security.AccessControl;
 
-    public class InMemoryDirectory : IDirectory
+    using Appccelerate.IO.Access.Internals;
+
+    public class InMemoryDirectory : IDirectory, IExtensionProvider<IDirectoryExtension>
     {
         private readonly IInMemoryFileSystem fileSystem;
 
-        public InMemoryDirectory(IInMemoryFileSystem fileSystem)
+        private readonly IEnumerable<IDirectoryExtension> extensions;
+
+        public InMemoryDirectory(IInMemoryFileSystem fileSystem, IEnumerable<IDirectoryExtension> extensions)
         {
             this.fileSystem = fileSystem;
+            this.extensions = extensions;
+        }
+
+        public IEnumerable<IDirectoryExtension> Extensions
+        {
+            get
+            {
+                return this.extensions;
+            }
         }
 
         public bool Exists(string path)
         {
-            return this.fileSystem.DirectoryExists(path);
+            return this.EncapsulateWithExtension(
+                () => this.fileSystem.DirectoryExists(path),
+                e => e.BeginExists(path),
+                (e, r) => e.EndExists(r, path),
+                (IDirectoryExtension e, ref Exception exception) => e.FailExists(ref exception, path));
         }
 
         public IEnumerable<string> GetFiles(string path)
         {
-            return this.fileSystem.GetFilesOf(path).Select(x => x.Value);
+            return this.EncapsulateWithExtension(
+                () => this.fileSystem.GetFilesOf(path).Select(x => x.Value).ToArray(),
+                e => e.BeginGetFiles(path),
+                (e, r) => e.EndGetFiles(r, path),
+                (IDirectoryExtension e, ref Exception exception) => e.FailGetFiles(ref exception, path));
         }
 
         public IEnumerable<string> GetFiles(string path, string searchPattern)
         {
-            return this.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly);
+            return this.EncapsulateWithExtension(
+                () =>
+                {
+                    IEnumerable<string> allFileCandidates = this.GetFiles(path);
+
+                    return allFileCandidates.Where(x => System.IO.Path.GetFileName(x).IsLike(searchPattern)).ToArray();
+                },
+                e => e.BeginGetFiles(path, searchPattern),
+                (e, r) => e.EndGetFiles(r, path, searchPattern),
+                (IDirectoryExtension e, ref Exception exception) => e.FailGetFiles(ref exception, path, searchPattern));
         }
 
         public IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption)
         {
-            IEnumerable<string> allFileCandidates = searchOption == SearchOption.TopDirectoryOnly ? 
-                this.GetFiles(path) : 
-                this.fileSystem.GetFilesOfRecursive(path).Select(x => x.Value);
+            return this.EncapsulateWithExtension(
+                () =>
+                    {
+                        IEnumerable<string> allFileCandidates = searchOption == SearchOption.TopDirectoryOnly ? 
+                            this.GetFiles(path) : 
+                            this.fileSystem.GetFilesOfRecursive(path).Select(x => x.Value);
 
-            return allFileCandidates.Where(x => Path.GetFileName(x).IsLike(searchPattern));
+                        return allFileCandidates.Where(x => System.IO.Path.GetFileName(x).IsLike(searchPattern)).ToArray();
+                    },
+                e => e.BeginGetFiles(path, searchPattern),
+                (e, r) => e.EndGetFiles(r, path, searchPattern),
+                (IDirectoryExtension e, ref Exception exception) => e.FailGetFiles(ref exception, path, searchPattern));
         }
 
         public IEnumerable<string> GetDirectories(string path)
         {
-            return this.fileSystem.GetSubdirectoriesOf(path).Select(x => x.Value);
+            return this.EncapsulateWithExtension(
+                () => 
+                    this.fileSystem.GetSubdirectoriesOf(path)
+                        .Select(x => x.Value),
+                e => e.BeginGetDirectories(path),
+                (e, r) => e.EndGetDirectories(r.ToArray(), path),
+                (IDirectoryExtension e, ref Exception exception) => e.FailGetDirectories(ref exception, path));
         }
 
         public IEnumerable<string> GetDirectories(string path, string searchPattern)
         {
-            return this.fileSystem.GetSubdirectoriesOf(path)
-                .Select(x => x.Value)
-                .Where(x => Path.GetFileName(x).IsLike(searchPattern));
+            return this.EncapsulateWithExtension(
+                () => 
+                    this.fileSystem.GetSubdirectoriesOf(path)
+                        .Select(x => x.Value)
+                        .Where(x => System.IO.Path.GetFileName(x).IsLike(searchPattern)),
+                e => e.BeginGetDirectories(path),
+                (e, r) => e.EndGetDirectories(r.ToArray(), path),
+                (IDirectoryExtension e, ref Exception exception) => e.FailGetDirectories(ref exception, path));
         }
 
         public IDirectoryInfo CreateDirectory(string path)
         {
-            this.fileSystem.CreateDirectory(path);
-
-            return new InMemoryDirectoryInfo(this.fileSystem, path);
+            return this.EncapsulateWithExtension(
+                () =>
+                    {
+                        this.fileSystem.CreateDirectory(path);
+                        return new InMemoryDirectoryInfo(this.fileSystem, path);
+                    },
+                e => e.BeginCreateDirectory(path),
+                (e, r) => e.EndCreateDirectory(r, path),
+                (IDirectoryExtension e, ref Exception exception) => e.FailCreateDirectory(ref exception, path));
         }
 
         public void Delete(string path)
         {
-            this.Delete(path, false);
+            this.EncapsulateWithExtension(
+                () =>
+                {
+                    this.EnsureDirectoryIsEmpty(path);
+                    
+                    this.fileSystem.DeleteDirectory(path);
+                },
+                e => e.BeginDelete(path),
+                e => e.EndDelete(path),
+                (IDirectoryExtension e, ref Exception exception) => e.FailDelete(ref exception, path));
         }
 
         public void Delete(string path, bool recursive)
         {
-            if (!recursive)
-            {
-                this.EnsureDirectoryIsEmpty(path);
-            }
+            this.EncapsulateWithExtension(
+                () =>
+                    {
+                       if (!recursive)
+                        {
+                            this.EnsureDirectoryIsEmpty(path);
+                        }
 
-            this.fileSystem.DeleteDirectory(path);
+                        this.fileSystem.DeleteDirectory(path);
+                    },
+                e => e.BeginDelete(path, recursive),
+                e => e.EndDelete(path, recursive),
+                (IDirectoryExtension e, ref Exception exception) => e.FailDelete(ref exception, path, recursive));
         }
-
+        
         public IDirectoryInfo CreateDirectory(string path, DirectorySecurity directorySecurity)
         {
             throw new NotImplementedException();

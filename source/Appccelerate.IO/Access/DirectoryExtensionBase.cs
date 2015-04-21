@@ -34,7 +34,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailExists(ref Exception exception)
+        public virtual void FailExists(ref Exception exceptio, string pathn)
         {
         }
 
@@ -42,11 +42,11 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void EndCreateDirectory(DirectoryInfo result, string path)
+        public virtual void EndCreateDirectory(IDirectoryInfo result, string path)
         {
         }
 
-        public virtual void FailCreateDirectory(ref Exception exception)
+        public virtual void FailCreateDirectory(ref Exception exception, string path)
         {
         }
 
@@ -54,7 +54,11 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void EndCreateDirectory(DirectoryInfo result, string path, DirectorySecurity directorySecurity)
+        public virtual void EndCreateDirectory(IDirectoryInfo result, string path, DirectorySecurity directorySecurity)
+        {
+        }
+
+        public void FailCreateDirectory(ref Exception exception, string path, DirectorySecurity directorySecurity)
         {
         }
 
@@ -66,7 +70,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailDelete(ref Exception exception)
+        public virtual void FailDelete(ref Exception exception, string path, bool recursive)
         {
         }
 
@@ -78,6 +82,10 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public void FailDelete(ref Exception exception, string path)
+        {
+        }
+
         public virtual void BeginGetFiles(string path)
         {
         }
@@ -86,7 +94,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetFiles(ref Exception exception)
+        public virtual void FailGetFiles(ref Exception exception, string path)
         {
         }
 
@@ -98,11 +106,19 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public void FailGetFiles(ref Exception exception, string path, string searchPattern)
+        {
+        }
+
         public virtual void BeginGetFiles(string path, string searchPattern, SearchOption searchOption)
         {
         }
 
         public virtual void EndGetFiles(string[] result, string path, string searchPattern, SearchOption searchOption)
+        {
+        }
+
+        public void FailGetFiles(ref Exception exception, string path, string searchPattern, SearchOption searchOption)
         {
         }
 
@@ -114,7 +130,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetDirectories(ref Exception exception)
+        public virtual void FailGetDirectories(ref Exception exception, string path)
         {
         }
 
@@ -126,11 +142,19 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public void FailGetDirectories(ref Exception exception, string path, string searchPattern)
+        {
+        }
+
         public virtual void BeginGetDirectories(string path, string searchPattern, SearchOption searchOption)
         {
         }
 
         public virtual void EndGetDirectories(string[] result, string path, string searchPattern, SearchOption searchOption)
+        {
+        }
+
+        public void FailGetDirectories(ref Exception exception, string path, string searchPattern, SearchOption searchOption)
         {
         }
 
@@ -142,7 +166,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetAccessControl(ref Exception exception)
+        public virtual void FailGetAccessControl(ref Exception exception, string path)
         {
         }
 
@@ -154,6 +178,10 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public void FailGetAccessControl(ref Exception exception, string path, AccessControlSections includeSections)
+        {
+        }
+
         public virtual void BeginGetCreationTime(string path)
         {
         }
@@ -162,7 +190,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetCreationTime(ref Exception exception)
+        public virtual void FailGetCreationTime(ref Exception exception, string path)
         {
         }
 
@@ -174,7 +202,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetCreationTimeUtc(ref Exception exception)
+        public virtual void FailGetCreationTimeUtc(ref Exception exception, string path)
         {
         }
 
@@ -198,7 +226,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetDirectoryRoot(ref Exception exception)
+        public virtual void FailGetDirectoryRoot(ref Exception exception, string path)
         {
         }
 
@@ -210,7 +238,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetFileSystemEntries(ref Exception exception)
+        public virtual void FailGetFileSystemEntries(ref Exception exception, string path)
         {
         }
 
@@ -222,6 +250,10 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public void FailGetFileSystemEntries(ref Exception exception, string path, string searchPattern)
+        {
+        }
+
         public virtual void BeginGetLastAccessTime(string path)
         {
         }
@@ -230,7 +262,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetLastAccessTime(ref Exception exception)
+        public virtual void FailGetLastAccessTime(ref Exception exception, string path)
         {
         }
 
@@ -242,7 +274,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetLastAccessTimeUtc(ref Exception exception)
+        public virtual void FailGetLastAccessTimeUtc(ref Exception exception, string path)
         {
         }
 
@@ -254,7 +286,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetLastWriteTime(ref Exception exception)
+        public virtual void FailGetLastWriteTime(ref Exception exception, string path)
         {
         }
 
@@ -266,7 +298,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetLastWriteTimeUtc(ref Exception exception)
+        public virtual void FailGetLastWriteTimeUtc(ref Exception exception, string path)
         {
         }
 
@@ -290,7 +322,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetParent(ref Exception exception)
+        public virtual void FailGetParent(ref Exception exception, string path)
         {
         }
 
@@ -302,7 +334,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailMove(ref Exception exception)
+        public virtual void FailMove(ref Exception exception, string sourceDirName, string destDirName)
         {
         }
 
@@ -314,7 +346,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetAccessControl(ref Exception exception)
+        public virtual void FailSetAccessControl(ref Exception exception, string path, DirectorySecurity directorySecurity)
         {
         }
 
@@ -326,7 +358,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetCreationTime(ref Exception exception)
+        public virtual void FailSetCreationTime(ref Exception exception, string path, DateTime creationTime)
         {
         }
 
@@ -338,7 +370,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetCreationTimeUtc(ref Exception exception)
+        public virtual void FailSetCreationTimeUtc(ref Exception exception, string path, DateTime creationTimeUtc)
         {
         }
 
@@ -350,7 +382,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetCurrentDirectory(ref Exception exception)
+        public virtual void FailSetCurrentDirectory(ref Exception exception, string path)
         {
         }
 
@@ -362,7 +394,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetLastAccessTime(ref Exception exception)
+        public virtual void FailSetLastAccessTime(ref Exception exception, string path, DateTime lastAccessTime)
         {
         }
 
@@ -374,7 +406,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetLastAccessTimeUtc(ref Exception exception)
+        public virtual void FailSetLastAccessTimeUtc(ref Exception exception, string path, DateTime lastAccessTimeUtc)
         {
         }
 
@@ -386,7 +418,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetLastWriteTime(ref Exception exception)
+        public virtual void FailSetLastWriteTime(ref Exception exception, string path, DateTime lastWriteTime)
         {
         }
 
@@ -398,7 +430,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetLastWriteTimeUtc(ref Exception exception)
+        public virtual void FailSetLastWriteTimeUtc(ref Exception exception, string path, DateTime lastWriteTimeUtc)
         {
         }
     }

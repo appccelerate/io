@@ -20,6 +20,8 @@ namespace Appccelerate.IO.Access.InMemory
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
+
     using FluentAssertions;
     using Xunit;
 
@@ -43,7 +45,7 @@ namespace Appccelerate.IO.Access.InMemory
         {
             this.fileSystem = new InMemoryFileSystem();
 
-            this.testee = new InMemoryDirectory(this.fileSystem);
+            this.testee = new InMemoryDirectory(this.fileSystem, Enumerable.Empty<IDirectoryExtension>());
         }
 
         [Fact]
