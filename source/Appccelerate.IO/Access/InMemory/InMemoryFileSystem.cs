@@ -107,6 +107,14 @@ namespace Appccelerate.IO.Access.InMemory
             return currentDirectory.Children.Select(i => new AbsoluteFolderPath(Path.Combine(absoluteFolderPath, i.Item.Name))).ToList();
         }
 
+        public IEnumerable<AbsoluteFolderPath> GetSubdirectoriesOfRecursive(AbsoluteFolderPath absoluteFolderPath)
+        {
+            Tree<DirectoryEntry> currentDirectory = this.GetDirectoryBy(absoluteFolderPath);
+            EnsureDirectoryExists(currentDirectory, absoluteFolderPath);
+
+            return this.GetSubdirectoriesOfRecursiveInternal(absoluteFolderPath, currentDirectory);
+        }
+
         public IEnumerable<AbsoluteFilePath> GetFilesOf(AbsoluteFolderPath absoluteFolderPath)
         {
             Tree<DirectoryEntry> currentDirectory = this.GetDirectoryBy(absoluteFolderPath);
@@ -161,6 +169,20 @@ namespace Appccelerate.IO.Access.InMemory
             this.AddFile(absoluteDestinationFilePath, contents);
 
             this.DeleteFile(absoluteSourceFilePath);
+        }
+
+        private IEnumerable<AbsoluteFolderPath> GetSubdirectoriesOfRecursiveInternal(AbsoluteFolderPath absoluteFolderPath, Tree<DirectoryEntry> directoryEntry)
+        {
+            List<AbsoluteFolderPath> directories = directoryEntry.Children.Select(d => new AbsoluteFolderPath(Path.Combine(absoluteFolderPath, d.Item.Name))).ToList();
+
+            foreach (Tree<DirectoryEntry> child in directoryEntry.Children)
+            {
+                IEnumerable<AbsoluteFolderPath> subFoldersOfChild = this.GetSubdirectoriesOfRecursiveInternal(Path.Combine(absoluteFolderPath, child.Item.Name), child);
+
+                directories.AddRange(subFoldersOfChild);
+            }
+
+            return directories;
         }
 
         private IEnumerable<AbsoluteFilePath> GetFilesOfRecursiveInternal(AbsoluteFolderPath absoluteFolderPath, Tree<DirectoryEntry> directoryEntry)
