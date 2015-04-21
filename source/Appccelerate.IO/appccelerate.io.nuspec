@@ -24,6 +24,7 @@
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="net45" />
       <frameworkAssembly assemblyName="System.Core" targetFramework="net45" />
+      <frameworkAssembly assemblyName="System.Runtime" targetFramework="net45" />
       <frameworkAssembly assemblyName="System.Xml" targetFramework="net45" />
     </frameworkAssemblies>
     <dependencies>

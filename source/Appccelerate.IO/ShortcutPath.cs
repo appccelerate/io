@@ -27,6 +27,8 @@ namespace Appccelerate.IO
 
         public ShortcutPath(string shortcutPath)
         {
+            Ensure.ArgumentNotNull(shortcutPath, "shortcutPath");
+
             if (ContainsInvalidShortcut(shortcutPath))
             {
                 throw new ArgumentException("Expected path with shortcuts, but path contains incomplete shortcut `" + shortcutPath + "`.");
