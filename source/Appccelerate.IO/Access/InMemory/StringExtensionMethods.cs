@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StringExtensionMethods.cs" company="Appccelerate">
-//   Copyright (c) 2008-2014
+//   Copyright (c) 2008-2015
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 namespace Appccelerate.IO.Access.InMemory
 {
     using System;
+    using System.IO;
 
     public static class StringExtensionMethods
     {
@@ -40,6 +41,11 @@ namespace Appccelerate.IO.Access.InMemory
             }
 
             return false;
+        }
+
+        public static string NormalizePathEnding(this string inputString)
+        {
+            return inputString.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
         }
     }
 }

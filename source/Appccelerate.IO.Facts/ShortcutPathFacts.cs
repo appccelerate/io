@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="ShortcutPathFacts.cs" company="Appccelerate">
-//   Copyright (c) 2008-2014
+//   Copyright (c) 2008-2015
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ namespace Appccelerate.IO
     using System;
     using FluentAssertions;
     using Xunit;
+    using Xunit.Extensions;
 
     public class ShortcutPathFacts
     {
@@ -69,6 +70,20 @@ namespace Appccelerate.IO
             Action action = () => new ShortcutPath(InvalidShortcutPath);
 
             action.ShouldThrow<ArgumentException>();
+        }
+
+        [Theory]
+        [InlineData("c:\\folder\\file.extension", false)]
+        [InlineData("%Shortcut%", false)]
+        [InlineData("%Shortcut%\\%AnotherShortcut%", false)]
+        [InlineData("%Short%cut%", true)]
+        [InlineData("%Shortcut", true)]
+        [InlineData("Shortcut%\\folder", true)]
+        public void ReturnsWhetherpathContainsInvalidShortcut(string path, bool expected)
+        {
+            bool result = ShortcutPath.ContainsInvalidShortcut(path);
+
+            result.Should().Be(expected);
         }
     }
 }

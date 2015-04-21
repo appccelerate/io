@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="AbsoluteFilePathFacts.cs" company="Appccelerate">
-//   Copyright (c) 2008-2014
+//   Copyright (c) 2008-2015
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -107,6 +107,18 @@ namespace Appccelerate.IO
             AbsoluteFilePath b = bb;
 
             bool result = a == b;
+
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(@"c:\folder\file.ext", true)]
+        [InlineData(@"c:\folder\file", true)]
+        [InlineData(@".\folder\file", false)]
+        [InlineData(@"blah", false)]
+        public void ReturnsWhetherAPathIsAnAbsoluteFilePath(string path, bool expected)
+        {
+            bool result = AbsoluteFilePath.IsAbsoluteFilePath(path);
 
             result.Should().Be(expected);
         }
