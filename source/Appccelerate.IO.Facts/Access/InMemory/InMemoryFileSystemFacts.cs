@@ -41,7 +41,7 @@ namespace Appccelerate.IO.Access.InMemory
 
             public DirectoryFacts()
             {
-                this.testee = new InMemoryFileSystem(new TimeDoesNotMatterInMemoryDateTimeProvider());
+                this.testee = new InMemoryFileSystem(new TimeDoesNotMatterDateTimeProvider());
             }
 
             [Fact]
@@ -120,11 +120,21 @@ namespace Appccelerate.IO.Access.InMemory
 
         public class FileFacts
         {
+            private static readonly DateTime FileCreationTime;
+            private static readonly DateTime FileModificationTime;
             private readonly InMemoryFileSystem testee;
+            private readonly InMemoryDateTimeProvider dateTimeProvider;
 
             public FileFacts()
             {
-                this.testee = new InMemoryFileSystem(new TimeDoesNotMatterInMemoryDateTimeProvider());
+                this.dateTimeProvider = new InMemoryDateTimeProvider();
+                this.testee = new InMemoryFileSystem(this.dateTimeProvider);
+            }
+
+            static FileFacts()
+            {
+                FileCreationTime = new DateTime(2015, 10, 20, 10, 30, 59, DateTimeKind.Utc);
+                FileModificationTime = FileCreationTime + TimeSpan.FromMinutes(2);
             }
 
             [Fact]
@@ -139,15 +149,42 @@ namespace Appccelerate.IO.Access.InMemory
             }
 
             [Fact]
-            public void AddsAFile_WhenFileAlreadyExists()
+            public void SetsTheLastWriteTimeUtcOnAddingAFile()
             {
+                var now = new DateTime(2015, 10, 20, 10, 30, 59, DateTimeKind.Utc);
+                this.dateTimeProvider.SetUtcNow(now);
                 this.testee.CreateDirectory(Folder);
 
+                this.testee.AddFile(FileInFolder, DummyFile);
+
+                FileProperties result = this.testee.GetFileProperties(FileInFolder);
+                result.LastWriteTimeUtc.Should().Be(now);
+            }
+
+            [Fact]
+            public void ReplacesAFileOnAdding_WhenFileAlreadyExists()
+            {
+                this.testee.CreateDirectory(Folder);
                 this.testee.AddFile(FileInFolder, new byte[] { 9, 9 });
+
                 this.testee.AddFile(FileInFolder, DummyFile);
 
                 this.testee.GetFile(FileInFolder)
                     .Should().Equal(DummyFile);
+            }
+
+            [Fact]
+            public void UpdatesTheLastWriteTimeUtcToCurrentTimeOnReplacingAFile()
+            {
+                this.dateTimeProvider.SetUtcNow(FileCreationTime);
+                this.testee.CreateDirectory(Folder);
+                this.testee.AddFile(FileInFolder, new byte[] { 9, 9 });
+
+                this.dateTimeProvider.SetUtcNow(FileModificationTime);
+                this.testee.AddFile(FileInFolder, DummyFile);
+
+                FileProperties result = this.testee.GetFileProperties(FileInFolder);
+                result.LastWriteTimeUtc.Should().Be(FileModificationTime);
             }
 
             [Fact]
@@ -214,6 +251,41 @@ namespace Appccelerate.IO.Access.InMemory
 
                 this.testee.FileExists(OtherFileInOtherFolder)
                     .Should().BeTrue();
+            }
+
+            [Fact]
+            public void TakesLastWriteTimeUtcFromSourceFileOnMovingAFile()
+            {
+                this.dateTimeProvider.SetUtcNow(FileCreationTime);
+                this.testee.CreateDirectory(Folder);
+                this.testee.AddFile(FileInFolder, DummyFile);
+                this.testee.CreateDirectory(OtherFolder);
+
+                this.dateTimeProvider.SetUtcNow(FileModificationTime);
+                this.testee.Move(FileInFolder, OtherFileInOtherFolder);
+
+                FileProperties result = this.testee.GetFileProperties(OtherFileInOtherFolder);
+                result.LastWriteTimeUtc.Should().Be(FileCreationTime);
+            }
+
+            [Fact]
+            public void TakesLastWriteTimeUtcFromSourceFileOnMovingAFile_WhenDestinationAlreadyExists()
+            {
+                DateTime otherFileCreationTime = FileCreationTime.AddSeconds(20);
+
+                this.dateTimeProvider.SetUtcNow(FileCreationTime);
+                this.testee.CreateDirectory(Folder);
+                this.testee.AddFile(FileInFolder, DummyFile);
+
+                this.dateTimeProvider.SetUtcNow(otherFileCreationTime);
+                this.testee.CreateDirectory(OtherFolder);
+                this.testee.AddFile(OtherFileInOtherFolder, new byte[] { 9, 9 });
+
+                this.dateTimeProvider.SetUtcNow(FileModificationTime);
+                this.testee.Move(FileInFolder, OtherFileInOtherFolder);
+
+                FileProperties result = this.testee.GetFileProperties(OtherFileInOtherFolder);
+                result.LastWriteTimeUtc.Should().Be(FileCreationTime);
             }
 
             [Fact]

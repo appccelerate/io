@@ -31,7 +31,7 @@ namespace Appccelerate.IO.Access.InMemory
 
         public InMemoryFileInfoFacts()
         {
-            this.testee = new InMemoryFileInfo(new InMemoryFileSystem(new TimeDoesNotMatterInMemoryDateTimeProvider()), FileInFolder);
+            this.testee = new InMemoryFileInfo(new InMemoryFileSystem(new TimeDoesNotMatterDateTimeProvider()), FileInFolder);
         }
 
         [Fact]

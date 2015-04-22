@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TimeDoesNotMatterInMemoryDateTimeProvider.cs" company="Appccelerate">
+// <copyright file="TimeDoesNotMatterDateTimeProvider.cs" company="Appccelerate">
 //   Copyright (c) 2008-2015
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,7 @@ namespace Appccelerate.IO.Access.InMemory
 {
     using System;
 
-    public class TimeDoesNotMatterInMemoryDateTimeProvider : IInMemoryDateTimeProvider
+    public class TimeDoesNotMatterDateTimeProvider : IInMemoryDateTimeProvider
     {
         public DateTime UtcNow
         {

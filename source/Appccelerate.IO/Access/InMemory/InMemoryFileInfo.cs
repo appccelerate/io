@@ -80,7 +80,18 @@ namespace Appccelerate.IO.Access.InMemory
 
         public DateTime LastWriteTime { get; set; }
 
-        public DateTime LastWriteTimeUtc { get; set; }
+        public DateTime LastWriteTimeUtc
+        {
+            get
+            {
+                return this.fileSystem.GetFileProperties(this.pathToFile).LastWriteTimeUtc;
+            }
+
+            set
+            {
+                this.fileSystem.GetFileProperties(this.pathToFile).LastWriteTimeUtc = value;
+            }
+        }
 
         public IDirectoryInfo Directory
         {
@@ -136,15 +147,7 @@ namespace Appccelerate.IO.Access.InMemory
             }
 
             this.fileSystem.AddFile(destFileName, this.fileSystem.GetFile(this.pathToFile));
-            FileProperties fileProperties = this.fileSystem.GetFileProperties(destFileName);
-
-            return new InMemoryFileInfo(this.fileSystem, destFileName)
-                       {
-                           Attributes = fileProperties.Attributes,
-                           CreationTimeUtc = fileProperties.CreationTimeUtc,
-                           LastAccessTimeUtc = fileProperties.LastAccessTimeUtc,
-                           LastWriteTimeUtc = fileProperties.LastWriteTimeUtc
-                       };
+            return new InMemoryFileInfo(this.fileSystem, destFileName);
         }
 
         public IFileInfo CopyTo(string destFileName, bool overwrite)

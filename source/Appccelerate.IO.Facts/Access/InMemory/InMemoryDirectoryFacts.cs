@@ -43,7 +43,7 @@ namespace Appccelerate.IO.Access.InMemory
 
         public InMemoryDirectoryFacts()
         {
-            this.fileSystem = new InMemoryFileSystem(new TimeDoesNotMatterInMemoryDateTimeProvider());
+            this.fileSystem = new InMemoryFileSystem(new TimeDoesNotMatterDateTimeProvider());
 
             this.testee = new InMemoryDirectory(this.fileSystem, Enumerable.Empty<IDirectoryExtension>());
         }

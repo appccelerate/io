@@ -18,16 +18,9 @@
 namespace Appccelerate.IO.Access.InMemory
 {
     using System;
-    using System.IO;
 
     public class FileProperties
     {
-        public FileAttributes Attributes { get; set; }
-
-        public DateTime CreationTimeUtc { get; set; }
-            
-        public DateTime LastAccessTimeUtc { get; set; }
-            
         public DateTime LastWriteTimeUtc { get; set; }
     }
 }

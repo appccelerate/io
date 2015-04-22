@@ -71,7 +71,7 @@
     <Compile Include="Access\InMemory\IInMemoryFileSystem.cs" />
     <Compile Include="Access\InMemory\InMemoryAccessFactory.cs" />
     <Compile Include="Access\InMemory\InMemoryDateTimeProvider.cs" />
-    <Compile Include="Access\InMemory\TimeDoesNotMatterInMemoryDateTimeProvider.cs" />
+    <Compile Include="Access\InMemory\TimeDoesNotMatterDateTimeProvider.cs" />
     <Compile Include="Access\InMemory\InMemoryDirectory.cs" />
     <Compile Include="Access\InMemory\InMemoryDirectoryInfo.cs" />
     <Compile Include="Access\InMemory\InMemoryEnvironment.cs" />

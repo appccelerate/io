@@ -314,7 +314,7 @@ namespace Appccelerate.IO.Access.InMemory
 
         public DateTime GetLastWriteTimeUtc(string path)
         {
-            throw new NotImplementedException();
+            return this.fileSystem.GetFileProperties(path).LastWriteTimeUtc;
         }
 
         public StreamReader OpenText(string path)
@@ -364,7 +364,7 @@ namespace Appccelerate.IO.Access.InMemory
 
         public void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
         {
-            throw new NotImplementedException();
+            this.fileSystem.GetFileProperties(path).LastWriteTimeUtc = lastWriteTimeUtc;
         }
     }
 }

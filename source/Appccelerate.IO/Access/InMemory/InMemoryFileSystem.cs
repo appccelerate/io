@@ -62,9 +62,7 @@ namespace Appccelerate.IO.Access.InMemory
             {
                 FileEntry current = GetFileByNameIgnoringCase(parentDirectory, Path.GetFileName(absoluteFilePath));
                 current.Content = fileContent;
-                DateTime now = this.dateTimeProvider.UtcNow;
-                current.FileProperties.LastWriteTimeUtc = now;
-                current.FileProperties.LastAccessTimeUtc = now;
+                current.FileProperties.LastWriteTimeUtc = this.dateTimeProvider.UtcNow;
             }
         }
 
@@ -76,7 +74,6 @@ namespace Appccelerate.IO.Access.InMemory
             this.EnsureFileExists(absoluteFilePath);
 
             FileEntry fileEntry = GetFileByNameIgnoringCase(parentDirectory, Path.GetFileName(absoluteFilePath));
-            fileEntry.FileProperties.LastAccessTimeUtc = this.dateTimeProvider.UtcNow;
 
             return fileEntry.Content;
         }
@@ -181,11 +178,14 @@ namespace Appccelerate.IO.Access.InMemory
         public void Move(AbsoluteFilePath absoluteSourceFilePath, AbsoluteFilePath absoluteDestinationFilePath)
         {
             IEnumerable<byte> contents = this.GetFile(absoluteSourceFilePath);
+            FileProperties sourceFileProperties = this.GetFileProperties(absoluteSourceFilePath);
 
             AbsoluteFolderPath absoluteDestinationFolderPath = Path.GetDirectoryName(absoluteDestinationFilePath);
             this.CreateDirectory(absoluteDestinationFolderPath);
-
             this.AddFile(absoluteDestinationFilePath, contents);
+
+            FileProperties destionationFileProperties = this.GetFileProperties(absoluteDestinationFilePath);
+            destionationFileProperties.LastWriteTimeUtc = sourceFileProperties.LastWriteTimeUtc;
 
             this.DeleteFile(absoluteSourceFilePath);
         }
@@ -325,13 +325,7 @@ namespace Appccelerate.IO.Access.InMemory
                 DateTime now = this.dateTimeProvider.UtcNow;
                 var fileEntry = new FileEntry(Path.GetFileName(absoluteFilePath), fileContent) 
                     { 
-                        FileProperties =
-                        {
-                            Attributes = FileAttributes.Normal, 
-                            CreationTimeUtc = now, 
-                            LastAccessTimeUtc = now, 
-                            LastWriteTimeUtc = now
-                        } 
+                        FileProperties = { LastWriteTimeUtc = now } 
                     };
 
                 parentDirectory.Item.Files.Add(fileEntry);

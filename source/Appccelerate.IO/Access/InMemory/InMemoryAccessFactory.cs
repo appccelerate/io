@@ -35,7 +35,7 @@ namespace Appccelerate.IO.Access.InMemory
 
         private Func<IEnumerable<IDriveExtension>> driveExtensionsProvider = Enumerable.Empty<IDriveExtension>;
 
-        public InMemoryAccessFactory() : this(new TimeDoesNotMatterInMemoryDateTimeProvider())
+        public InMemoryAccessFactory() : this(new TimeDoesNotMatterDateTimeProvider())
         {
         }
 
