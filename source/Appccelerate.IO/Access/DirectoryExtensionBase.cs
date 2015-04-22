@@ -34,7 +34,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailExists(ref Exception exceptio, string pathn)
+        public virtual void FailExists(ref Exception exception, string path)
         {
         }
 
