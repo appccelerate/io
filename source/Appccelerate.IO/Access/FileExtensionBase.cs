@@ -36,7 +36,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetLastWriteTime(ref Exception exception)
+        public virtual void FailGetLastWriteTime(ref Exception exception, string path)
         {
         }
 
@@ -48,7 +48,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetLastWriteTimeUtc(ref Exception exception)
+        public virtual void FailGetLastWriteTimeUtc(ref Exception exception, string path)
         {
         }
 
@@ -60,7 +60,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailMove(ref Exception exception)
+        public virtual void FailMove(ref Exception exception, string sourceFileName, string destFileName)
         {
         }
 
@@ -68,11 +68,11 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void EndOpenRead(FileStream result, string path)
+        public virtual void EndOpenRead(Stream result, string path)
         {
         }
 
-        public virtual void FailOpenRead(ref Exception exception)
+        public virtual void FailOpenRead(ref Exception exception, string path)
         {
         }
 
@@ -84,7 +84,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailOpenText(ref Exception exception)
+        public virtual void FailOpenText(ref Exception exception, string path)
         {
         }
 
@@ -96,7 +96,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailOpenWrite(ref Exception exception)
+        public virtual void FailOpenWrite(ref Exception exception, string path)
         {
         }
 
@@ -108,15 +108,36 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailReplace(ref Exception exception)
+        public virtual void FailReplace(
+            ref Exception exception,
+            string sourceFileName,
+            string destinationFileName,
+            string destinationBackupFileName)
         {
         }
 
-        public virtual void BeginReplace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
+        public virtual void BeginReplace(
+            string sourceFileName,
+            string destinationFileName,
+            string destinationBackupFileName,
+            bool ignoreMetadataErrors)
         {
         }
 
-        public virtual void EndReplace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
+        public virtual void EndReplace(
+            string sourceFileName,
+            string destinationFileName,
+            string destinationBackupFileName,
+            bool ignoreMetadataErrors)
+        {
+        }
+
+        public virtual void FailReplace(
+            ref Exception exception,
+            string sourceFileName,
+            string destinationFileName,
+            string destinationBackupFileName,
+            bool ignoreMetadataErrors)
         {
         }
 
@@ -128,7 +149,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetAccessControl(ref Exception exception)
+        public virtual void FailSetAccessControl(ref Exception exception, string path, FileSecurity fileSecurity)
         {
         }
 
@@ -140,7 +161,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetCreationTime(ref Exception exception)
+        public virtual void FailSetCreationTime(ref Exception exception, string path, DateTime creationTime)
         {
         }
 
@@ -152,7 +173,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetCreationTimeUtc(ref Exception exception)
+        public virtual void FailSetCreationTimeUtc(ref Exception exception, string path, DateTime creationTimeUtc)
         {
         }
 
@@ -164,7 +185,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetLastAccessTime(ref Exception exception)
+        public virtual void FailSetLastAccessTime(ref Exception exception, string path, DateTime lastAccessTime)
         {
         }
 
@@ -176,7 +197,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetLastAccessTimeUtc(ref Exception exception)
+        public virtual void FailSetLastAccessTimeUtc(ref Exception exception, string path, DateTime lastAccessTimeUtc)
         {
         }
 
@@ -188,7 +209,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetLastWriteTimeUtc(ref Exception exception)
+        public virtual void FailSetLastWriteTimeUtc(ref Exception exception, string path, DateTime lastWriteTimeUtc)
         {
         }
 
@@ -200,7 +221,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailDelete(ref Exception exception)
+        public virtual void FailDelete(ref Exception exception, string path)
         {
         }
 
@@ -212,7 +233,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailCopy(ref Exception exception)
+        public virtual void FailCopy(ref Exception exception, string sourceFileName, string destFileName)
         {
         }
 
@@ -224,6 +245,10 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public virtual void FailCopy(ref Exception exception, string sourceFileName, string destFileName, bool overwrite)
+        {
+        }
+
         public virtual void BeginCreateText(string path)
         {
         }
@@ -232,7 +257,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailCreateText(ref Exception exception)
+        public virtual void FailCreateText(ref Exception exception, string path)
         {
         }
 
@@ -244,7 +269,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetAttributes(ref Exception exception)
+        public virtual void FailGetAttributes(ref Exception exception, string path)
         {
         }
 
@@ -256,7 +281,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetLastWriteTime(ref Exception exception)
+        public virtual void FailSetLastWriteTime(ref Exception exception, string path, DateTime lastWriteTime)
         {
         }
 
@@ -268,7 +293,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailSetAttributes(ref Exception exception)
+        public virtual void FailSetAttributes(ref Exception exception, string path, FileAttributes fileAttributes)
         {
         }
 
@@ -280,7 +305,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailExists(ref Exception exception)
+        public virtual void FailExists(ref Exception exception, string path)
         {
         }
 
@@ -292,7 +317,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailReadAllBytes(ref Exception exception)
+        public virtual void FailReadAllBytes(ref Exception exception, string path)
         {
         }
 
@@ -304,7 +329,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailReadAllLines(ref Exception exception)
+        public virtual void FailReadAllLines(ref Exception exception, string path, Encoding encoding)
         {
         }
 
@@ -316,11 +341,19 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public virtual void FailReadAllLines(ref Exception exception, string path)
+        {
+        }
+
         public virtual void BeginReadAllText(string path, Encoding encoding)
         {
         }
 
         public virtual void EndReadAllText(string result, string path, Encoding encoding)
+        {
+        }
+
+        public virtual void FailReadAllText(ref Exception exception, string path, Encoding encoding)
         {
         }
 
@@ -332,6 +365,10 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public virtual void FailReadAllText(ref Exception exception, string path)
+        {
+        }
+
         public virtual void BeginReadLines(string path)
         {
         }
@@ -340,7 +377,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailReadLines(ref Exception exception)
+        public virtual void FailReadLines(ref Exception exception, string path)
         {
         }
 
@@ -352,7 +389,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailReadAllText(ref Exception exception)
+        public virtual void FailReadLines(ref Exception exception, string path, Encoding encoding)
         {
         }
 
@@ -364,7 +401,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailWriteAllLines(ref Exception exception)
+        public virtual void FailWriteAllLines(ref Exception exception, string path, IEnumerable<string> contents, Encoding encoding)
         {
         }
 
@@ -376,6 +413,10 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public virtual void FailWriteAllLines(ref Exception exception, string path, IEnumerable<string> contents)
+        {
+        }
+
         public virtual void BeginWriteAllText(string path, string contents)
         {
         }
@@ -384,7 +425,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailWriteAllText(ref Exception exception)
+        public virtual void FailWriteAllText(ref Exception exception, string path, string contents)
         {
         }
 
@@ -396,6 +437,10 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public virtual void FailWriteAllText(ref Exception exception, string path, string contents, Encoding encoding)
+        {
+        }
+
         public virtual void BeginWriteAllBytes(string path, byte[] bytes)
         {
         }
@@ -404,7 +449,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailWriteAllBytes(ref Exception exception)
+        public virtual void FailWriteAllBytes(ref Exception exception, string path, byte[] bytes)
         {
         }
 
@@ -416,7 +461,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailOpen(ref Exception exception)
+        public virtual void FailOpen(ref Exception exception, string path, FileMode mode)
         {
         }
 
@@ -428,11 +473,19 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public virtual void FailOpen(ref Exception exception, string path, FileMode mode, FileAccess access)
+        {
+        }
+
         public virtual void BeginOpen(string path, FileMode mode, FileAccess access, FileShare share)
         {
         }
 
         public virtual void EndOpen(FileStream result, string path, FileMode mode, FileAccess access, FileShare share)
+        {
+        }
+
+        public virtual void FailOpen(ref Exception exception, string path, FileMode mode, FileAccess access, FileShare share)
         {
         }
 
@@ -444,7 +497,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailAppendAllLines(ref Exception exception)
+        public virtual void FailAppendAllLines(ref Exception exception, string path, IEnumerable<string> contents)
         {
         }
 
@@ -456,6 +509,10 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public virtual void FailAppendAllLines(ref Exception exception, string path, IEnumerable<string> contents, Encoding encoding)
+        {
+        }
+
         public virtual void BeginAppendAllText(string path, string contents)
         {
         }
@@ -464,7 +521,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailAppendAllText(ref Exception exception)
+        public virtual void FailAppendAllText(ref Exception exception, string path, string contents)
         {
         }
 
@@ -476,6 +533,10 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public virtual void FailAppendAllText(ref Exception exception, string path, string contents, Encoding encoding)
+        {
+        }
+
         public virtual void BeginAppendText(string path)
         {
         }
@@ -484,7 +545,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailAppendText(ref Exception exception)
+        public virtual void FailAppendText(ref Exception exception, string path)
         {
         }
 
@@ -496,7 +557,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailCreate(ref Exception exception)
+        public virtual void FailCreate(ref Exception exception, string path)
         {
         }
 
@@ -508,11 +569,19 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public virtual void FailCreate(ref Exception exception, string path, int bufferSize)
+        {
+        }
+
         public virtual void BeginCreate(string path, int bufferSize, FileOptions options)
         {
         }
 
         public virtual void EndCreate(FileStream result, string path, int bufferSize, FileOptions options)
+        {
+        }
+
+        public virtual void FailCreate(ref Exception exception, string path, int bufferSize, FileOptions options)
         {
         }
 
@@ -524,6 +593,10 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public virtual void FailCreate(ref Exception exception, string path, int bufferSize, FileOptions options, FileSecurity fileSecurity)
+        {
+        }
+
         public virtual void BeginDecrypt(string path)
         {
         }
@@ -532,7 +605,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailDecrypt(ref Exception exception)
+        public virtual void FailDecrypt(ref Exception exception, string path)
         {
         }
 
@@ -544,7 +617,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailEncrypt(ref Exception exception)
+        public virtual void FailEncrypt(ref Exception exception, string path)
         {
         }
 
@@ -556,7 +629,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetAccessControl(ref Exception exception)
+        public virtual void FailGetAccessControl(ref Exception exception, string path)
         {
         }
 
@@ -568,6 +641,10 @@ namespace Appccelerate.IO.Access
         {
         }
 
+        public virtual void FailGetAccessControl(ref Exception exception, string path, AccessControlSections includeSections)
+        {
+        }
+
         public virtual void BeginGetCreationTime(string path)
         {
         }
@@ -576,7 +653,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetCreationTime(ref Exception exception)
+        public virtual void FailGetCreationTime(ref Exception exception, string path)
         {
         }
 
@@ -588,7 +665,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetCreationTimeUtc(ref Exception exception)
+        public virtual void FailGetCreationTimeUtc(ref Exception exception, string path)
         {
         }
 
@@ -600,7 +677,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetLastAccessTime(ref Exception exception)
+        public virtual void FailGetLastAccessTime(ref Exception exception, string path)
         {
         }
 
@@ -612,7 +689,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetLastAccessTimeUtc(ref Exception exception)
+        public virtual void FailGetLastAccessTimeUtc(ref Exception exception, string path)
         {
         }
     }

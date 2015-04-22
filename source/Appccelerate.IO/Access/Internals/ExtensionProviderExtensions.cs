@@ -54,6 +54,8 @@ namespace Appccelerate.IO.Access.Internals
 
         private static readonly ConcurrentDictionary<Key, Item> ReflectionCache = new ConcurrentDictionary<Key, Item>();
 
+        public delegate void FailAction<TExtension>(TExtension extension, ref Exception exception);
+
         /// <summary>
         /// Surrounds the specified function expression with extension methods following a certain convention.
         /// </summary>
@@ -80,6 +82,80 @@ namespace Appccelerate.IO.Access.Internals
             where TExtension : class
         {
             SurroundWithExtensionInternal<TExtension, Missing>(provider, action, args);
+        }
+
+        public static void EncapsulateWithExtension<TExtension>(
+            this IExtensionProvider<TExtension> provider,
+            Action f,
+            Action<TExtension> begin,
+            Action<TExtension> end,
+            FailAction<TExtension> fail)
+        {
+            foreach (TExtension extension in provider.Extensions)
+            {
+                begin(extension);
+            }
+
+            try
+            {
+                f();
+            }
+            catch (Exception exception)
+            {
+                var exceptionToRethrow = exception;
+                foreach (TExtension fileExtension in provider.Extensions)
+                {
+                    var e = exception;
+                    fail(fileExtension, ref e);
+
+                    exceptionToRethrow = e;
+                }
+
+                throw exceptionToRethrow;
+            }
+
+            foreach (TExtension fileExtension in provider.Extensions)
+            {
+                end(fileExtension);
+            }
+        }
+
+        public static TResult EncapsulateWithExtension<TExtension, TResult>(
+            this IExtensionProvider<TExtension> provider, 
+            Func<TResult> f, 
+            Action<TExtension> begin, 
+            Action<TExtension, TResult> end,
+            FailAction<TExtension> fail)
+        {
+            foreach (TExtension extension in provider.Extensions)
+            {
+                begin(extension);
+            }
+
+            try
+            {
+                TResult result = f();
+
+                foreach (TExtension fileExtension in provider.Extensions)
+                {
+                    end(fileExtension, result);
+                }
+
+                return result;
+            }
+            catch (Exception exception)
+            {
+                var exceptionToRethrow = exception;
+                foreach (TExtension fileExtension in provider.Extensions)
+                {
+                    var e = exception;
+                    fail(fileExtension, ref e);
+
+                    exceptionToRethrow = e;
+                }
+
+                throw exceptionToRethrow;
+            }
         }
 
         /// <summary>

@@ -53,115 +53,191 @@ namespace Appccelerate.IO.Access.Internals
         /// <inheritdoc />
         public void Delete(string path)
         {
-            this.SurroundWithExtension(() => System.IO.File.Delete(path), path);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.Delete(path),
+                e => e.BeginDelete(path),
+                e => e.EndDelete(path),
+                (IFileExtension e, ref Exception exception) => e.FailDelete(ref exception, path));
         }
 
         /// <inheritdoc />
         public void Copy(string sourceFileName, string destFileName)
         {
-            this.SurroundWithExtension(() => System.IO.File.Copy(sourceFileName, destFileName), sourceFileName, destFileName);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.Copy(sourceFileName, destFileName),
+                e => e.BeginCopy(sourceFileName, destFileName),
+                e => e.EndCopy(sourceFileName, destFileName),
+                (IFileExtension e, ref Exception exception) => e.FailCopy(ref exception, sourceFileName, destFileName));
         }
 
         /// <inheritdoc />
         public void Copy(string sourceFileName, string destFileName, bool overwrite)
         {
-            this.SurroundWithExtension(() => System.IO.File.Copy(sourceFileName, destFileName, overwrite), sourceFileName, destFileName, overwrite);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.Copy(sourceFileName, destFileName, overwrite),
+                e => e.BeginCopy(sourceFileName, destFileName, overwrite),
+                e => e.EndCopy(sourceFileName, destFileName, overwrite),
+                (IFileExtension e, ref Exception exception) => e.FailCopy(ref exception, sourceFileName, destFileName, overwrite));
         }
 
         /// <inheritdoc />
         public StreamWriter CreateText(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.CreateText(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.CreateText(path),
+                e => e.BeginCreateText(path),
+                (e, r) => e.EndCreateText(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailCreateText(ref exception, path));
         }
 
         /// <inheritdoc />
         public FileAttributes GetAttributes(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.GetAttributes(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.GetAttributes(path),
+                e => e.BeginGetAttributes(path),
+                (e, r) => e.EndGetAttributes(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailGetAttributes(ref exception, path));
         }
 
         /// <inheritdoc />
         public void SetLastWriteTime(string path, DateTime lastWriteTime)
         {
-            this.SurroundWithExtension(() => System.IO.File.SetLastWriteTime(path, lastWriteTime), path, lastWriteTime);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.SetLastWriteTime(path, lastWriteTime),
+                e => e.BeginSetLastWriteTime(path, lastWriteTime),
+                e => e.EndSetLastWriteTime(path, lastWriteTime),
+                (IFileExtension e, ref Exception exception) => e.FailSetLastWriteTime(ref exception, path, lastWriteTime));
         }
 
         /// <inheritdoc />
         public void SetAttributes(string path, FileAttributes fileAttributes)
         {
-            this.SurroundWithExtension(() => System.IO.File.SetAttributes(path, fileAttributes), path, fileAttributes);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.SetAttributes(path, fileAttributes),
+                e => e.BeginSetAttributes(path, fileAttributes),
+                e => e.EndSetAttributes(path, fileAttributes),
+                (IFileExtension e, ref Exception exception) => e.FailSetAttributes(ref exception, path, fileAttributes));
         }
 
         /// <inheritdoc />
         public bool Exists(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.Exists(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.Exists(path),
+                e => e.BeginExists(path),
+                (e, r) => e.EndExists(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailExists(ref exception, path));
         }
 
         /// <inheritdoc />
         public IEnumerable<byte> ReadAllBytes(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.ReadAllBytes(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.ReadAllBytes(path),
+                e => e.BeginReadAllBytes(path),
+                (e, r) => e.EndReadAllBytes(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailReadAllBytes(ref exception, path));
         }
 
         /// <inheritdoc />
         public IEnumerable<string> ReadAllLines(string path, Encoding encoding)
         {
-            return this.SurroundWithExtension(() => System.IO.File.ReadAllLines(path, encoding), path, encoding);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.ReadAllLines(path, encoding),
+                e => e.BeginReadAllLines(path, encoding),
+                (e, r) => e.EndReadAllLines(r, path, encoding),
+                (IFileExtension e, ref Exception exception) => e.FailReadAllLines(ref exception, path, encoding));
         }
 
         /// <inheritdoc />
         public IEnumerable<string> ReadAllLines(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.ReadAllLines(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.ReadAllLines(path),
+                e => e.BeginReadAllLines(path),
+                (e, r) => e.EndReadAllLines(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailReadAllLines(ref exception, path));
         }
 
         /// <inheritdoc />
         public string ReadAllText(string path, Encoding encoding)
         {
-            return this.SurroundWithExtension(() => System.IO.File.ReadAllText(path, encoding), path, encoding);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.ReadAllText(path, encoding),
+                e => e.BeginReadAllText(path, encoding),
+                (e, r) => e.EndReadAllText(r, path, encoding),
+                (IFileExtension e, ref Exception exception) => e.FailReadAllText(ref exception, path, encoding));
         }
 
         /// <inheritdoc />
         public string ReadAllText(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.ReadAllText(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.ReadAllText(path),
+                e => e.BeginReadAllText(path),
+                (e, r) => e.EndReadAllText(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailReadAllText(ref exception, path));
         }
 
         /// <inheritdoc />
         public IEnumerable<string> ReadLines(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.ReadLines(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.ReadLines(path),
+                e => e.BeginReadLines(path),
+                (e, r) => e.EndReadLines(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailReadLines(ref exception, path));
         }
 
         /// <inheritdoc />
         public IEnumerable<string> ReadLines(string path, Encoding encoding)
         {
-            return this.SurroundWithExtension(() => System.IO.File.ReadLines(path, encoding), path, encoding);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.ReadLines(path, encoding),
+                e => e.BeginReadLines(path, encoding),
+                (e, r) => e.EndReadLines(r, path, encoding),
+                (IFileExtension e, ref Exception exception) => e.FailReadLines(ref exception, path, encoding));
         }
 
         /// <inheritdoc />
         public void WriteAllLines(string path, IEnumerable<string> contents, Encoding encoding)
         {
-            this.SurroundWithExtension(() => System.IO.File.WriteAllLines(path, contents, encoding), path, contents, encoding);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.WriteAllLines(path, contents, encoding),
+                e => e.BeginWriteAllLines(path, contents, encoding),
+                e => e.EndWriteAllLines(path, contents, encoding),
+                (IFileExtension e, ref Exception exception) => e.FailWriteAllLines(ref exception, path, contents, encoding));
         }
 
         /// <inheritdoc />
         public void WriteAllLines(string path, IEnumerable<string> contents)
         {
-            this.SurroundWithExtension(() => System.IO.File.WriteAllLines(path, contents), path, contents);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.WriteAllLines(path, contents),
+                e => e.BeginWriteAllLines(path, contents),
+                e => e.EndWriteAllLines(path, contents),
+                (IFileExtension e, ref Exception exception) => e.FailWriteAllLines(ref exception, path, contents));
         }
 
         /// <inheritdoc />
         public void WriteAllText(string path, string contents)
         {
-            this.SurroundWithExtension(() => System.IO.File.WriteAllText(path, contents), path, contents);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.WriteAllText(path, contents),
+                e => e.BeginWriteAllText(path, contents),
+                e => e.EndWriteAllText(path, contents),
+                (IFileExtension e, ref Exception exception) => e.FailWriteAllText(ref exception, path, contents));
         }
 
         /// <inheritdoc />
         public void WriteAllText(string path, string contents, Encoding encoding)
         {
-            this.SurroundWithExtension(() => System.IO.File.WriteAllText(path, contents, encoding), path, contents, encoding);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.WriteAllText(path, contents, encoding),
+                e => e.BeginWriteAllText(path, contents, encoding),
+                e => e.EndWriteAllText(path, contents, encoding),
+                (IFileExtension e, ref Exception exception) => e.FailWriteAllText(ref exception, path, contents, encoding));
         }
 
         /// <inheritdoc />
@@ -169,211 +245,351 @@ namespace Appccelerate.IO.Access.Internals
         {
             byte[] bytesAsArray = bytes.ToArray();
 
-            this.SurroundWithExtension(() => System.IO.File.WriteAllBytes(path, bytesAsArray), path, bytesAsArray);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.WriteAllBytes(path, bytesAsArray),
+                e => e.BeginWriteAllBytes(path, bytesAsArray),
+                e => e.EndWriteAllBytes(path, bytesAsArray),
+                (IFileExtension e, ref Exception exception) => e.FailWriteAllBytes(ref exception, path, bytesAsArray));
         }
 
         /// <inheritdoc />
         public Stream Open(string path, FileMode mode)
         {
-            return this.SurroundWithExtension(() => System.IO.File.Open(path, mode), path, mode);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.Open(path, mode),
+                e => e.BeginOpen(path, mode),
+                (e, r) => e.EndOpen(r, path, mode),
+                (IFileExtension e, ref Exception exception) => e.FailOpen(ref exception, path, mode));
         }
 
         /// <inheritdoc />
-        public Stream Open(string path, FileMode mode, System.IO.FileAccess access)
+        public Stream Open(string path, FileMode mode, FileAccess access)
         {
-            return this.SurroundWithExtension(() => System.IO.File.Open(path, mode, access), path, mode, access);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.Open(path, mode, access),
+                e => e.BeginOpen(path, mode, access),
+                (e, r) => e.EndOpen(r, path, mode, access),
+                (IFileExtension e, ref Exception exception) => e.FailOpen(ref exception, path, mode, access));
         }
 
         /// <inheritdoc />
-        public Stream Open(string path, FileMode mode, System.IO.FileAccess access, FileShare share)
+        public Stream Open(string path, FileMode mode, FileAccess access, FileShare share)
         {
-            return this.SurroundWithExtension(() => System.IO.File.Open(path, mode, access, share), path, mode, access, share);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.Open(path, mode, access, share),
+                e => e.BeginOpen(path, mode, access, share),
+                (e, r) => e.EndOpen(r, path, mode, access, share),
+                (IFileExtension e, ref Exception exception) => e.FailOpen(ref exception, path, mode, access, share));
         }
 
         /// <inheritdoc />
         public void AppendAllLines(string path, IEnumerable<string> contents)
         {
-            this.SurroundWithExtension(() => System.IO.File.AppendAllLines(path, contents), path, contents);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.AppendAllLines(path, contents),
+                e => e.BeginAppendAllLines(path, contents),
+                e => e.EndAppendAllLines(path, contents),
+                (IFileExtension e, ref Exception exception) => e.FailAppendAllLines(ref exception, path, contents));
         }
 
         /// <inheritdoc />
         public void AppendAllLines(string path, IEnumerable<string> contents, Encoding encoding)
         {
-            this.SurroundWithExtension(() => System.IO.File.AppendAllLines(path, contents, encoding), path, contents, encoding);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.AppendAllLines(path, contents, encoding),
+                e => e.BeginAppendAllLines(path, contents, encoding),
+                e => e.EndAppendAllLines(path, contents, encoding),
+                (IFileExtension e, ref Exception exception) => e.FailAppendAllLines(ref exception, path, contents, encoding));
         }
 
         /// <inheritdoc />
         public void AppendAllText(string path, string contents)
         {
-            this.SurroundWithExtension(() => System.IO.File.AppendAllText(path, contents), path, contents);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.AppendAllText(path, contents),
+                e => e.BeginAppendAllText(path, contents),
+                e => e.EndAppendAllText(path, contents),
+                (IFileExtension e, ref Exception exception) => e.FailAppendAllText(ref exception, path, contents));
         }
 
         /// <inheritdoc />
         public void AppendAllText(string path, string contents, Encoding encoding)
         {
-            this.SurroundWithExtension(() => System.IO.File.AppendAllText(path, contents, encoding), path, contents, encoding);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.AppendAllText(path, contents, encoding),
+                e => e.BeginAppendAllText(path, contents, encoding),
+                e => e.EndAppendAllText(path, contents, encoding),
+                (IFileExtension e, ref Exception exception) => e.FailAppendAllText(ref exception, path, contents, encoding));
         }
 
         /// <inheritdoc />
         public StreamWriter AppendText(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.AppendText(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.AppendText(path),
+                e => e.BeginAppendText(path),
+                (e, r) => e.EndAppendText(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailAppendText(ref exception, path));
         }
 
         /// <inheritdoc />
         public Stream Create(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.Create(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.Create(path),
+                e => e.BeginCreate(path),
+                (e, r) => e.EndCreate(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailCreate(ref exception, path));
         }
 
         /// <inheritdoc />
         public Stream Create(string path, int bufferSize)
         {
-            return this.SurroundWithExtension(() => System.IO.File.Create(path, bufferSize), path, bufferSize);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.Create(path, bufferSize),
+                e => e.BeginCreate(path, bufferSize),
+                (e, r) => e.EndCreate(r, path, bufferSize),
+                (IFileExtension e, ref Exception exception) => e.FailCreate(ref exception, path, bufferSize));
         }
 
         /// <inheritdoc />
         public Stream Create(string path, int bufferSize, FileOptions options)
         {
-            return this.SurroundWithExtension(() => System.IO.File.Create(path, bufferSize, options), path, bufferSize, options);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.Create(path, bufferSize, options),
+                e => e.BeginCreate(path, bufferSize, options),
+                (e, r) => e.EndCreate(r, path, bufferSize, options),
+                (IFileExtension e, ref Exception exception) => e.FailCreate(ref exception, path, bufferSize, options));
         }
 
         /// <inheritdoc />
         public Stream Create(string path, int bufferSize, FileOptions options, FileSecurity fileSecurity)
         {
-            return this.SurroundWithExtension(() => System.IO.File.Create(path, bufferSize, options, fileSecurity), path, bufferSize, options, fileSecurity);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.Create(path, bufferSize, options, fileSecurity),
+                e => e.BeginCreate(path, bufferSize, options, fileSecurity),
+                (e, r) => e.EndCreate(r, path, bufferSize, options, fileSecurity),
+                (IFileExtension e, ref Exception exception) => e.FailCreate(ref exception, path, bufferSize, options, fileSecurity));
         }
 
         /// <inheritdoc />
         public void Decrypt(string path)
         {
-            this.SurroundWithExtension(() => System.IO.File.Decrypt(path), path);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.Decrypt(path),
+                e => e.BeginDecrypt(path),
+                e => e.EndDecrypt(path),
+                (IFileExtension e, ref Exception exception) => e.FailDecrypt(ref exception, path));
         }
 
         /// <inheritdoc />
         public void Encrypt(string path)
         {
-            this.SurroundWithExtension(() => System.IO.File.Encrypt(path), path);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.Encrypt(path),
+                e => e.BeginEncrypt(path),
+                e => e.EndEncrypt(path),
+                (IFileExtension e, ref Exception exception) => e.FailEncrypt(ref exception, path));
         }
 
         /// <inheritdoc />
         public FileSecurity GetAccessControl(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.GetAccessControl(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.GetAccessControl(path),
+                e => e.BeginGetAccessControl(path),
+                (e, r) => e.EndGetAccessControl(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailGetAccessControl(ref exception, path));
         }
 
         /// <inheritdoc />
         public FileSecurity GetAccessControl(string path, AccessControlSections includeSections)
         {
-            return this.SurroundWithExtension(() => System.IO.File.GetAccessControl(path, includeSections), path, includeSections);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.GetAccessControl(path, includeSections),
+                e => e.BeginGetAccessControl(path, includeSections),
+                (e, r) => e.EndGetAccessControl(r, path, includeSections),
+                (IFileExtension e, ref Exception exception) => e.FailGetAccessControl(ref exception, path, includeSections));
         }
 
         /// <inheritdoc />
         public DateTime GetCreationTime(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.GetCreationTime(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.GetCreationTime(path),
+                e => e.BeginGetCreationTime(path),
+                (e, r) => e.EndGetCreationTime(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailGetCreationTime(ref exception, path));
         }
 
         /// <inheritdoc />
         public DateTime GetCreationTimeUtc(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.GetCreationTimeUtc(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.GetCreationTimeUtc(path),
+                e => e.BeginGetCreationTimeUtc(path),
+                (e, r) => e.EndGetCreationTimeUtc(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailGetCreationTimeUtc(ref exception, path));
         }
 
         /// <inheritdoc />
         public DateTime GetLastAccessTime(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.GetLastAccessTime(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.GetLastAccessTime(path),
+                e => e.BeginGetLastAccessTime(path),
+                (e, r) => e.EndGetLastAccessTime(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailGetLastAccessTime(ref exception, path));
         }
 
         /// <inheritdoc />
         public DateTime GetLastAccessTimeUtc(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.GetLastAccessTimeUtc(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.GetLastAccessTimeUtc(path),
+                e => e.BeginGetLastAccessTimeUtc(path),
+                (e, r) => e.EndGetLastAccessTimeUtc(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailGetLastAccessTimeUtc(ref exception, path));
         }
 
         /// <inheritdoc />
         public DateTime GetLastWriteTime(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.GetLastWriteTime(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.GetLastWriteTime(path),
+                e => e.BeginGetLastWriteTime(path),
+                (e, r) => e.EndGetLastWriteTime(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailGetLastWriteTime(ref exception, path));
         }
 
         /// <inheritdoc />
         public DateTime GetLastWriteTimeUtc(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.GetLastWriteTimeUtc(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.GetLastWriteTimeUtc(path),
+                e => e.BeginGetLastWriteTimeUtc(path),
+                (e, r) => e.EndGetLastWriteTimeUtc(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailGetLastWriteTimeUtc(ref exception, path));
         }
 
         /// <inheritdoc />
         public void Move(string sourceFileName, string destFileName)
         {
-            this.SurroundWithExtension(() => System.IO.File.Move(sourceFileName, destFileName), sourceFileName, destFileName);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.Move(sourceFileName, destFileName),
+                e => e.BeginMove(sourceFileName, destFileName),
+                e => e.EndMove(sourceFileName, destFileName),
+                (IFileExtension e, ref Exception exception) => e.FailMove(ref exception, sourceFileName, destFileName));
         }
 
         /// <inheritdoc />
         public Stream OpenRead(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.OpenRead(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.OpenRead(path),
+                e => e.BeginOpenRead(path),
+                (e, r) => e.EndOpenRead(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailOpenRead(ref exception, path));
         }
 
         /// <inheritdoc />
         public StreamReader OpenText(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.OpenText(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.OpenText(path),
+                e => e.BeginOpenText(path),
+                (e, r) => e.EndOpenText(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailOpenText(ref exception, path));
         }
 
         /// <inheritdoc />
         public Stream OpenWrite(string path)
         {
-            return this.SurroundWithExtension(() => System.IO.File.OpenWrite(path), path);
+            return this.EncapsulateWithExtension(
+                () => System.IO.File.OpenWrite(path),
+                e => e.BeginOpenWrite(path),
+                (e, r) => e.EndOpenWrite(r, path),
+                (IFileExtension e, ref Exception exception) => e.FailOpenWrite(ref exception, path));
         }
 
         /// <inheritdoc />
         public void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName)
         {
-            this.SurroundWithExtension(() => System.IO.File.Replace(sourceFileName, destinationFileName, destinationBackupFileName), sourceFileName, destinationFileName, destinationBackupFileName);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.Replace(sourceFileName, destinationFileName, destinationBackupFileName),
+                e => e.BeginReplace(sourceFileName, destinationFileName, destinationBackupFileName),
+                e => e.EndReplace(sourceFileName, destinationFileName, destinationBackupFileName),
+                (IFileExtension e, ref Exception exception) => e.FailReplace(ref exception, sourceFileName, destinationFileName, destinationBackupFileName));
         }
 
         /// <inheritdoc />
         public void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
         {
-            this.SurroundWithExtension(() => System.IO.File.Replace(sourceFileName, destinationFileName, destinationBackupFileName), sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.Replace(sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors),
+                e => e.BeginReplace(sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors),
+                e => e.EndReplace(sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors),
+                (IFileExtension e, ref Exception exception) => e.FailReplace(ref exception, sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors));
         }
 
         /// <inheritdoc />
         public void SetAccessControl(string path, FileSecurity fileSecurity)
         {
-            this.SurroundWithExtension(() => System.IO.File.SetAccessControl(path, fileSecurity), path, fileSecurity);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.SetAccessControl(path, fileSecurity),
+                e => e.BeginSetAccessControl(path, fileSecurity),
+                e => e.EndSetAccessControl(path, fileSecurity),
+                (IFileExtension e, ref Exception exception) => e.FailSetAccessControl(ref exception, path, fileSecurity));
         }
 
         /// <inheritdoc />
         public void SetCreationTime(string path, DateTime creationTime)
         {
-            this.SurroundWithExtension(() => System.IO.File.SetCreationTime(path, creationTime), path, creationTime);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.SetCreationTime(path, creationTime),
+                e => e.BeginSetCreationTime(path, creationTime),
+                e => e.EndSetCreationTime(path, creationTime),
+                (IFileExtension e, ref Exception exception) => e.FailSetCreationTime(ref exception, path, creationTime));
         }
 
         /// <inheritdoc />
         public void SetCreationTimeUtc(string path, DateTime creationTimeUtc)
         {
-            this.SurroundWithExtension(() => System.IO.File.SetCreationTimeUtc(path, creationTimeUtc), path, creationTimeUtc);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.SetCreationTimeUtc(path, creationTimeUtc),
+                e => e.BeginSetCreationTimeUtc(path, creationTimeUtc),
+                e => e.EndSetCreationTimeUtc(path, creationTimeUtc),
+                (IFileExtension e, ref Exception exception) => e.FailSetCreationTimeUtc(ref exception, path, creationTimeUtc));
         }
 
         /// <inheritdoc />
         public void SetLastAccessTime(string path, DateTime lastAccessTime)
         {
-            this.SurroundWithExtension(() => System.IO.File.SetLastAccessTime(path, lastAccessTime), path, lastAccessTime);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.SetLastAccessTime(path, lastAccessTime),
+                e => e.BeginSetLastAccessTime(path, lastAccessTime),
+                e => e.EndSetLastAccessTime(path, lastAccessTime),
+                (IFileExtension e, ref Exception exception) => e.FailSetLastAccessTime(ref exception, path, lastAccessTime));
         }
 
         /// <inheritdoc />
         public void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc)
         {
-            this.SurroundWithExtension(() => System.IO.File.SetLastAccessTimeUtc(path, lastAccessTimeUtc), path, lastAccessTimeUtc);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.SetLastAccessTimeUtc(path, lastAccessTimeUtc),
+                e => e.BeginSetLastAccessTimeUtc(path, lastAccessTimeUtc),
+                e => e.EndSetLastAccessTimeUtc(path, lastAccessTimeUtc),
+                (IFileExtension e, ref Exception exception) => e.FailSetLastAccessTimeUtc(ref exception, path, lastAccessTimeUtc));
         }
 
         /// <inheritdoc />
         public void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
         {
-            this.SurroundWithExtension(() => System.IO.File.SetLastWriteTimeUtc(path, lastWriteTimeUtc), path, lastWriteTimeUtc);
+            this.EncapsulateWithExtension(
+                () => System.IO.File.SetLastWriteTimeUtc(path, lastWriteTimeUtc),
+                e => e.BeginSetLastWriteTimeUtc(path, lastWriteTimeUtc),
+                e => e.EndSetLastWriteTimeUtc(path, lastWriteTimeUtc),
+                (IFileExtension e, ref Exception exception) => e.FailSetLastWriteTimeUtc(ref exception, path, lastWriteTimeUtc));
         }
     }
 }
