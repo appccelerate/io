@@ -31,7 +31,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailExit(ref Exception exception)
+        public virtual void FailExit(ref Exception exception, int exitCode)
         {
         }
 
@@ -43,7 +43,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailExpandEnvironmentVariables(ref Exception exception)
+        public virtual void FailExpandEnvironmentVariables(ref Exception exception, string name)
         {
         }
 
@@ -55,7 +55,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailFailFast(ref Exception exception)
+        public virtual void FailFailFast(ref Exception thrownException, string message, Exception exception)
         {
         }
 
@@ -64,6 +64,10 @@ namespace Appccelerate.IO.Access
         }
 
         public virtual void EndFailFast(string message)
+        {
+        }
+
+        public virtual void FailFailFast(ref Exception exception, string message)
         {
         }
 
@@ -87,7 +91,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetEnvironmentVariable(ref Exception exception)
+        public virtual void FailGetEnvironmentVariable(ref Exception exception, string variable, EnvironmentVariableTarget target)
         {
         }
 
@@ -99,67 +103,11 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void EndSetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target)
+        public virtual void FailGetEnvironmentVariable(ref Exception exception, string variable)
         {
         }
 
-        public virtual void BeginSetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target)
-        {
-        }
-
-        public virtual void FailSetEnvironmentVariable(ref Exception exception)
-        {
-        }
-
-        public virtual void EndSetEnvironmentVariable(string variable, string value)
-        {
-        }
-
-        public virtual void BeginSetEnvironmentVariable(string variable, string value)
-        {
-        }
-
-        public virtual void FailGetLogicalDrives(ref Exception exception)
-        {
-        }
-
-        public virtual void EndGetLogicalDrives(string[] result)
-        {
-        }
-
-        public virtual void BeginGetLogicalDrives()
-        {
-        }
-
-        public virtual void EndGetFolderPath(string result, Environment.SpecialFolder folder, Environment.SpecialFolderOption option)
-        {
-        }
-
-        public virtual void BeginGetFolderPath(Environment.SpecialFolder folder, Environment.SpecialFolderOption option)
-        {
-        }
-
-        public virtual void FailGetFolderPath(ref Exception exception)
-        {
-        }
-
-        public virtual void EndGetFolderPath(string result, Environment.SpecialFolder folder)
-        {
-        }
-
-        public virtual void BeginGetFolderPath(Environment.SpecialFolder folder)
-        {
-        }
-
-        public virtual void EndGetEnvironmentVariables(IDictionary result)
-        {
-        }
-
-        public virtual void BeginGetEnvironmentVariables()
-        {
-        }
-
-        public virtual void FailGetEnvironmentVariables(ref Exception exception)
+        public virtual void BeginGetEnvironmentVariables(EnvironmentVariableTarget target)
         {
         }
 
@@ -167,7 +115,83 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void BeginGetEnvironmentVariables(EnvironmentVariableTarget target)
+        public virtual void FailGetEnvironmentVariables(ref Exception exception, EnvironmentVariableTarget target)
+        {
+        }
+
+        public virtual void BeginGetEnvironmentVariables()
+        {
+        }
+
+        public virtual void EndGetEnvironmentVariables(IDictionary result)
+        {
+        }
+
+        public virtual void FailGetEnvironmentVariables(ref Exception exception)
+        {
+        }
+
+        public virtual void BeginGetFolderPath(Environment.SpecialFolder folder)
+        {
+        }
+
+        public virtual void EndGetFolderPath(string result, Environment.SpecialFolder folder)
+        {
+        }
+
+        public virtual void FailGetFolderPath(ref Exception exception, Environment.SpecialFolder folder)
+        {
+        }
+
+        public virtual void BeginGetFolderPath(Environment.SpecialFolder folder, Environment.SpecialFolderOption option)
+        {
+        }
+
+        public virtual void EndGetFolderPath(string result, Environment.SpecialFolder folder, Environment.SpecialFolderOption option)
+        {
+        }
+
+        public virtual void FailGetFolderPath(ref Exception exception, Environment.SpecialFolder folder, Environment.SpecialFolderOption option)
+        {
+        }
+
+        public virtual void BeginGetLogicalDrives()
+        {
+        }
+
+        public virtual void EndGetLogicalDrives(string[] result)
+        {
+        }
+
+        public virtual void FailGetLogicalDrives(ref Exception exception)
+        {
+        }
+
+        public virtual void BeginSetEnvironmentVariable(string variable, string value)
+        {
+        }
+
+        public virtual void EndSetEnvironmentVariable(string variable, string value)
+        {
+        }
+
+        public virtual void FailSetEnvironmentVariable(ref Exception exception, string variable, string value)
+        {
+        }
+
+        public virtual void BeginSetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target)
+        {
+        }
+
+        public virtual void EndSetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target)
+        {
+        }
+
+        public virtual void FailSetEnvironmentVariable(
+            ref Exception exception,
+            string variable,
+            string value,
+            EnvironmentVariableTarget target)
         {
         }
     }

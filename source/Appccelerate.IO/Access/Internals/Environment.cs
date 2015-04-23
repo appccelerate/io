@@ -204,71 +204,131 @@ namespace Appccelerate.IO.Access.Internals
 
         public void Exit(int exitCode)
         {
-            this.SurroundWithExtension(() => System.Environment.Exit(exitCode), exitCode);
+            this.EncapsulateWithExtension(
+                () => System.Environment.Exit(exitCode),
+                e => e.BeginExit(exitCode),
+                e => e.EndExit(exitCode),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailExit(ref exception, exitCode));
         }
 
         public string ExpandEnvironmentVariables(string name)
         {
-            return this.SurroundWithExtension(() => System.Environment.ExpandEnvironmentVariables(name), name);
+            return this.EncapsulateWithExtension(
+                () => System.Environment.ExpandEnvironmentVariables(name),
+                e => e.BeginExpandEnvironmentVariables(name),
+                (e, r) => e.EndExpandEnvironmentVariables(r, name),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailExpandEnvironmentVariables(ref exception, name));
         }
 
         public void FailFast(string message, Exception exception)
         {
-            this.SurroundWithExtension(() => System.Environment.FailFast(message, exception), message, exception);
+            this.EncapsulateWithExtension(
+                () => System.Environment.FailFast(message, exception),
+                e => e.BeginFailFast(message, exception),
+                e => e.EndFailFast(message, exception),
+                (IEnvironmentExtension e, ref Exception ex) => e.FailFailFast(ref ex, message, exception));
         }
 
         public void FailFast(string message)
         {
-            this.SurroundWithExtension(() => System.Environment.FailFast(message), message);
+            this.EncapsulateWithExtension(
+                () => System.Environment.FailFast(message),
+                e => e.BeginFailFast(message),
+                e => e.EndFailFast(message),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailFailFast(ref exception, message));
         }
 
         public IEnumerable<string> GetCommandLineArgs()
         {
-            return this.SurroundWithExtension(() => System.Environment.GetCommandLineArgs());
+            return this.EncapsulateWithExtension(
+                () => System.Environment.GetCommandLineArgs(),
+                e => e.BeginGetCommandLineArgs(),
+                (e, r) => e.EndGetCommandLineArgs(r),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailGetCommandLineArgs(ref exception));
         }
 
         public string GetEnvironmentVariable(string variable, EnvironmentVariableTarget target)
         {
-            return this.SurroundWithExtension(() => System.Environment.GetEnvironmentVariable(variable, target), variable, target);
+            return this.EncapsulateWithExtension(
+                () => System.Environment.GetEnvironmentVariable(variable, target),
+                e => e.BeginGetEnvironmentVariable(variable, target),
+                (e, r) => e.EndGetEnvironmentVariable(r, variable, target),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailGetEnvironmentVariable(ref exception, variable, target));
         }
 
         public string GetEnvironmentVariable(string variable)
         {
-            return this.SurroundWithExtension(() => System.Environment.GetEnvironmentVariable(variable), variable);
+            return this.EncapsulateWithExtension(
+                () => System.Environment.GetEnvironmentVariable(variable),
+                e => e.BeginGetEnvironmentVariable(variable),
+                (e, r) => e.EndGetEnvironmentVariable(r, variable),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailGetEnvironmentVariable(ref exception, variable));
         }
 
         public IDictionary<string, string> GetEnvironmentVariables(EnvironmentVariableTarget target)
         {
-            return this.SurroundWithExtension(() => System.Environment.GetEnvironmentVariables(target), target).OfType<DictionaryEntry>().ToDictionary(e => (string)e.Key, v => (string)v.Value);
+            return this.EncapsulateWithExtension(
+                () => System.Environment.GetEnvironmentVariables(target).OfType<DictionaryEntry>().ToDictionary(e => (string)e.Key, v => (string)v.Value),
+                e => e.BeginGetEnvironmentVariables(target),
+                (e, r) => e.EndGetEnvironmentVariables(r, target),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailGetEnvironmentVariables(ref exception, target));
         }
 
         public IDictionary<string, string> GetEnvironmentVariables()
         {
-            return this.SurroundWithExtension(() => System.Environment.GetEnvironmentVariables()).OfType<DictionaryEntry>().ToDictionary(e => (string)e.Key, v => (string)v.Value);
+            return this.EncapsulateWithExtension(
+                () => System.Environment.GetEnvironmentVariables().OfType<DictionaryEntry>().ToDictionary(e => (string)e.Key, v => (string)v.Value),
+                e => e.BeginGetEnvironmentVariables(),
+                (e, r) => e.EndGetEnvironmentVariables(r),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailGetEnvironmentVariables(ref exception));
         }
 
         public string GetFolderPath(System.Environment.SpecialFolder folder)
         {
-            return this.SurroundWithExtension(() => System.Environment.GetFolderPath(folder), folder);
+            return this.EncapsulateWithExtension(
+                () => System.Environment.GetFolderPath(folder),
+                e => e.BeginGetFolderPath(folder),
+                (e, r) => e.EndGetFolderPath(r, folder),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailGetFolderPath(ref exception, folder));
         }
 
         public string GetFolderPath(System.Environment.SpecialFolder folder, System.Environment.SpecialFolderOption option)
         {
-            return this.SurroundWithExtension(() => System.Environment.GetFolderPath(folder, option), folder, option);
+            return this.EncapsulateWithExtension(
+                () => System.Environment.GetFolderPath(folder, option),
+                e => e.BeginGetFolderPath(folder, option),
+                (e, r) => e.EndGetFolderPath(r, folder, option),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailGetFolderPath(ref exception, folder, option));
         }
 
         public IEnumerable<string> GetLogicalDrives()
         {
-            return this.SurroundWithExtension(() => System.Environment.GetLogicalDrives());
+            return this.EncapsulateWithExtension(
+                () => System.Environment.GetLogicalDrives(),
+                e => e.BeginGetLogicalDrives(),
+                (e, r) => e.EndGetLogicalDrives(r),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailGetLogicalDrives(ref exception));
         }
 
         public void SetEnvironmentVariable(string variable, string value)
         {
+            this.EncapsulateWithExtension(
+                () => System.Environment.SetEnvironmentVariable(variable, value),
+                e => e.BeginSetEnvironmentVariable(variable, value),
+                e => e.EndSetEnvironmentVariable(variable, value),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailSetEnvironmentVariable(ref exception, variable, value));
+
             this.SurroundWithExtension(() => System.Environment.SetEnvironmentVariable(variable, value), variable, value);
         }
 
         public void SetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target)
         {
+            this.EncapsulateWithExtension(
+                () => System.Environment.SetEnvironmentVariable(variable, value, target),
+                e => e.BeginSetEnvironmentVariable(variable, value, target),
+                e => e.EndSetEnvironmentVariable(variable, value, target),
+                (IEnvironmentExtension e, ref Exception exception) => e.FailSetEnvironmentVariable(ref exception, variable, value, target));
+
             this.SurroundWithExtension(() => System.Environment.SetEnvironmentVariable(variable, value, target), variable, value, target);
         }
     }
