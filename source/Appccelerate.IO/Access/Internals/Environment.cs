@@ -317,8 +317,6 @@ namespace Appccelerate.IO.Access.Internals
                 e => e.BeginSetEnvironmentVariable(variable, value),
                 e => e.EndSetEnvironmentVariable(variable, value),
                 (IEnvironmentExtension e, ref Exception exception) => e.FailSetEnvironmentVariable(ref exception, variable, value));
-
-            this.SurroundWithExtension(() => System.Environment.SetEnvironmentVariable(variable, value), variable, value);
         }
 
         public void SetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target)
@@ -328,8 +326,6 @@ namespace Appccelerate.IO.Access.Internals
                 e => e.BeginSetEnvironmentVariable(variable, value, target),
                 e => e.EndSetEnvironmentVariable(variable, value, target),
                 (IEnvironmentExtension e, ref Exception exception) => e.FailSetEnvironmentVariable(ref exception, variable, value, target));
-
-            this.SurroundWithExtension(() => System.Environment.SetEnvironmentVariable(variable, value, target), variable, value, target);
         }
     }
 }
