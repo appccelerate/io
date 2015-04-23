@@ -27,7 +27,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void EndGetDrives(DriveInfo[] result)
+        public virtual void EndGetDrives(IDriveInfo[] result)
         {
         }
 

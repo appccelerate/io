@@ -19,7 +19,6 @@
 namespace Appccelerate.IO.Access
 {
     using System;
-    using System.IO;
     using System.Runtime.CompilerServices;
 
     [CompilerGenerated]
@@ -27,7 +26,7 @@ namespace Appccelerate.IO.Access
     {
         void BeginGetDrives();
 
-        void EndGetDrives(DriveInfo[] result);
+        void EndGetDrives(IDriveInfo[] result);
 
         void FailGetDrives(ref Exception exception);
     }
