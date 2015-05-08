@@ -27,93 +27,63 @@ namespace Appccelerate.IO.Access
     public interface IPathExtension
     {
         void BeginGetDirectoryName(string path);
-
         void EndGetDirectoryName(string result, string path);
-
-        void FailGetDirectoryName(ref Exception exception);
+        void FailGetDirectoryName(ref Exception exception, string path);
 
         void BeginGetFileName(string path);
-
         void EndGetFileName(string result, string path);
-
-        void FailGetFileName(ref Exception exception);
+        void FailGetFileName(ref Exception exception, string path);
 
         void BeginGetFileNameWithoutExtension(string path);
-
         void EndGetFileNameWithoutExtension(string result, string path);
-
-        void FailGetFileNameWithoutExtension(ref Exception exception);
+        void FailGetFileNameWithoutExtension(ref Exception exception, string path);
 
         void BeginCombine(string path1, string path2);
-
         void EndCombine(string result, string path1, string path2);
-
-        void FailCombine(ref Exception exception);
+        void FailCombine(ref Exception exception, string path1, string path2);
 
         void BeginGetRandomFileName();
-
         void EndGetRandomFileName(string result);
-
         void FailGetRandomFileName(ref Exception exception);
 
         void BeginChangeExtension(string path, string extension);
-
         void EndChangeExtension(string result, string path, string extension);
-
-        void FailChangeExtension(ref Exception exception);
+        void FailChangeExtension(ref Exception exception, string path, string extension);
 
         void BeginGetExtension(string path);
-
         void EndGetExtension(string result, string path);
-
-        void FailGetExtension(ref Exception exception);
+        void FailGetExtension(ref Exception exception, string path);
 
         void BeginGetFullPath(string path);
-
         void EndGetFullPath(string result, string path);
-
-        void FailGetFullPath(ref Exception exception);
+        void FailGetFullPath(ref Exception exception, string path);
 
         void BeginGetInvalidFileNameChars();
-
         void EndGetInvalidFileNameChars(char[] result);
-
         void FailGetInvalidFileNameChars(ref Exception exception);
 
         void BeginGetInvalidPathChars();
-
         void EndGetInvalidPathChars(char[] result);
-
         void FailGetInvalidPathChars(ref Exception exception);
 
         void BeginGetPathRoot(string path);
-
         void EndGetPathRoot(string result, string path);
-
-        void FailGetPathRoot(ref Exception exception);
+        void FailGetPathRoot(ref Exception exception, string path);
 
         void BeginGetTempFileName();
-
         void EndGetTempFileName(string result);
-
         void FailGetTempFileName(ref Exception exception);
 
         void BeginGetTempPath();
-
         void EndGetTempPath(string result);
-
         void FailGetTempPath(ref Exception exception);
 
         void BeginHasExtension(string path);
-
         void EndHasExtension(bool result, string path);
-
-        void FailHasExtension(ref Exception exception);
+        void FailHasExtension(ref Exception exception, string path);
 
         void BeginIsPathRooted(string path);
-
         void EndIsPathRooted(bool result, string path);
-
-        void FailIsPathRooted(ref Exception exception);
+        void FailIsPathRooted(ref Exception exception, string path);
     }
 }

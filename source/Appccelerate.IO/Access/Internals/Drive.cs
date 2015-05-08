@@ -18,6 +18,7 @@
 
 namespace Appccelerate.IO.Access.Internals
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -44,7 +45,11 @@ namespace Appccelerate.IO.Access.Internals
 
         public IEnumerable<IDriveInfo> GetDrives()
         {
-            return this.SurroundWithExtension(() => System.IO.DriveInfo.GetDrives()).Select(info => new DriveInfo(info));
+            return this.EncapsulateWithExtension(
+                () => System.IO.DriveInfo.GetDrives().Select(info => new DriveInfo(info)).ToArray(),
+                e => e.BeginGetDrives(),
+                (e, r) => e.EndGetDrives(r),
+                (IDriveExtension e, ref Exception exception) => e.FailGetDrives(ref exception));
         }
     }
 }

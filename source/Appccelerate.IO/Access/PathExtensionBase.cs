@@ -32,7 +32,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetDirectoryName(ref Exception exception)
+        public virtual void FailGetDirectoryName(ref Exception exception, string path)
         {
         }
 
@@ -44,7 +44,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetFileName(ref Exception exception)
+        public virtual void FailGetFileName(ref Exception exception, string path)
         {
         }
 
@@ -56,7 +56,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetFileNameWithoutExtension(ref Exception exception)
+        public virtual void FailGetFileNameWithoutExtension(ref Exception exception, string path)
         {
         }
 
@@ -68,7 +68,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailCombine(ref Exception exception)
+        public virtual void FailCombine(ref Exception exception, string path1, string path2)
         {
         }
 
@@ -92,7 +92,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailChangeExtension(ref Exception exception)
+        public virtual void FailChangeExtension(ref Exception exception, string path, string extension)
         {
         }
 
@@ -104,7 +104,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetExtension(ref Exception exception)
+        public virtual void FailGetExtension(ref Exception exception, string path)
         {
         }
 
@@ -116,7 +116,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetFullPath(ref Exception exception)
+        public virtual void FailGetFullPath(ref Exception exception, string path)
         {
         }
 
@@ -152,7 +152,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailGetPathRoot(ref Exception exception)
+        public virtual void FailGetPathRoot(ref Exception exception, string path)
         {
         }
 
@@ -188,7 +188,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailHasExtension(ref Exception exception)
+        public virtual void FailHasExtension(ref Exception exception, string path)
         {
         }
 
@@ -200,7 +200,7 @@ namespace Appccelerate.IO.Access
         {
         }
 
-        public virtual void FailIsPathRooted(ref Exception exception)
+        public virtual void FailIsPathRooted(ref Exception exception, string path)
         {
         }
     }
