@@ -161,14 +161,18 @@ namespace Appccelerate.IO.Access.InMemory
 
         public void Move(AbsoluteFilePath absoluteSourceFilePath, AbsoluteFilePath absoluteDestinationFilePath)
         {
+            this.Copy(absoluteSourceFilePath, absoluteDestinationFilePath);
+            this.DeleteFile(absoluteSourceFilePath);
+        }
+
+        public void Copy(AbsoluteFilePath absoluteSourceFilePath, AbsoluteFilePath absoluteDestinationFilePath)
+        {
             IEnumerable<byte> contents = this.GetFile(absoluteSourceFilePath);
 
             AbsoluteFolderPath absoluteDestinationFolderPath = Path.GetDirectoryName(absoluteDestinationFilePath);
             this.CreateDirectory(absoluteDestinationFolderPath);
 
             this.AddFile(absoluteDestinationFilePath, contents);
-
-            this.DeleteFile(absoluteSourceFilePath);
         }
 
         private IEnumerable<AbsoluteFolderPath> GetSubdirectoriesOfRecursiveInternal(AbsoluteFolderPath absoluteFolderPath, Tree<DirectoryEntry> directoryEntry)

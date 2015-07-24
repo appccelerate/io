@@ -47,5 +47,7 @@ namespace Appccelerate.IO.Access.InMemory
         string DumpFileSystem();
 
         void Move(AbsoluteFilePath absoluteSourceFilePath, AbsoluteFilePath absoluteDestinationFilePath);
+
+        void Copy(AbsoluteFilePath absoluteSourceFilePath, AbsoluteFilePath absoluteDestinationFilePath);
     }
 }
