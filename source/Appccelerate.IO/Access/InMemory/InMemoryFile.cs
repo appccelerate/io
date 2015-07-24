@@ -139,7 +139,11 @@ namespace Appccelerate.IO.Access.InMemory
 
         public void Copy(string sourceFileName, string destFileName)
         {
-            throw new NotImplementedException();
+            this.EncapsulateWithExtension(
+                () => this.fileSystem.Copy(sourceFileName, destFileName),
+                extension => extension.BeginCopy(sourceFileName, destFileName),
+                extension => extension.EndCopy(sourceFileName, destFileName),
+                (IFileExtension extension, ref Exception exception) => { });
         }
 
         public void Copy(string sourceFileName, string destFileName, bool overwrite)
