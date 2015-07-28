@@ -161,7 +161,6 @@ namespace Appccelerate.IO.Access.InMemory
 
         public void Move(AbsoluteFilePath absoluteSourceFilePath, AbsoluteFilePath absoluteDestinationFilePath)
         {
-            // TODO: test
             this.Copy(absoluteSourceFilePath, absoluteDestinationFilePath, false);
             this.DeleteFile(absoluteSourceFilePath);
         }

@@ -143,12 +143,16 @@ namespace Appccelerate.IO.Access.InMemory
                 () => this.fileSystem.Copy(sourceFileName, destFileName, false),
                 extension => extension.BeginCopy(sourceFileName, destFileName),
                 extension => extension.EndCopy(sourceFileName, destFileName),
-                (IFileExtension extension, ref Exception exception) => { });
+                (IFileExtension extension, ref Exception exception) => extension.FailCopy(ref exception, sourceFileName, destFileName));
         }
 
         public void Copy(string sourceFileName, string destFileName, bool overwrite)
         {
-            throw new NotImplementedException();
+            this.EncapsulateWithExtension(
+                () => this.fileSystem.Copy(sourceFileName, destFileName, overwrite),
+                extension => extension.BeginCopy(sourceFileName, destFileName, overwrite),
+                extension => extension.EndCopy(sourceFileName, destFileName, overwrite),
+                (IFileExtension extension, ref Exception exception) => extension.FailCopy(ref exception, sourceFileName, destFileName, overwrite));
         }
 
         public StreamWriter CreateText(string path)

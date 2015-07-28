@@ -337,6 +337,7 @@ namespace Appccelerate.IO.Access.InMemory
                 this.testee.GetFile(OtherFileInOtherFolder)
                     .Should().Equal(originalContent);
             }
+
             [Fact]
             public void CopiesAFile_WhenAlreadyAFileAtTargetExistsAndOverwriteSetToTrue()
             {

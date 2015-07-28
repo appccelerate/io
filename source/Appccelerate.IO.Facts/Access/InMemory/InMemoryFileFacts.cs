@@ -17,6 +17,8 @@
 //-------------------------------------------------------------------------------
 namespace Appccelerate.IO.Access.InMemory
 {
+    using System;
+    using System.IO;
     using System.Text;
     using FakeItEasy;
     using FluentAssertions;
@@ -54,6 +56,37 @@ namespace Appccelerate.IO.Access.InMemory
 
             this.fileSystem.FileExists(DestinationFile)
                 .Should().BeTrue();
+            this.fileSystem.GetFile(DestinationFile)
+                .Should().Equal(DummyContent);
+        }
+
+        [Fact]
+        public void CopyDoesNotOverwriteExistingFileContentByDefault()
+        {
+            var originalContent = Encoding.UTF8.GetBytes("nananana Batman");
+            this.fileSystem.CreateDirectory(SourceFolder);
+            this.fileSystem.AddFile(SourceFile, DummyContent);
+            this.fileSystem.CreateDirectory(DestinationFolder);
+            this.fileSystem.AddFile(DestinationFile, originalContent);
+
+            Action action = () => this.testee.Copy(SourceFile, DestinationFile);
+
+            action.ShouldThrow<IOException>();
+            this.fileSystem.GetFile(DestinationFile)
+                .Should().Equal(originalContent);
+        }
+
+        [Fact]
+        public void OverwritesExistingFileContentOnCopyingAFile_WhenOverwriteSetToTrue()
+        {
+            var originalContent = Encoding.UTF8.GetBytes("nananana Batman");
+            this.fileSystem.CreateDirectory(SourceFolder);
+            this.fileSystem.AddFile(SourceFile, DummyContent);
+            this.fileSystem.CreateDirectory(DestinationFolder);
+            this.fileSystem.AddFile(DestinationFile, originalContent);
+
+            this.testee.Copy(SourceFile, DestinationFile, true);
+
             this.fileSystem.GetFile(DestinationFile)
                 .Should().Equal(DummyContent);
         }
