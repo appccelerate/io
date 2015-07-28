@@ -142,7 +142,7 @@ namespace Appccelerate.IO.Access.InMemory
             this.EncapsulateWithExtension(
                 () =>
                 {
-                    this.EnsureParentDirectoryExists(destFileName);
+                    this.fileSystem.EnsureParentDirectoryExists(destFileName);
                     this.fileSystem.Copy(sourceFileName, destFileName, false);
                 },
                 extension => extension.BeginCopy(sourceFileName, destFileName),
@@ -155,7 +155,7 @@ namespace Appccelerate.IO.Access.InMemory
             this.EncapsulateWithExtension(
                 () =>
                 {
-                    this.EnsureParentDirectoryExists(destFileName);
+                    this.fileSystem.EnsureParentDirectoryExists(destFileName);
                     this.fileSystem.Copy(sourceFileName, destFileName, overwrite);
                 },
                 extension => extension.BeginCopy(sourceFileName, destFileName, overwrite),
@@ -381,14 +381,6 @@ namespace Appccelerate.IO.Access.InMemory
         public void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
         {
             throw new NotImplementedException();
-        }
-
-        private void EnsureParentDirectoryExists(string absoluteFilePath)
-        {
-            if (!this.fileSystem.DirectoryExists(Path.GetDirectoryName(absoluteFilePath)))
-            {
-                throw new DirectoryNotFoundException(string.Format("Could not find a part of the path '{0}'.", absoluteFilePath));
-            }
         }
     }
 }

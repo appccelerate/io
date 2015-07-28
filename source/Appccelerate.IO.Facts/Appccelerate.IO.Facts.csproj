@@ -64,6 +64,7 @@
     <Compile Include="Access\InMemory\InMemoryDirectoryInfoFacts.cs" />
     <Compile Include="Access\InMemory\InMemoryFileFacts.cs" />
     <Compile Include="Access\InMemory\InMemoryFileInfoFacts.cs" />
+    <Compile Include="Access\InMemory\InMemoryFileSystemExtensionsFacts.cs" />
     <Compile Include="Access\InMemory\InMemoryFileSystemFacts.cs" />
     <Compile Include="Access\Internals\ExtensionProviderExtensionsFacts.cs" />
     <Compile Include="Csv\CsvParserFacts.cs" />
