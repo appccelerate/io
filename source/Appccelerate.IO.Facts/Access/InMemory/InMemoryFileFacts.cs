@@ -92,6 +92,32 @@ namespace Appccelerate.IO.Access.InMemory
         }
 
         [Fact]
+        public void ThrowsDirectoryNotFoundExceptionOnCopyingAFile_WhenDestinationDirectoryDoesNotExist()
+        {
+            this.fileSystem.CreateDirectory(SourceFolder);
+            this.fileSystem.AddFile(SourceFile, DummyContent);
+
+            Action action = () => this.testee.Copy(SourceFile, DestinationFile);
+
+            action.ShouldThrow<DirectoryNotFoundException>();
+            this.fileSystem.FileExists(DestinationFile)
+                .Should().BeFalse();
+        }
+
+        [Fact]
+        public void ThrowsDirectoryNotFoundExceptionOnCopyingAFileWithOverwriteFlag_WhenDestinationDirectoryDoesNotExist()
+        {
+            this.fileSystem.CreateDirectory(SourceFolder);
+            this.fileSystem.AddFile(SourceFile, DummyContent);
+
+            Action action = () => this.testee.Copy(SourceFile, DestinationFile, true);
+
+            action.ShouldThrow<DirectoryNotFoundException>();
+            this.fileSystem.FileExists(DestinationFile)
+                .Should().BeFalse();
+        }
+
+        [Fact]
         public void CallsBeginAndEndCopyOnExtensionsOnCopyingAFile()
         {
             this.fileSystem.CreateDirectory(SourceFolder);

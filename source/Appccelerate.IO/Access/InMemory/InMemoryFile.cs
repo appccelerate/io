@@ -140,7 +140,11 @@ namespace Appccelerate.IO.Access.InMemory
         public void Copy(string sourceFileName, string destFileName)
         {
             this.EncapsulateWithExtension(
-                () => this.fileSystem.Copy(sourceFileName, destFileName, false),
+                () =>
+                {
+                    this.EnsureParentDirectoryExists(destFileName);
+                    this.fileSystem.Copy(sourceFileName, destFileName, false);
+                },
                 extension => extension.BeginCopy(sourceFileName, destFileName),
                 extension => extension.EndCopy(sourceFileName, destFileName),
                 (IFileExtension extension, ref Exception exception) => extension.FailCopy(ref exception, sourceFileName, destFileName));
@@ -149,7 +153,11 @@ namespace Appccelerate.IO.Access.InMemory
         public void Copy(string sourceFileName, string destFileName, bool overwrite)
         {
             this.EncapsulateWithExtension(
-                () => this.fileSystem.Copy(sourceFileName, destFileName, overwrite),
+                () =>
+                {
+                    this.EnsureParentDirectoryExists(destFileName);
+                    this.fileSystem.Copy(sourceFileName, destFileName, overwrite);
+                },
                 extension => extension.BeginCopy(sourceFileName, destFileName, overwrite),
                 extension => extension.EndCopy(sourceFileName, destFileName, overwrite),
                 (IFileExtension extension, ref Exception exception) => extension.FailCopy(ref exception, sourceFileName, destFileName, overwrite));
@@ -373,6 +381,14 @@ namespace Appccelerate.IO.Access.InMemory
         public void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc)
         {
             throw new NotImplementedException();
+        }
+
+        private void EnsureParentDirectoryExists(string absoluteFilePath)
+        {
+            if (!this.fileSystem.DirectoryExists(Path.GetDirectoryName(absoluteFilePath)))
+            {
+                throw new DirectoryNotFoundException(string.Format("Could not find a part of the path '{0}'.", absoluteFilePath));
+            }
         }
     }
 }
