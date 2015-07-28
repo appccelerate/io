@@ -17,7 +17,6 @@
 //-------------------------------------------------------------------------------
 namespace Appccelerate.IO.Access.InMemory
 {
-    using System.IO;
     using System.Text;
     using FakeItEasy;
     using FluentAssertions;

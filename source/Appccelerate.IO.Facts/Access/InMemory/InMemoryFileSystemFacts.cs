@@ -256,17 +256,19 @@ namespace Appccelerate.IO.Access.InMemory
             }
 
             [Fact]
-            public void MovesAFile_WhenAlreadyAFileAtTargetExists()
+            public void ThrowsIOExceptionOnMovingAFile_WhenAlreadyAFileAtTargetExists()
             {
+                var originalContent = new byte[] { 9, 9 };
                 this.testee.CreateDirectory(Folder);
                 this.testee.AddFile(FileInFolder, DummyFile);
                 this.testee.CreateDirectory(OtherFolder);
-                this.testee.AddFile(OtherFileInOtherFolder, new byte[] { 9, 9 });
+                this.testee.AddFile(OtherFileInOtherFolder, originalContent);
 
-                this.testee.Move(FileInFolder, OtherFileInOtherFolder);
+                Action action = () => this.testee.Move(FileInFolder, OtherFileInOtherFolder);
 
+                action.ShouldThrow<IOException>();
                 this.testee.GetFile(OtherFileInOtherFolder)
-                    .Should().Equal(DummyFile);
+                    .Should().Equal(originalContent);
             }
 
             [Fact]
@@ -276,7 +278,7 @@ namespace Appccelerate.IO.Access.InMemory
                 this.testee.AddFile(FileInFolder, DummyFile);
                 this.testee.CreateDirectory(OtherFolder);
 
-                this.testee.Copy(FileInFolder, OtherFileInOtherFolder);
+                this.testee.Copy(FileInFolder, OtherFileInOtherFolder, false);
 
                 this.testee.FileExists(OtherFileInOtherFolder)
                     .Should().BeTrue();
@@ -290,7 +292,7 @@ namespace Appccelerate.IO.Access.InMemory
                 this.testee.CreateDirectory(Folder);
                 this.testee.CreateDirectory(OtherFolder);
 
-                Action action = () => this.testee.Copy(FileInFolder, OtherFileInOtherFolder);
+                Action action = () => this.testee.Copy(FileInFolder, OtherFileInOtherFolder, false);
 
                 action.ShouldThrow<FileNotFoundException>();
             }
@@ -300,7 +302,7 @@ namespace Appccelerate.IO.Access.InMemory
             {
                 this.testee.CreateDirectory(OtherFolder);
 
-                Action action = () => this.testee.Copy(FileInFolder, OtherFileInOtherFolder);
+                Action action = () => this.testee.Copy(FileInFolder, OtherFileInOtherFolder, false);
 
                 action.ShouldThrow<DirectoryNotFoundException>();
             }
@@ -311,7 +313,7 @@ namespace Appccelerate.IO.Access.InMemory
                 this.testee.CreateDirectory(Folder);
                 this.testee.AddFile(FileInFolder, DummyFile);
 
-                this.testee.Copy(FileInFolder, OtherFileInOtherFolder);
+                this.testee.Copy(FileInFolder, OtherFileInOtherFolder, false);
 
                 this.testee.FileExists(OtherFileInOtherFolder)
                     .Should().BeTrue();
@@ -321,14 +323,29 @@ namespace Appccelerate.IO.Access.InMemory
             }
 
             [Fact]
-            public void CopiesAFile_WhenAlreadyAFileAtTargetExists()
+            public void ThrowsIOExceptionOnCopyingAFile_WhenAlreadyAFileAtTargetExistsAndOverwriteSetToFalse()
+            {
+                var originalContent = Encoding.UTF8.GetBytes("Hello World");
+                this.testee.CreateDirectory(Folder);
+                this.testee.AddFile(FileInFolder, DummyFile);
+                this.testee.CreateDirectory(OtherFolder);
+                this.testee.AddFile(OtherFileInOtherFolder, originalContent);
+
+                Action action = () => this.testee.Copy(FileInFolder, OtherFileInOtherFolder, false);
+
+                action.ShouldThrow<IOException>();
+                this.testee.GetFile(OtherFileInOtherFolder)
+                    .Should().Equal(originalContent);
+            }
+            [Fact]
+            public void CopiesAFile_WhenAlreadyAFileAtTargetExistsAndOverwriteSetToTrue()
             {
                 this.testee.CreateDirectory(Folder);
                 this.testee.AddFile(FileInFolder, DummyFile);
                 this.testee.CreateDirectory(OtherFolder);
                 this.testee.AddFile(OtherFileInOtherFolder, Encoding.UTF8.GetBytes("Hello World"));
 
-                this.testee.Copy(FileInFolder, OtherFileInOtherFolder);
+                this.testee.Copy(FileInFolder, OtherFileInOtherFolder, true);
 
                 this.testee.GetFile(OtherFileInOtherFolder)
                     .Should().Equal(DummyFile);

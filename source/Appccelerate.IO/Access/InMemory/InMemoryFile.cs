@@ -140,7 +140,7 @@ namespace Appccelerate.IO.Access.InMemory
         public void Copy(string sourceFileName, string destFileName)
         {
             this.EncapsulateWithExtension(
-                () => this.fileSystem.Copy(sourceFileName, destFileName),
+                () => this.fileSystem.Copy(sourceFileName, destFileName, false),
                 extension => extension.BeginCopy(sourceFileName, destFileName),
                 extension => extension.EndCopy(sourceFileName, destFileName),
                 (IFileExtension extension, ref Exception exception) => { });

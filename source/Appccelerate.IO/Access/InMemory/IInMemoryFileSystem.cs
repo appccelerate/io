@@ -48,6 +48,6 @@ namespace Appccelerate.IO.Access.InMemory
 
         void Move(AbsoluteFilePath absoluteSourceFilePath, AbsoluteFilePath absoluteDestinationFilePath);
 
-        void Copy(AbsoluteFilePath absoluteSourceFilePath, AbsoluteFilePath absoluteDestinationFilePath);
+        void Copy(AbsoluteFilePath absoluteSourceFilePath, AbsoluteFilePath absoluteDestinationFilePath, bool overwrite);
     }
 }

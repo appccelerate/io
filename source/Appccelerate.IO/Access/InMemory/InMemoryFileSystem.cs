@@ -161,13 +161,19 @@ namespace Appccelerate.IO.Access.InMemory
 
         public void Move(AbsoluteFilePath absoluteSourceFilePath, AbsoluteFilePath absoluteDestinationFilePath)
         {
-            this.Copy(absoluteSourceFilePath, absoluteDestinationFilePath);
+            // TODO: test
+            this.Copy(absoluteSourceFilePath, absoluteDestinationFilePath, false);
             this.DeleteFile(absoluteSourceFilePath);
         }
 
-        public void Copy(AbsoluteFilePath absoluteSourceFilePath, AbsoluteFilePath absoluteDestinationFilePath)
+        public void Copy(AbsoluteFilePath absoluteSourceFilePath, AbsoluteFilePath absoluteDestinationFilePath, bool overwrite)
         {
             IEnumerable<byte> contents = this.GetFile(absoluteSourceFilePath);
+
+            if (!overwrite && this.FileExists(absoluteDestinationFilePath))
+            {
+                throw new IOException(string.Format("The file '{0}' already exists.", absoluteDestinationFilePath));
+            }
 
             AbsoluteFolderPath absoluteDestinationFolderPath = Path.GetDirectoryName(absoluteDestinationFilePath);
             this.CreateDirectory(absoluteDestinationFolderPath);
