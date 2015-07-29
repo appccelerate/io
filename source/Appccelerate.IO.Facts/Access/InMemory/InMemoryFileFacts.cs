@@ -15,6 +15,7 @@
 //   limitations under the License.
 // </copyright>
 //-------------------------------------------------------------------------------
+
 namespace Appccelerate.IO.Access.InMemory
 {
     using System;
@@ -23,6 +24,7 @@ namespace Appccelerate.IO.Access.InMemory
     using FakeItEasy;
     using FluentAssertions;
     using Xunit;
+    using Xunit.Extensions;
 
     public class InMemoryFileFacts
     {
@@ -128,6 +130,47 @@ namespace Appccelerate.IO.Access.InMemory
 
             A.CallTo(() => this.extension.BeginCopy(SourceFile, DestinationFile)).MustHaveHappened();
             A.CallTo(() => this.extension.EndCopy(SourceFile, DestinationFile)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void ReadsAllText_WhenFileContentIsUtf8Encoded()
+        {
+            const string FileContent = "κόσμε";
+            this.fileSystem.CreateDirectory(SourceFile);
+            this.fileSystem.AddFile(SourceFile, Encoding.UTF8.GetBytes(FileContent));
+
+            var result = this.testee.ReadAllText(SourceFile);
+
+            result.Should().Be(FileContent);
+        }
+
+        [Theory]
+        [InlineData("utf-32", "κόσμε")]
+        [InlineData("iso-8859-1", "Les naïfs ægithales hâtifs pondant à Noël")]
+        [InlineData("us-ascii", "*(^_^`)~")]
+        public void ReadsAllTextUsingProvidedEncoding(string encodingName, string content)
+        {
+            var encoding = Encoding.GetEncoding(encodingName);
+            this.fileSystem.CreateDirectory(SourceFile);
+            this.fileSystem.AddFile(SourceFile, encoding.GetBytes(content));
+
+            var result = this.testee.ReadAllText(SourceFile, encoding);
+
+            result.Should().Be(content);
+        }
+
+        [Fact]
+        public void CallsBeginAndEndReadAllTextOnReadingText()
+        {
+            var encoding = Encoding.UTF8;
+            var content = "mep mep";
+            this.fileSystem.CreateDirectory(SourceFile);
+            this.fileSystem.AddFile(SourceFile, encoding.GetBytes(content));
+
+            this.testee.ReadAllText(SourceFile, encoding);
+
+            A.CallTo(() => this.extension.BeginReadAllText(SourceFile, encoding)).MustHaveHappened();
+            A.CallTo(() => this.extension.EndReadAllText(content, SourceFile, encoding)).MustHaveHappened();
         }
     }
 }

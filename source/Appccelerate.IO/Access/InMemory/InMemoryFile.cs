@@ -79,10 +79,19 @@ namespace Appccelerate.IO.Access.InMemory
         public string ReadAllText(string path)
         {
             return this.EncapsulateWithExtension(
-                () => Encoding.Default.GetString(this.fileSystem.GetFile(path).ToArray()),
+                () => Encoding.UTF8.GetString(this.fileSystem.GetFile(path).ToArray()),
                 extension => extension.BeginReadAllText(path),
                 (extension, result) => extension.EndReadAllText(result, path),
                 (IFileExtension extension, ref Exception exception) => extension.FailReadAllText(ref exception, path));
+        }
+
+        public string ReadAllText(string path, Encoding encoding)
+        {
+            return this.EncapsulateWithExtension(
+                () => encoding.GetString(this.fileSystem.GetFile(path).ToArray()),
+                extension => extension.BeginReadAllText(path, encoding),
+                (extension, result) => extension.EndReadAllText(result, path, encoding),
+                (IFileExtension extension, ref Exception exception) => extension.FailReadAllText(ref exception, path, encoding));
         }
 
         public void WriteAllBytes(string path, IEnumerable<byte> bytes)
@@ -199,11 +208,6 @@ namespace Appccelerate.IO.Access.InMemory
         }
 
         public IEnumerable<string> ReadLines(string path, Encoding encoding)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ReadAllText(string path, Encoding encoding)
         {
             throw new NotImplementedException();
         }
