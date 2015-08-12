@@ -38,7 +38,9 @@ namespace Appccelerate.IO.Access.InMemory
             var directoryPath = @"C:\some\directory\path";
             this.fileSystem.CreateDirectory(directoryPath);
 
-            this.fileSystem.EnsureParentDirectoryExists(Path.Combine(directoryPath, "test.txt"));
+            Action action = () => this.fileSystem.EnsureParentDirectoryExists(Path.Combine(directoryPath, "test.txt"));
+
+            action.ShouldNotThrow();
         }
 
         [Fact]
