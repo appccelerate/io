@@ -130,24 +130,13 @@ namespace Appccelerate.IO.Access.InMemory
 
         public IFileInfo CopyTo(string destFileName)
         {
-            if (this.fileSystem.FileExists(destFileName))
-            {
-                throw new IOException("file " + destFileName + " already exists.");
-            }
-
-            this.fileSystem.AddFile(destFileName, this.fileSystem.GetFile(this.pathToFile));
-
-            return new InMemoryFileInfo(this.fileSystem, destFileName);
+            return this.CopyTo(destFileName, false);
         }
 
         public IFileInfo CopyTo(string destFileName, bool overwrite)
         {
-            if (!overwrite)
-            {
-                return this.CopyTo(destFileName);
-            }
-
-            this.fileSystem.AddFile(destFileName, this.fileSystem.GetFile(this.pathToFile));
+            this.fileSystem.EnsureParentDirectoryExists(destFileName);
+            this.fileSystem.Copy(this.pathToFile, destFileName, overwrite);
 
             return new InMemoryFileInfo(this.fileSystem, destFileName);
         }

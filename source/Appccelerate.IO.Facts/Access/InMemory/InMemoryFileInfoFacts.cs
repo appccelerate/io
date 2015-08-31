@@ -17,6 +17,9 @@
 //-------------------------------------------------------------------------------
 namespace Appccelerate.IO.Access.InMemory
 {
+    using System;
+    using System.IO;
+    using System.Text;
     using FluentAssertions;
     using Xunit;
 
@@ -26,12 +29,16 @@ namespace Appccelerate.IO.Access.InMemory
         private const string FolderName = "folder";
         private const string Folder = Root + FolderName;
         private const string FileInFolder = Folder + "\\file.ext";
+        private static readonly byte[] FileContent = { 1, 2, 3 };
 
+        private readonly InMemoryFileSystem fileSystem = new InMemoryFileSystem();
         private readonly InMemoryFileInfo testee;
 
         public InMemoryFileInfoFacts()
         {
-            this.testee = new InMemoryFileInfo(new InMemoryFileSystem(), FileInFolder);
+            this.fileSystem.CreateDirectory(FileInFolder);
+            this.fileSystem.AddFile(FileInFolder, FileContent);
+            this.testee = new InMemoryFileInfo(this.fileSystem, FileInFolder);
         }
 
         [Fact]
@@ -48,6 +55,68 @@ namespace Appccelerate.IO.Access.InMemory
             string result = this.testee.DirectoryName;
 
             result.Should().Be(FolderName);
+        }
+
+        [Fact]
+        public void CopiesFile()
+        {
+            var destinationPath = Path.Combine(Folder, "someSubFolder", "dest.ext");
+            this.fileSystem.CreateDirectory(Path.Combine(Folder, "someSubFolder"));
+
+            IFileInfo result = this.testee.CopyTo(destinationPath);
+
+            result.Exists.Should().BeTrue();
+            result.Name.Should().Be("dest.ext");
+            result.FullName.Should().Be(destinationPath);
+        }
+
+        [Fact]
+        public void DoesNotOverwriteAFileOnCopyToByDefault()
+        {
+            var originalContent = Encoding.UTF8.GetBytes("Hello World");
+            var destinationPath = Path.Combine(Folder, "dest.ext");
+            this.fileSystem.AddFile(destinationPath, originalContent);
+
+            Action action = () => this.testee.CopyTo(destinationPath);
+
+            action.ShouldThrow<IOException>();
+            this.fileSystem.GetFile(destinationPath).Should().BeEquivalentTo(originalContent);
+        }
+
+        [Fact]
+        public void OverwritesAFileOnCopyTo_WhenOverwriteFlagSet()
+        {
+            var destinationPath = Path.Combine(Folder, "dest.ext");
+            this.fileSystem.AddFile(destinationPath, Encoding.UTF8.GetBytes("Hello World"));
+
+            this.testee.CopyTo(destinationPath, true);
+
+            this.fileSystem.GetFile(destinationPath).Should().BeEquivalentTo(FileContent);
+        }
+
+        [Fact]
+        public void DoesNotOverwriteAFileOnCopyTo_WhenOverwriteFlagNotSet()
+        {
+            var originalContent = Encoding.UTF8.GetBytes("Hello World");
+            var destinationPath = Path.Combine(Folder, "dest.ext");
+            this.fileSystem.AddFile(destinationPath, originalContent);
+
+            Action action = () => this.testee.CopyTo(destinationPath, false);
+
+            action.ShouldThrow<IOException>();
+            this.fileSystem.GetFile(destinationPath).Should().BeEquivalentTo(originalContent);
+        }
+
+        [Fact]
+        public void ThrowsDirectoryNotFoundExceptionOnCopyTo_WhenDestinationDirectoryDoesNotExist()
+        {
+            var destinationPath = Path.Combine(Folder, "someSubFolder", "dest.ext");
+
+            Action action = () => this.testee.CopyTo(destinationPath);
+
+            action.ShouldThrow<DirectoryNotFoundException>();
+            this.fileSystem.FileExists(destinationPath)
+                .Should().BeFalse();
         }
     }
 }
