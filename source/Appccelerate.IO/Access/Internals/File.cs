@@ -366,7 +366,7 @@ namespace Appccelerate.IO.Access.Internals
         public Stream Create(string path, int bufferSize, FileOptions options, FileSecurity fileSecurity)
         {
             return this.EncapsulateWithExtension(
-                () => System.IO.File.Create(path, bufferSize, options, fileSecurity),
+                () => new System.IO.FileInfo(path).Create(FileMode.Create, FileSystemRights.Read | FileSystemRights.Write, FileShare.None, bufferSize, options, fileSecurity),
                 e => e.BeginCreate(path, bufferSize, options, fileSecurity),
                 (e, r) => e.EndCreate(r, path, bufferSize, options, fileSecurity),
                 (IFileExtension e, ref Exception exception) => e.FailCreate(ref exception, path, bufferSize, options, fileSecurity));
@@ -395,8 +395,8 @@ namespace Appccelerate.IO.Access.Internals
         /// <inheritdoc />
         public FileSecurity GetAccessControl(string path)
         {
-            return this.EncapsulateWithExtension(
-                () => System.IO.File.GetAccessControl(path),
+            return  this.EncapsulateWithExtension(
+                () => new System.IO.FileInfo(path).GetAccessControl(),
                 e => e.BeginGetAccessControl(path),
                 (e, r) => e.EndGetAccessControl(r, path),
                 (IFileExtension e, ref Exception exception) => e.FailGetAccessControl(ref exception, path));
@@ -406,7 +406,7 @@ namespace Appccelerate.IO.Access.Internals
         public FileSecurity GetAccessControl(string path, AccessControlSections includeSections)
         {
             return this.EncapsulateWithExtension(
-                () => System.IO.File.GetAccessControl(path, includeSections),
+                () => new System.IO.FileInfo(path).GetAccessControl(includeSections),
                 e => e.BeginGetAccessControl(path, includeSections),
                 (e, r) => e.EndGetAccessControl(r, path, includeSections),
                 (IFileExtension e, ref Exception exception) => e.FailGetAccessControl(ref exception, path, includeSections));
@@ -536,7 +536,7 @@ namespace Appccelerate.IO.Access.Internals
         public void SetAccessControl(string path, FileSecurity fileSecurity)
         {
             this.EncapsulateWithExtension(
-                () => System.IO.File.SetAccessControl(path, fileSecurity),
+                () => new System.IO.FileInfo(path).SetAccessControl(fileSecurity),
                 e => e.BeginSetAccessControl(path, fileSecurity),
                 e => e.EndSetAccessControl(path, fileSecurity),
                 (IFileExtension e, ref Exception exception) => e.FailSetAccessControl(ref exception, path, fileSecurity));

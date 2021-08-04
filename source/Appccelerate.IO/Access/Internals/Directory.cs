@@ -73,7 +73,7 @@ namespace Appccelerate.IO.Access.Internals
         public IDirectoryInfo CreateDirectory(string path, DirectorySecurity directorySecurity)
         {
             return this.EncapsulateWithExtension(
-                () => new DirectoryInfo(System.IO.Directory.CreateDirectory(path, directorySecurity)),
+                () => new DirectoryInfo(directorySecurity.CreateDirectory(path)),
                 e => e.BeginCreateDirectory(path, directorySecurity),
                 (e, r) => e.EndCreateDirectory(r, path, directorySecurity),
                 (IDirectoryExtension e, ref Exception exception) => e.FailCreateDirectory(ref exception, path, directorySecurity));
@@ -143,7 +143,7 @@ namespace Appccelerate.IO.Access.Internals
         public DirectorySecurity GetAccessControl(string path)
         {
             return this.EncapsulateWithExtension(
-                () => System.IO.Directory.GetAccessControl(path),
+                () => new System.IO.DirectoryInfo(path).GetAccessControl(),
                 e => e.BeginGetAccessControl(path),
                 (e, r) => e.EndGetAccessControl(r, path),
                 (IDirectoryExtension e, ref Exception exception) => e.FailGetAccessControl(ref exception, path));
@@ -153,7 +153,7 @@ namespace Appccelerate.IO.Access.Internals
         public DirectorySecurity GetAccessControl(string path, AccessControlSections includeSections)
         {
             return this.EncapsulateWithExtension(
-                () => System.IO.Directory.GetAccessControl(path, includeSections),
+                () => new System.IO.DirectoryInfo(path).GetAccessControl(includeSections),
                 e => e.BeginGetAccessControl(path, includeSections),
                 (e, r) => e.EndGetAccessControl(r, path, includeSections),
                 (IDirectoryExtension e, ref Exception exception) => e.FailGetAccessControl(ref exception, path, includeSections));
@@ -314,7 +314,7 @@ namespace Appccelerate.IO.Access.Internals
         public void SetAccessControl(string path, DirectorySecurity directorySecurity)
         {
             this.EncapsulateWithExtension(
-                () => System.IO.Directory.SetAccessControl(path, directorySecurity),
+                () => new System.IO.DirectoryInfo(path).SetAccessControl(directorySecurity),
                 e => e.BeginSetAccessControl(path, directorySecurity),
                 e => e.EndSetAccessControl(path, directorySecurity),
                 (IDirectoryExtension e, ref Exception exception) => e.FailSetAccessControl(ref exception, path, directorySecurity));
