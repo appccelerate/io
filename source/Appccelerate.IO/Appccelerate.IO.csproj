@@ -1,156 +1,81 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{040E4BA4-3EC0-4D60-B82F-2F375BF0DD29}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Appccelerate.IO</RootNamespace>
-    <AssemblyName>Appccelerate.IO</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>03af2c48</NuGetPackageImportStamp>
+    <TargetFrameworks>net45</TargetFrameworks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Appccelerate.IO.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
+
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile />
+    <Title>Appccelerate.IO</Title>
+    <Copyright>Copyright ©  2008-2020</Copyright>
+    <Authors>Appccelerate team</Authors>
+    <Company>Appccelerate</Company>
+    <Product>Appccelerate</Product>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Appccelerate.Fundamentals">
-      <HintPath>..\packages\Appccelerate.Fundamentals.2.8.0\lib\portable-windows8+net45\Appccelerate.Fundamentals.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Xml" />
+
+  <!-- nuget package -->
+  <PropertyGroup>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/appccelerate/io</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <PackageIcon>icon.png</PackageIcon>
+    <description>
+      Provides functionality for simplified IO operations:
+      File system abstraction (completely testable)
+      Stream decorators/interceptors,
+      loader for resources (from file/embedded)
+    </description>
+    <PackageReleaseNotes>
+      3.0.0:
+      - Supports now .NET Standard 2.0
+    </PackageReleaseNotes>
+    <PackageTags>Appccelerate io</PackageTags>
+  </PropertyGroup>
+
+  <!-- nuget symbol package -->
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <!-- strong name signing -->
+  <PropertyGroup>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>Appccelerate.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>False</DelaySign>
+  </PropertyGroup>
+
+  <!-- Stylecop / Analyzers -->
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>../Analyzers.Productive.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <!-- versioning -->
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PackageReference Include="MinVer" Version="2.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
+  <PropertyGroup>
+    <MinVerAutoIncrement>Minor</MinVerAutoIncrement>
+  </PropertyGroup>
+
+  <!-- license -->
   <ItemGroup>
-    <Compile Include="AbsoluteFilePath.cs" />
-    <Compile Include="AbsoluteFolderPath.cs" />
-    <Compile Include="AbsolutePath.cs" />
-    <Compile Include="Access\AccessFactory.cs" />
-    <Compile Include="Access\DirectoryExtensionBase.cs" />
-    <Compile Include="Access\DriveExtensionBase.cs" />
-    <Compile Include="Access\EnvironmentExtensionBase.cs" />
-    <Compile Include="Access\FileExtensionBase.cs" />
-    <Compile Include="Access\IAccessFactory.cs" />
-    <Compile Include="Access\IDirectory.g.cs" />
-    <Compile Include="Access\IDirectoryExtension.g.cs" />
-    <Compile Include="Access\IDirectoryInfo.g.cs" />
-    <Compile Include="Access\IDrive.g.cs" />
-    <Compile Include="Access\IDriveExtension.g.cs" />
-    <Compile Include="Access\IDriveInfo.g.cs" />
-    <Compile Include="Access\IEnvironment.g.cs" />
-    <Compile Include="Access\IEnvironmentExtension.g.cs" />
-    <Compile Include="Access\IFile.g.cs" />
-    <Compile Include="Access\IFileExtension.g.cs" />
-    <Compile Include="Access\IFileInfo.g.cs" />
-    <Compile Include="Access\IFileSystemInfo.g.cs" />
-    <Compile Include="Access\InMemory\IInMemoryFileSystem.cs" />
-    <Compile Include="Access\InMemory\InMemoryAccessFactory.cs" />
-    <Compile Include="Access\InMemory\InMemoryDirectory.cs" />
-    <Compile Include="Access\InMemory\InMemoryDirectoryInfo.cs" />
-    <Compile Include="Access\InMemory\InMemoryEnvironment.cs" />
-    <Compile Include="Access\InMemory\InMemoryFile.cs" />
-    <Compile Include="Access\InMemory\InMemoryFileInfo.cs" />
-    <Compile Include="Access\InMemory\InMemoryFileSystem.cs" />
-    <Compile Include="Access\InMemory\InMemoryFileSystemExtensions.cs" />
-    <Compile Include="Access\InMemory\StringExtensionMethods.cs" />
-    <Compile Include="Access\Internals\Directory.cs" />
-    <Compile Include="Access\Internals\DirectoryInfo.cs" />
-    <Compile Include="Access\Internals\Drive.cs" />
-    <Compile Include="Access\Internals\DriveInfo.cs" />
-    <Compile Include="Access\Internals\Environment.cs" />
-    <Compile Include="Access\Internals\ExtensionProviderExtensions.cs" />
-    <Compile Include="Access\Internals\File.cs" />
-    <Compile Include="Access\Internals\FileInfo.cs" />
-    <Compile Include="Access\Internals\FileSystemInfo{TInfo}.cs" />
-    <Compile Include="Access\Internals\IExtensionProvider{TExtension}.cs" />
-    <Compile Include="Access\Internals\Path.cs" />
-    <Compile Include="Access\IPath.g.cs" />
-    <Compile Include="Access\IPathExtension.g.cs" />
-    <Compile Include="Access\PathExtensionBase.cs" />
-    <Compile Include="Csv\CsvParseException.cs" />
-    <Compile Include="Csv\CsvParser.cs" />
-    <Compile Include="Csv\CsvWriter.cs" />
-    <Compile Include="ExceptionExtensionMethods.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\GlobalAssemblyInfo.cs" />
-    <Compile Include="Resources\EmbeddedResourceLoader.cs" />
-    <Compile Include="Resources\FileResourceLoader.cs" />
-    <Compile Include="Resources\IResourceLoader.cs" />
-    <Compile Include="ShortcutPath.cs" />
-    <Compile Include="Streams\StreamDecoratorStream.cs" />
-    <Compile Include="Streams\StreamExtensionMethods.cs" />
-    <Compile Include="TemporaryFileHolder.cs" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
+
+  <!-- xml documentation file generation -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
-    <None Include="appccelerate.io.nuspec" />
     <None Include="Appccelerate.Public.snk" />
     <None Include="Appccelerate.snk" />
-    <None Include="NuGet.config" />
-    <None Include="packages.config" />
-    <None Include="Settings.stylecop" />
+    <None Include="icon.png" Pack="true" Visible="false" PackagePath="" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Access\IDirectory.doc.xml" />
-    <Content Include="Access\IDirectoryInfo.doc.xml" />
-    <Content Include="Access\IDriveInfo.doc.xml" />
-    <Content Include="Access\IEnvironment.doc.xml" />
-    <Content Include="Access\IFile.doc.xml" />
-    <Content Include="Access\IFileInfo.doc.xml" />
-    <Content Include="Access\IFileSystemInfo.doc.xml" />
-    <Content Include="Access\IPath.doc.xml" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Appccelerate.Development.0.18\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.18\build\Appccelerate.development.targets')" />
-  <Import Project="..\packages\Appccelerate.CheckNugetDependenciesTask.0.2.0-Unstable4\build\Appccelerate.CheckNugetDependenciesTask.targets" Condition="Exists('..\packages\Appccelerate.CheckNugetDependenciesTask.0.2.0-Unstable4\build\Appccelerate.CheckNugetDependenciesTask.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.ProductionCode.0.18\build\Appccelerate.development.ProductionCode.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.0.18\build\Appccelerate.development.ProductionCode.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.VersionTask.1.17.0\build\Appccelerate.VersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.VersionTask.1.17.0\build\Appccelerate.VersionTask.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.CheckNugetDependenciesTask.1.13.0\build\Appccelerate.CheckNugetDependenciesTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.CheckNugetDependenciesTask.1.13.0\build\Appccelerate.CheckNugetDependenciesTask.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.CheckHintPathTask.1.15.0\build\Appccelerate.CheckHintPathTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.CheckHintPathTask.1.15.0\build\Appccelerate.CheckHintPathTask.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.Development.ProductionCode.Signed.1.14.0\build\Appccelerate.development.ProductionCode.Signed.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.ProductionCode.Signed.1.14.0\build\Appccelerate.development.ProductionCode.Signed.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.Development.ProductionCode.1.14.0\build\Appccelerate.development.ProductionCode.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.ProductionCode.1.14.0\build\Appccelerate.development.ProductionCode.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.Development.1.14.0\build\Appccelerate.development.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.1.14.0\build\Appccelerate.development.targets'))" />
-  </Target>
-  <Import Project="..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" />
-  <Import Project="..\packages\Appccelerate.VersionTask.1.17.0\build\Appccelerate.VersionTask.targets" Condition="Exists('..\packages\Appccelerate.VersionTask.1.17.0\build\Appccelerate.VersionTask.targets')" />
-  <Import Project="..\packages\Appccelerate.CheckNugetDependenciesTask.1.13.0\build\Appccelerate.CheckNugetDependenciesTask.targets" Condition="Exists('..\packages\Appccelerate.CheckNugetDependenciesTask.1.13.0\build\Appccelerate.CheckNugetDependenciesTask.targets')" />
-  <Import Project="..\packages\Appccelerate.CheckHintPathTask.1.15.0\build\Appccelerate.CheckHintPathTask.targets" Condition="Exists('..\packages\Appccelerate.CheckHintPathTask.1.15.0\build\Appccelerate.CheckHintPathTask.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.ProductionCode.Signed.1.14.0\build\Appccelerate.development.ProductionCode.Signed.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.Signed.1.14.0\build\Appccelerate.development.ProductionCode.Signed.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.ProductionCode.1.14.0\build\Appccelerate.development.ProductionCode.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.1.14.0\build\Appccelerate.development.ProductionCode.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.1.14.0\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.1.14.0\build\Appccelerate.development.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
