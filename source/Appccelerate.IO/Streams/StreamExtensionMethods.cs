@@ -88,8 +88,8 @@ namespace Appccelerate.IO.Streams
         /// </returns>
         public static bool CompareStreamContentsTo(this Stream actual, Stream expected)
         {
-            Ensure.ArgumentNotNull(actual, "actual");
-            Ensure.ArgumentNotNull(expected, "expected");
+            Guard.AgainstNullArgument(nameof(actual), actual);
+            Guard.AgainstNullArgument(nameof(expected), expected);
 
             if (!expected.CanRead)
             {

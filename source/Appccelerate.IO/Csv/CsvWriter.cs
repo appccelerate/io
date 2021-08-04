@@ -54,7 +54,7 @@ namespace Appccelerate.IO.Csv
         /// </returns>
         public string Write(string[] values, string delimiter)
         {
-            Ensure.ArgumentNotNull(values, "values");
+            Guard.AgainstNullArgument(nameof(values), values);
 
             StringBuilder line = new StringBuilder();
             foreach (string value in values)

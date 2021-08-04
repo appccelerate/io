@@ -38,7 +38,7 @@ namespace Appccelerate.IO
         /// <param name="fileContent">Content of the file.</param>
         public TemporaryFileHolder(string filePath, Stream fileContent)
         {
-            Ensure.ArgumentNotNull(fileContent, "fileContent");
+            Guard.AgainstNullArgument(nameof(fileContent), fileContent);
 
             this.filePath = filePath;
             using (FileStream fileStream = File.Create(filePath))

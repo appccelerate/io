@@ -27,7 +27,7 @@ namespace Appccelerate.IO
 
         public ShortcutPath(string shortcutPath)
         {
-            Ensure.ArgumentNotNull(shortcutPath, "shortcutPath");
+            Guard.AgainstNullArgument(nameof(shortcutPath), shortcutPath);
 
             if (ContainsInvalidShortcut(shortcutPath))
             {

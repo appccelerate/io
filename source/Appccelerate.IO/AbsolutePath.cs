@@ -62,7 +62,7 @@ namespace Appccelerate.IO
 
         public static implicit operator string(AbsolutePath absolutePath)
         {
-            Ensure.ArgumentNotNull(absolutePath, "absolutePath");
+            Guard.AgainstNullArgument(nameof(absolutePath), absolutePath);
 
             return absolutePath.Value;
         }
@@ -121,7 +121,7 @@ namespace Appccelerate.IO
 
         private bool Equals(AbsolutePath other)
         {
-            Ensure.ArgumentNotNull(other, "other");
+            Guard.AgainstNullArgument(nameof(other), other);
 
             return string.Equals(this.Value, other.Value);
         }

@@ -39,7 +39,7 @@ namespace Appccelerate.IO.Resources
         /// </returns>
         public IXPathNavigable LoadResourceAsXml(Type type, string resourceName)
         {
-            Ensure.ArgumentNotNull(type, "type");
+            Guard.AgainstNullArgument(nameof(type), type);
 
             return this.LoadResourceAsXml(type.Assembly, resourceName);
         }
@@ -54,7 +54,7 @@ namespace Appccelerate.IO.Resources
         /// </returns>
         public IXPathNavigable LoadResourceAsXml(Assembly assembly, string resourceName)
         {
-            Ensure.ArgumentNotNull(assembly, "assembly");
+            Guard.AgainstNullArgument(nameof(assembly), assembly);
             
             XmlDocument xmlDocument = new XmlDocument();
             string filepath = Path.Combine(Path.GetDirectoryName(assembly.Location), resourceName);
@@ -73,7 +73,7 @@ namespace Appccelerate.IO.Resources
         /// </returns>
         public string LoadResourceAsString(Type type, string resourceName)
         {
-            Ensure.ArgumentNotNull(type, "type");
+            Guard.AgainstNullArgument(nameof(type), type);
 
             return this.LoadResourceAsString(type.Assembly, resourceName);
         }
@@ -88,7 +88,7 @@ namespace Appccelerate.IO.Resources
         /// </returns>
         public string LoadResourceAsString(Assembly assembly, string resourceName)
         {
-            Ensure.ArgumentNotNull(assembly, "assembly");
+            Guard.AgainstNullArgument(nameof(assembly), assembly);
 
             string filepath = Path.Combine(Path.GetDirectoryName(assembly.Location), resourceName);
             using (StreamReader reader = new StreamReader(filepath))
@@ -107,7 +107,7 @@ namespace Appccelerate.IO.Resources
         /// </returns>
         public MemoryStream LoadResourceAsStream(Type type, string resourceName)
         {
-            Ensure.ArgumentNotNull(type, "type");
+            Guard.AgainstNullArgument(nameof(type), type);
 
             return this.LoadResourceAsStream(type.Assembly, resourceName);
         }
@@ -124,7 +124,7 @@ namespace Appccelerate.IO.Resources
             Justification = "it's a memory stream and has to be disposed by caller")]
         public MemoryStream LoadResourceAsStream(Assembly assembly, string resourceName)
         {
-            Ensure.ArgumentNotNull(assembly, "assembly");
+            Guard.AgainstNullArgument(nameof(assembly), assembly);
 
             var result = new MemoryStream();
             string filepath = Path.Combine(Path.GetDirectoryName(assembly.Location), resourceName);
