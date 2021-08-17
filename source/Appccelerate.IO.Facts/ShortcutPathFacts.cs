@@ -69,7 +69,7 @@ namespace Appccelerate.IO
             const string InvalidShortcutPath = ShortcutPath.ShortcutCharacter + "ShortcutT" + ShortcutPath.ShortcutCharacter + "ff" + ShortcutPath.ShortcutCharacter + @"\file.ext";
             Action action = () => new ShortcutPath(InvalidShortcutPath);
 
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [Theory]

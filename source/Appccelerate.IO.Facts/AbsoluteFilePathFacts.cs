@@ -58,7 +58,7 @@ namespace Appccelerate.IO
         {
             Action action = () => new AbsoluteFilePath(FolderPath);
 
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace Appccelerate.IO
         {
             Action action = () => new AbsoluteFilePath(@".\file");
 
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [Theory]

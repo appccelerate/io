@@ -40,7 +40,7 @@ namespace Appccelerate.IO.Access.InMemory
 
             Action action = () => this.fileSystem.EnsureParentDirectoryExists(Path.Combine(directoryPath, "test.txt"));
 
-            action.ShouldNotThrow();
+            action.Should().NotThrow();
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace Appccelerate.IO.Access.InMemory
 
             Action action = () => this.fileSystem.EnsureParentDirectoryExists(Path.Combine(directoryPath, "butDifferent", "test.txt"));
 
-            action.ShouldThrow<DirectoryNotFoundException>();
+            action.Should().Throw<DirectoryNotFoundException>();
         }
     }
 }

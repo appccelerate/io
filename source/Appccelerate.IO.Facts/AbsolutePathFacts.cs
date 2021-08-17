@@ -73,7 +73,7 @@ namespace Appccelerate.IO
         {
             Action action = () => new AbsolutePath("..\folder\file.ext");
 
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [Theory]

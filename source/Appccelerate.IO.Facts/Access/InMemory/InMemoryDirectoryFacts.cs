@@ -56,7 +56,7 @@ namespace Appccelerate.IO.Access.InMemory
 
             Action action = () => this.testee.Delete(Folder);
 
-            action.ShouldThrow<IOException>();
+            action.Should().Throw<IOException>();
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace Appccelerate.IO.Access.InMemory
 
             Action action = () => this.testee.Delete(Folder);
 
-            action.ShouldThrow<IOException>();
+            action.Should().Throw<IOException>();
         }
 
         [Fact]
