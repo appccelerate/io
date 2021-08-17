@@ -164,30 +164,6 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         /// <summary>
-        /// Creates an object that contains all the relevant information required to
-        /// generate a proxy used to communicate with a remote object.
-        /// </summary>
-        /// <param name="requestedType">The <see cref="T:System.Type"/> of the object that
-        /// the new <see cref="T:System.Runtime.Remoting.ObjRef"/> will reference.</param>
-        /// <returns>
-        /// Information required to generate a proxy.
-        /// </returns>
-        /// <exception cref="T:System.Runtime.Remoting.RemotingException">
-        /// This instance is not a valid remoting object.
-        /// </exception>
-        /// <exception cref="T:System.Security.SecurityException">
-        /// The immediate caller does not have infrastructure permission.
-        /// </exception>
-        /// <PermissionSet>
-        /// <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="Infrastructure"/>
-        /// </PermissionSet>
-        [SecurityCritical]
-        public override System.Runtime.Remoting.ObjRef CreateObjRef(Type requestedType)
-        {
-            return this.Info.CreateObjRef(requestedType);
-        }
-
-        /// <summary>
         /// Obtains a lifetime service object to control the lifetime policy for this instance.
         /// </summary>
         /// <returns>

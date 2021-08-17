@@ -122,7 +122,7 @@ namespace Appccelerate.IO.Csv
         {
             Action action = () => this.parser.Parse("\"00501, ABC");
 
-            action.ShouldThrow<CsvParseException>();
+            action.Should().Throw<CsvParseException>();
         }
 
         [Fact]
@@ -130,7 +130,7 @@ namespace Appccelerate.IO.Csv
         {
             Action action = () => this.parser.Parse("\"00501\" , \"ABC\"");
 
-            action.ShouldThrow<CsvParseException>();
+            action.Should().Throw<CsvParseException>();
         }
 
         [Fact]

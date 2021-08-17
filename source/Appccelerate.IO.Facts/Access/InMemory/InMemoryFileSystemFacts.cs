@@ -99,7 +99,7 @@ namespace Appccelerate.IO.Access.InMemory
             {
                 Action action = () => this.testee.DeleteDirectory(Folder);
 
-                action.ShouldThrow<DirectoryNotFoundException>();
+                action.Should().Throw<DirectoryNotFoundException>();
             }
 
             [Fact]
@@ -156,7 +156,7 @@ namespace Appccelerate.IO.Access.InMemory
             {
                 Action action = () => this.testee.AddFile(FileInFolder, DummyFile);
 
-                action.ShouldThrow<DirectoryNotFoundException>();
+                action.Should().Throw<DirectoryNotFoundException>();
             }
 
             [Fact]
@@ -201,7 +201,7 @@ namespace Appccelerate.IO.Access.InMemory
             {
                 Action action = () => this.testee.DeleteFile(FileInFolder);
 
-                action.ShouldThrow<DirectoryNotFoundException>();
+                action.Should().Throw<DirectoryNotFoundException>();
             }
 
             [Fact]
@@ -227,7 +227,7 @@ namespace Appccelerate.IO.Access.InMemory
 
                 Action action = () => this.testee.Move(FileInFolder, OtherFileInOtherFolder);
 
-                action.ShouldThrow<FileNotFoundException>();
+                action.Should().Throw<FileNotFoundException>();
             }
 
             [Fact]
@@ -237,7 +237,7 @@ namespace Appccelerate.IO.Access.InMemory
 
                 Action action = () => this.testee.Move(FileInFolder, OtherFileInOtherFolder);
 
-                action.ShouldThrow<DirectoryNotFoundException>();
+                action.Should().Throw<DirectoryNotFoundException>();
             }
 
             [Fact]
@@ -266,7 +266,7 @@ namespace Appccelerate.IO.Access.InMemory
 
                 Action action = () => this.testee.Move(FileInFolder, OtherFileInOtherFolder);
 
-                action.ShouldThrow<IOException>();
+                action.Should().Throw<IOException>();
                 this.testee.GetFile(OtherFileInOtherFolder)
                     .Should().Equal(originalContent);
             }
@@ -294,7 +294,7 @@ namespace Appccelerate.IO.Access.InMemory
 
                 Action action = () => this.testee.Copy(FileInFolder, OtherFileInOtherFolder, false);
 
-                action.ShouldThrow<FileNotFoundException>();
+                action.Should().Throw<FileNotFoundException>();
             }
 
             [Fact]
@@ -304,7 +304,7 @@ namespace Appccelerate.IO.Access.InMemory
 
                 Action action = () => this.testee.Copy(FileInFolder, OtherFileInOtherFolder, false);
 
-                action.ShouldThrow<DirectoryNotFoundException>();
+                action.Should().Throw<DirectoryNotFoundException>();
             }
 
             [Fact]
@@ -333,7 +333,7 @@ namespace Appccelerate.IO.Access.InMemory
 
                 Action action = () => this.testee.Copy(FileInFolder, OtherFileInOtherFolder, false);
 
-                action.ShouldThrow<IOException>();
+                action.Should().Throw<IOException>();
                 this.testee.GetFile(OtherFileInOtherFolder)
                     .Should().Equal(originalContent);
             }
@@ -370,7 +370,7 @@ namespace Appccelerate.IO.Access.InMemory
 
                 Action action = () => this.testee.GetFile(FileInFolder);
 
-                action.ShouldThrow<FileNotFoundException>();
+                action.Should().Throw<FileNotFoundException>();
             }
 
             [Fact]
@@ -378,7 +378,7 @@ namespace Appccelerate.IO.Access.InMemory
             {
                 Action action = () => this.testee.GetFile(FileInFolder);
 
-                action.ShouldThrow<DirectoryNotFoundException>();
+                action.Should().Throw<DirectoryNotFoundException>();
             }
         }
     }

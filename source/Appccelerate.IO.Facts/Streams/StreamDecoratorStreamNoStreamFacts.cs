@@ -32,7 +32,7 @@ namespace Appccelerate.IO.Streams
             var streamDecorator = new StreamDecoratorTestStream(null);
             
             streamDecorator.Invoking(s => s.Position = 10)
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
     }
 }

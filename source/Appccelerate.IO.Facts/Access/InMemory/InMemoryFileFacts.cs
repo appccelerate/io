@@ -73,7 +73,7 @@ namespace Appccelerate.IO.Access.InMemory
 
             Action action = () => this.testee.Copy(SourceFile, DestinationFile);
 
-            action.ShouldThrow<IOException>();
+            action.Should().Throw<IOException>();
             this.fileSystem.GetFile(DestinationFile)
                 .Should().Equal(originalContent);
         }
@@ -101,7 +101,7 @@ namespace Appccelerate.IO.Access.InMemory
 
             Action action = () => this.testee.Copy(SourceFile, DestinationFile);
 
-            action.ShouldThrow<DirectoryNotFoundException>();
+            action.Should().Throw<DirectoryNotFoundException>();
             this.fileSystem.FileExists(DestinationFile)
                 .Should().BeFalse();
         }
@@ -114,7 +114,7 @@ namespace Appccelerate.IO.Access.InMemory
 
             Action action = () => this.testee.Copy(SourceFile, DestinationFile, true);
 
-            action.ShouldThrow<DirectoryNotFoundException>();
+            action.Should().Throw<DirectoryNotFoundException>();
             this.fileSystem.FileExists(DestinationFile)
                 .Should().BeFalse();
         }

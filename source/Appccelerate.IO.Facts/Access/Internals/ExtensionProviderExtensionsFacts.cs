@@ -148,7 +148,7 @@ namespace Appccelerate.IO.Access.Internals
                                 e => e.EndDo(ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<Exception>();
+            action.Should().Throw<Exception>();
             A.CallTo(() => this.extension.FailDo(ref exception)).MustHaveHappened();
         }
 
@@ -169,7 +169,7 @@ namespace Appccelerate.IO.Access.Internals
                                 e => e.EndDo(ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -191,7 +191,7 @@ namespace Appccelerate.IO.Access.Internals
                                 e => e.EndDo(ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -259,7 +259,7 @@ namespace Appccelerate.IO.Access.Internals
                                 e => e.EndDo(ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [Fact]
@@ -279,7 +279,7 @@ namespace Appccelerate.IO.Access.Internals
                                 e => e.EndDo(ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -301,7 +301,7 @@ namespace Appccelerate.IO.Access.Internals
                                 e => e.EndDo(ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -385,7 +385,7 @@ namespace Appccelerate.IO.Access.Internals
                                 (e, r) => e.EndDoReturn(r, ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [Fact]
@@ -405,7 +405,7 @@ namespace Appccelerate.IO.Access.Internals
                                 (e, r) => e.EndDoReturn(r, ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDoReturn(ref ex));
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -427,7 +427,7 @@ namespace Appccelerate.IO.Access.Internals
                                 (e, r) => e.EndDoReturn(r, ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -495,7 +495,7 @@ namespace Appccelerate.IO.Access.Internals
                                 (e, r) => e.EndDoReturn(r, ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [Fact]
@@ -515,7 +515,7 @@ namespace Appccelerate.IO.Access.Internals
                                 (e, r) => e.EndDoReturn(r, ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -537,7 +537,7 @@ namespace Appccelerate.IO.Access.Internals
                                 (e, r) => e.EndDoReturn(r, ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
         
         [Fact]
@@ -586,7 +586,7 @@ namespace Appccelerate.IO.Access.Internals
                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
             
             this.intParameter.Should().Be(ExpectedParameter);
-            result.Should().Be(this.expectedReturnStream);
+            result.Should().BeSameAs(this.expectedReturnStream);
         }
 
         [Fact]
@@ -606,7 +606,7 @@ namespace Appccelerate.IO.Access.Internals
                 (e, r) => e.EndDoReturn(r, ExpectedParameter),
                 (IExtension e, ref Exception ex) => e.FailDoReturn(ref ex));
 
-            action.ShouldThrow<Exception>();
+            action.Should().Throw<Exception>();
             A.CallTo(() => this.extension.FailDoReturn(ref exception)).MustHaveHappened();
         }
 
@@ -627,7 +627,7 @@ namespace Appccelerate.IO.Access.Internals
                                 (e, r) => e.EndDoReturn(r, ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -649,7 +649,7 @@ namespace Appccelerate.IO.Access.Internals
                                 (e, r) => e.EndDoReturn(r, ExpectedParameter),
                                 (IExtension e, ref Exception ex) => e.FailDo(ref ex));
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
 
         private void RegisterExtensions(params IExtension[] extensions)

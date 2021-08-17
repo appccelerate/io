@@ -41,7 +41,7 @@ namespace Appccelerate.IO.Resources
         /// <exception cref="ArgumentException"><paramref name="resourceName"/> does not exist</exception>
         public IXPathNavigable LoadResourceAsXml(Type type, string resourceName)
         {
-            Ensure.ArgumentNotNull(type, "type");
+            Guard.AgainstNullArgument(nameof(type), type);
 
             return this.LoadResourceAsXml(type.Assembly, string.Format(CultureInfo.InvariantCulture, "{0}.{1}", type.Namespace, resourceName));
         }
@@ -75,7 +75,7 @@ namespace Appccelerate.IO.Resources
         /// </returns>
         public string LoadResourceAsString(Type type, string resourceName)
         {
-            Ensure.ArgumentNotNull(type, "type");
+            Guard.AgainstNullArgument(nameof(type), type);
 
             return this.LoadResourceAsString(type.Assembly, string.Format(CultureInfo.InvariantCulture, "{0}.{1}", type.Namespace, resourceName));
         }
@@ -92,7 +92,7 @@ namespace Appccelerate.IO.Resources
             Justification = "cannot be used otherwise")]
         public string LoadResourceAsString(Assembly assembly, string resourceName)
         {
-            Ensure.ArgumentNotNull(assembly, "assembly");
+            Guard.AgainstNullArgument(nameof(assembly), assembly);
 
             using (Stream resourceStream = assembly.GetManifestResourceStream(resourceName))
             {
@@ -119,7 +119,7 @@ namespace Appccelerate.IO.Resources
         /// </returns>
         public MemoryStream LoadResourceAsStream(Type type, string resourceName)
         {
-            Ensure.ArgumentNotNull(type, "type");
+            Guard.AgainstNullArgument(nameof(type), type);
 
             return this.LoadResourceAsStream(type.Assembly, string.Format(CultureInfo.InvariantCulture, "{0}.{1}", type.Namespace, resourceName));
         }
@@ -136,7 +136,7 @@ namespace Appccelerate.IO.Resources
             Justification = "it's a memory stream and has to be disposed by caller")]
         public MemoryStream LoadResourceAsStream(Assembly assembly, string resourceName)
         {
-            Ensure.ArgumentNotNull(assembly, "assembly");
+            Guard.AgainstNullArgument(nameof(assembly), assembly);
 
             using (Stream resourceStream = assembly.GetManifestResourceStream(resourceName))
             {
