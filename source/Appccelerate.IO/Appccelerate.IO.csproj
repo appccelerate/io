@@ -8,29 +8,32 @@
     <Copyright>Copyright ©  2008-2020</Copyright>
     <Authors>Appccelerate team</Authors>
     <Company>Appccelerate</Company>
-    <Product>Appccelerate</Product>
+    <Product>Appccelerate.IO</Product>
   </PropertyGroup>
 
   <!-- nuget package -->
   <PropertyGroup>
-    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/appccelerate/io</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <PackageIcon>icon.png</PackageIcon>
     <description>
       Provides functionality for simplified IO operations:
-      File system abstraction (completely testable)
-      Stream decorators/interceptors,
-      loader for resources (from file/embedded)
+        File system abstraction (completely testable)
+        Stream decorators/interceptors,
+        loader for resources (from file/embedded).
+    Supported on Windows only.
     </description>
     <PackageReleaseNotes>
       3.0.0:
       - Supports now .NET Standard 2.0
     </PackageReleaseNotes>
-    <PackageTags>Appccelerate io</PackageTags>
+    <PackageTags>Appccelerate;Appccelerate IO;IO</PackageTags>
   </PropertyGroup>
 
   <!-- nuget symbol package -->
